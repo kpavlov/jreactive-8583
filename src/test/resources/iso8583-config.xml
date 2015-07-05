@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE j8583-config PUBLIC "-//J8583//DTD CONFIG 1.0//EN"
+        "http://j8583.sourceforge.net/j8583.dtd">
+<j8583-config>
+
+    <!-- The client example uses this to create requests -->
+    <template type="0200">
+        <field num="3" type="NUMERIC" length="6">650000</field>
+        <field num="32" type="LLVAR">456</field>
+        <field num="35" type="LLVAR">4591700012340000=</field>
+        <field num="43" type="ALPHA" length="40">SOLABTEST TEST-3 DF MX</field>
+        <field num="49" type="ALPHA" length="3">484</field>
+        <field num="60" type="LLLVAR">B456PRO1+000</field>
+        <field num="61" type="LLLVAR">1234P</field>
+        <field num="100" type="LLVAR">999</field>
+        <field num="102" type="LLVAR">ABCD</field>
+    </template>
+
+    <!-- The server example uses this to create the responses
+        we only need a few fields because the rest are copied from the request -->
+    <template type="0210">
+        <field num="60" type="LLLVAR">Fixed data from template</field>
+        <field num="70" type="ALPHA" length="3">ABC</field>
+        <field num="90" type="ALPHA" length="42">Field of length 42</field>
+        <field num="100" type="LLVAR">Fixed field</field>
+        <field num="102" type="LLVAR">Another fixed field</field>
+        <field num="126" type="LLLVAR">...and yet another fixed field.</field>
+    </template>
+
+    <!-- echo request -->
+    <template type="0800">
+        <field num="70" type="NUMERIC" length="3">301</field>
+    </template>
+
+    <!-- echo response -->
+    <template type="0810">
+        <field num="39" type="ALPHA" length="2">-1</field>
+        <field num="70" type="NUMERIC" length="3">301</field>
+    </template>
+
+
+    <!-- The server example uses this to read the requests -->
+    <parse type="0200">
+        <field num="3" type="NUMERIC" length="6"/>
+        <field num="4" type="AMOUNT"/>
+        <field num="7" type="DATE10"/>
+        <field num="11" type="NUMERIC" length="6"/>
+        <field num="12" type="TIME"/>
+        <field num="13" type="DATE4"/>
+        <field num="15" type="DATE4"/>
+        <field num="17" type="DATE_EXP"/>
+        <field num="32" type="LLVAR"/>
+        <field num="35" type="LLVAR"/>
+        <field num="37" type="NUMERIC" length="12"/>
+        <field num="41" type="ALPHA" length="16"/>
+        <field num="43" type="ALPHA" length="40"/>
+        <field num="48" type="LLLVAR"/>
+        <field num="49" type="ALPHA" length="3"/>
+        <field num="60" type="LLLVAR"/>
+        <field num="61" type="LLLVAR"/>
+        <field num="100" type="LLVAR"/>
+        <field num="102" type="LLVAR"/>
+    </parse>
+
+    <!-- The client example uses this to read the responses -->
+    <parse type="0210">
+        <field num="3" type="NUMERIC" length="6"/>
+        <field num="4" type="AMOUNT"/>
+        <field num="7" type="DATE10"/>
+        <field num="11" type="NUMERIC" length="6"/>
+        <field num="12" type="TIME"/>
+        <field num="13" type="DATE4"/>
+        <field num="15" type="DATE4"/>
+        <field num="17" type="DATE_EXP"/>
+        <field num="32" type="LLVAR"/>
+        <field num="35" type="LLVAR"/>
+        <field num="37" type="NUMERIC" length="12"/>
+        <field num="38" type="NUMERIC" length="6"/>
+        <field num="39" type="NUMERIC" length="2"/>
+        <field num="41" type="ALPHA" length="16"/>
+        <field num="43" type="ALPHA" length="40"/>
+        <field num="48" type="LLLVAR"/>
+        <field num="49" type="ALPHA" length="3"/>
+        <field num="60" type="LLLVAR"/>
+        <field num="61" type="LLLVAR"/>
+        <field num="70" type="ALPHA" length="3"/>
+        <field num="90" type="ALPHA" length="42"/>
+        <field num="100" type="LLVAR"/>
+        <field num="102" type="LLVAR"/>
+        <field num="126" type="LLLVAR"/>
+    </parse>
+
+    <!-- echo request -->
+    <parse type="0800">
+        <field num="7" type="DATE10"/>
+        <field num="11" type="NUMERIC" length="6"/>
+        <field num="70" type="NUMERIC" length="3"/>
+    </parse>
+
+    <!-- echo response -->
+    <parse type="0810">
+        <field num="7" type="DATE10"/>
+        <field num="11" type="NUMERIC" length="6"/>
+        <field num="39" type="ALPHA" length="2"/>
+        <field num="70" type="NUMERIC" length="3"/>
+    </parse>
+
+</j8583-config>
