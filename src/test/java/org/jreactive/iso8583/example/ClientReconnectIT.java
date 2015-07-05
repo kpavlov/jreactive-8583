@@ -16,8 +16,8 @@ public class ClientReconnectIT extends AbstractIT {
         Thread.sleep(100L);
         assertThat(client.isConnected(), is(false));
         server.start();
-        assertThat(server.isStarted(), is(true));
-        Thread.sleep(1000L);
-        assertThat(client.isConnected(), is(true));
+        assertThat("server started", server.isStarted(), is(true));
+        Thread.sleep(3000L);
+        assertThat("client re-connected", client.isConnected(), is(true));
     }
 }
