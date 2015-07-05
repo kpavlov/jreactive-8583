@@ -13,6 +13,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.source.encoding>UTF-8</maven.source.encoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <j8583.version>1.11.0</j8583.version>
         <netty.version>4.0.29.Final</netty.version>
@@ -122,7 +123,5 @@
             </plugin>
         </plugins>
     </build>
-
-
 
 </project>
