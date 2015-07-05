@@ -22,9 +22,9 @@ A Frame consists of a 2-byte length header and a message body.
 The header contains the length of the following message.
 The high byte of value is transmitted first, and the low byte of value is transmitted second.
 
-|| 2 bytes          || N bytes
-|--------------------|-------------------
-| Message Length = N | ISO – 8583 Message
+| 2 bytes            | N bytes            |
+| ------------------ | ------------------ |
+| Message Length = N | ISO – 8583 Message |
 
 ## Supported Features
 
