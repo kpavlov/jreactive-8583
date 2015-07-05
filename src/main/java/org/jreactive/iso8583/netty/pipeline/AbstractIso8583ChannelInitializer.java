@@ -27,18 +27,18 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.jreactive.iso8583.netty.codec.Iso8583Codec;
 
-import java.nio.ByteOrder;
-
 public abstract class AbstractIso8583ChannelInitializer<C extends Channel> extends ChannelInitializer<C> {
 
     public static final int DEFAULT_LENGTH_HEADER_LENGTH = 2;
+    public static final int DEFAULT_IDLE_TIMEOUT = 30;
+    public static final int DEFAULT_MAX_FRAME_LENGTH = 32768;
+
     private final EventLoopGroup workerGroup;
     private final MessageFactory isoMessageFactory;
     private final DispatchingMessageHandler messageListener;
     private int headerLength = DEFAULT_LENGTH_HEADER_LENGTH;
-    private ByteOrder headerByteOrder = ByteOrder.BIG_ENDIAN;
-    private int maxFrameLength = 32768;
-    private int idleTimeoutSeconds = 1;
+    private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
+    private int idleTimeoutSeconds = DEFAULT_IDLE_TIMEOUT;
 
     protected AbstractIso8583ChannelInitializer(EventLoopGroup workerGroup,
                                                 MessageFactory isoMessageFactory,
@@ -52,7 +52,7 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
     public void initChannel(C ch) throws Exception {
         final ChannelPipeline pipeline = ch.pipeline();
 
-        pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(headerByteOrder, maxFrameLength, 0, headerLength, 0, headerLength, true));
+        pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(maxFrameLength, 0, headerLength, 0, headerLength, true));
         pipeline.addLast("lengthFieldPrepender", new LengthFieldPrepender(headerLength));
         pipeline.addLast("iso8583Codec", new Iso8583Codec(isoMessageFactory));
         pipeline.addLast("logging", new IsoMessageLoggingHandler(LogLevel.DEBUG));
