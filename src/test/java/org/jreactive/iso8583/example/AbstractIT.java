@@ -14,10 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class AbstractIT {
 
         @Autowired
-        Netty8583Client client;
+        protected Netty8583Client client;
 
         @Autowired
-        Netty8583Server server;
+        protected Netty8583Server server;
 
         @Before
         public void before() throws Exception {

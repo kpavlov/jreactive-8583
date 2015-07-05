@@ -42,7 +42,7 @@ public abstract class AbstractIso8583Connector {
         this.socketAddress = socketAddress;
     }
 
-    protected MessageFactory getIsoMessageFactory() {
+    public MessageFactory getIsoMessageFactory() {
         return isoMessageFactory;
     }
 

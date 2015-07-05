@@ -14,7 +14,6 @@ import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class Iso8583ClientConfig {
 
     @Value("${iso8583.connection.host}")
@@ -39,7 +38,6 @@ public class Iso8583ClientConfig {
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(true);
         messageFactory.setAssignDate(true);
-//        messageFactory.setForceStringEncoding(true);
         messageFactory.setTraceNumberGenerator(new SimpleTraceGenerator((int) (System
                 .currentTimeMillis() % 1000000)));
         return messageFactory;

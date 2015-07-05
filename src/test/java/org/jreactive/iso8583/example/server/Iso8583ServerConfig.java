@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class Iso8583ServerConfig {
 
     @Value("${iso8583.connection.port}")
@@ -19,7 +18,7 @@ public class Iso8583ServerConfig {
 
     @Bean
     public Netty8583Server iso8583Server() throws IOException {
-        return new Netty8583Server(port, null, serverMessageFactory());
+        return new Netty8583Server(port, serverMessageFactory());
     }
 
     private MessageFactory serverMessageFactory() throws IOException {
