@@ -1,7 +1,7 @@
 package org.jreactive.iso8583.example;
 
-import org.jreactive.iso8583.Netty8583Client;
-import org.jreactive.iso8583.Netty8583Server;
+import org.jreactive.iso8583.Iso8583Client;
+import org.jreactive.iso8583.Iso8583Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -14,10 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class AbstractIT {
 
         @Autowired
-        protected Netty8583Client client;
+        protected Iso8583Client client;
 
         @Autowired
-        protected Netty8583Server server;
+        protected Iso8583Server server;
 
         @Before
         public void before() throws Exception {

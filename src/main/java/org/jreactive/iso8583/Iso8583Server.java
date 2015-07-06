@@ -14,15 +14,14 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-public class Netty8583Server extends AbstractIso8583Connector {
+public class Iso8583Server extends AbstractIso8583Connector {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Netty8583Server.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Iso8583Server.class);
     private Channel channel;
     private MultithreadEventLoopGroup bossGroup;
     private MultithreadEventLoopGroup workerGroup;
 
-    public Netty8583Server(int port,
-                           MessageFactory messageFactory) {
+    public Iso8583Server(int port, MessageFactory messageFactory) {
         super(messageFactory);
         setSocketAddress(new InetSocketAddress(port));
     }

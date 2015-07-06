@@ -2,7 +2,7 @@ package org.jreactive.iso8583.example.server;
 
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
-import org.jreactive.iso8583.Netty8583Server;
+import org.jreactive.iso8583.Iso8583Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +17,8 @@ public class Iso8583ServerConfig {
     int port;
 
     @Bean
-    public Netty8583Server iso8583Server() throws IOException {
-        return new Netty8583Server(port, serverMessageFactory());
+    public Iso8583Server iso8583Server() throws IOException {
+        return new Iso8583Server(port, serverMessageFactory());
     }
 
     private MessageFactory serverMessageFactory() throws IOException {

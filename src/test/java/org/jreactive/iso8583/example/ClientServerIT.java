@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class ClientServerIT extends AbstractIT {
@@ -43,8 +44,9 @@ public class ClientServerIT extends AbstractIT {
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         client.send(finMessage);
 
-        Thread.sleep(100L);
+        Thread.sleep(500L);
 
+        assertThat("fin request", capturedRequest, notNullValue());
         assertThat("fin request", capturedRequest.debugString(), equalTo(finMessage.debugString()));
     }
 

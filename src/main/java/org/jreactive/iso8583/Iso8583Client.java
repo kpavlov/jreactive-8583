@@ -17,23 +17,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class Netty8583Client extends AbstractIso8583Connector {
+public class Iso8583Client extends AbstractIso8583Connector {
 
     private static final int RECONNECT_TIMEOUT = 100;
 
-    private final Logger logger = getLogger(Netty8583Client.class);
+    private final Logger logger = getLogger(Iso8583Client.class);
     private final AtomicBoolean disconnectRequested = new AtomicBoolean(false);
 
     private MultithreadEventLoopGroup bossEventLoopGroup;
     private MultithreadEventLoopGroup workerEventLoopGroup;
     private Channel channel;
 
-    public Netty8583Client(SocketAddress socketAddress, MessageFactory isoMessageFactory) {
+    public Iso8583Client(SocketAddress socketAddress, MessageFactory isoMessageFactory) {
         super(isoMessageFactory);
         setSocketAddress(socketAddress);
     }
 
-    public Netty8583Client(MessageFactory isoMessageFactory) {
+    public Iso8583Client(MessageFactory isoMessageFactory) {
         super(isoMessageFactory);
     }
 
@@ -42,7 +42,7 @@ public class Netty8583Client extends AbstractIso8583Connector {
         assert (channel != null) : "Channel must be set";
         logger.info("Client is started and connected to {}", channel.remoteAddress());
         final ChannelFuture closeFuture = channel.closeFuture();
-        return channel.closeFuture();
+        return closeFuture;
     }
 
     /**
@@ -118,10 +118,14 @@ public class Netty8583Client extends AbstractIso8583Connector {
         disconnectAsync().await();
     }
 
-    public void send(IsoMessage isoMessage) {
-        channel.writeAndFlush(isoMessage);
+    /** Sends asynchronously and returns a {@link ChannelFuture} */
+    public ChannelFuture sendAsync(IsoMessage isoMessage) {
+       return channel.writeAndFlush(isoMessage);
     }
 
+    public void send(IsoMessage isoMessage) throws InterruptedException {
+        sendAsync(isoMessage).await();
+    }
 
     public boolean isConnected() {
         return channel != null && channel.isActive();

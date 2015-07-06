@@ -3,7 +3,7 @@ package org.jreactive.iso8583.example.client;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.impl.SimpleTraceGenerator;
 import com.solab.iso8583.parse.ConfigParser;
-import org.jreactive.iso8583.Netty8583Client;
+import org.jreactive.iso8583.Iso8583Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +26,9 @@ public class Iso8583ClientConfig {
     int idleTimeout;
 
     @Bean
-    public Netty8583Client iso8583Client() throws IOException {
+    public Iso8583Client iso8583Client() throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(host, port);
-        final Netty8583Client client = new Netty8583Client(socketAddress, clientMessageFactory());
+        final Iso8583Client client = new Iso8583Client(socketAddress, clientMessageFactory());
         client.setIdleTimeout(idleTimeout);
         return client;
     }
