@@ -2,12 +2,12 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
-public class IdleEventHandler extends ChannelHandlerAdapter {
+public class IdleEventHandler extends ChannelInboundHandlerAdapter {
 
     private final MessageFactory isoMessageFactory;
 

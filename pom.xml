@@ -16,8 +16,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <j8583.version>1.11.0</j8583.version>
-        <netty.version>4.0.29.Final</netty.version>
-        <slf4j.version>[1.7.12,)</slf4j.version>
+        <netty.version>[4.0.29.Final, 4.0.100)</netty.version>
+        <slf4j.version>[1.7.12,1.8)</slf4j.version>
         <spring.version>4.1.7.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -55,12 +55,12 @@
         <dependency>
             <groupId>net.sf.j8583</groupId>
             <artifactId>j8583</artifactId>
-            <version>[${j8583.version},)</version>
+            <version>${j8583.version}</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>[${netty.version},)</version>
+            <version>${netty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

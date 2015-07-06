@@ -2,8 +2,8 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.IsoMessage;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.jreactive.iso8583.IsoMessageHandler;
 import org.slf4j.Logger;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @ChannelHandler.Sharable
-public class DispatchingMessageHandler extends ChannelHandlerAdapter {
+public class DispatchingMessageHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger logger = getLogger(DispatchingMessageHandler.class);
 

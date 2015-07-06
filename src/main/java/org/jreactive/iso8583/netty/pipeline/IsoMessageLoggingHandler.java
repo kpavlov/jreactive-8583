@@ -3,7 +3,6 @@ package org.jreactive.iso8583.netty.pipeline;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoValue;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -14,7 +13,16 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
         super(level);
     }
 
-    public static String formatIsoMessage(IsoMessage m) {
+    @Override
+    protected String formatMessage(String eventName, Object msg) {
+        if (msg instanceof IsoMessage) {
+            return formatIsoMessage((IsoMessage) msg);
+        } else {
+            return super.formatMessage(eventName, msg);
+        }
+    }
+
+    private static String formatIsoMessage(IsoMessage m) {
         StringBuilder sb = new StringBuilder();
         sb.append("Message: ").append(m.debugString()).append("\n");
         sb.append("TYPE: ").append(m.getType());
@@ -30,14 +38,5 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
             }
         }
         return sb.toString();
-    }
-
-    @Override
-    protected String format(ChannelHandlerContext ctx, String eventName, Object arg) {
-        if (arg instanceof IsoMessage) {
-            return formatIsoMessage((IsoMessage) arg);
-        } else {
-            return "";
-        }
     }
 }
