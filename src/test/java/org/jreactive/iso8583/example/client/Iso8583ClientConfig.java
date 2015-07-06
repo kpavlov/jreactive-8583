@@ -36,7 +36,7 @@ public class Iso8583ClientConfig {
     private MessageFactory clientMessageFactory() throws IOException {
         final MessageFactory messageFactory =  ConfigParser.createFromClasspathConfig("iso8583-config.xml");
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
-        messageFactory.setUseBinaryMessages(true);
+        messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);
         messageFactory.setTraceNumberGenerator(new SimpleTraceGenerator((int) (System
                 .currentTimeMillis() % 1000000)));

@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 public class Iso8583Server extends AbstractIso8583Connector {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Iso8583Server.class);
-    private Channel channel;
+    private volatile Channel channel;
     private MultithreadEventLoopGroup bossGroup;
     private MultithreadEventLoopGroup workerGroup;
 

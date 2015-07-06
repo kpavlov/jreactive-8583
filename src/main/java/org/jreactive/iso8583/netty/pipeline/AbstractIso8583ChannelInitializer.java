@@ -23,7 +23,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.jreactive.iso8583.netty.codec.Iso8583Decoder;
@@ -46,8 +45,6 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
     private final DispatchingMessageHandler messageListener;
     private final Iso8583Encoder isoMessageEncoder;
     private final LengthFieldBasedFrameDecoder lengthFieldBasedFrameDecoder;
-    private final LengthFieldPrepender lengthFieldPrepender;
-
 
     protected AbstractIso8583ChannelInitializer(EventLoopGroup workerGroup,
                                                 MessageFactory isoMessageFactory,
@@ -57,8 +54,7 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
         this.messageListener = messageListener;
 
         this.lengthFieldBasedFrameDecoder = new LengthFieldBasedFrameDecoder(maxFrameLength, 0, headerLength, 0, headerLength, true);
-        this.lengthFieldPrepender = new LengthFieldPrepender(headerLength);
-        this.isoMessageEncoder = createIso8583Encoder();
+        this.isoMessageEncoder = createIso8583Encoder(headerLength);
         this.loggingHandler = createLoggingHandler();
     }
 
@@ -67,10 +63,10 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
         final ChannelPipeline pipeline = ch.pipeline();
 
         pipeline.addLast("lengthFieldFameDecoder", lengthFieldBasedFrameDecoder);
-
-        pipeline.addLast("lengthFieldPrepender", lengthFieldPrepender);
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory));
+
         pipeline.addLast("iso8583Encoder", isoMessageEncoder);
+
         pipeline.addLast(workerGroup, "logging", loggingHandler);
         pipeline.addLast("idleState", new IdleStateHandler(0, 0, idleTimeoutSeconds));
         pipeline.addLast("idleEventHandler", new IdleEventHandler(isoMessageFactory));
@@ -88,8 +84,8 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
         //implementation was intentionally left blank
     }
 
-    protected Iso8583Encoder createIso8583Encoder() {
-        return new Iso8583Encoder();
+    protected Iso8583Encoder createIso8583Encoder(int lengthHeaderLength) {
+        return new Iso8583Encoder(lengthHeaderLength);
     }
 
     protected Iso8583Decoder createIso8583Decoder(final MessageFactory messageFactory) {

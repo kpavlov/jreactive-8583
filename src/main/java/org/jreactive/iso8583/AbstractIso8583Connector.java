@@ -4,6 +4,8 @@ import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import org.jreactive.iso8583.netty.pipeline.DispatchingMessageHandler;
 import org.jreactive.iso8583.netty.pipeline.EchoMessageHandler;
 
@@ -52,5 +54,13 @@ public abstract class AbstractIso8583Connector {
 
     public void setIdleTimeout(int heartbeatInterval) {
         this.idleTimeout = heartbeatInterval;
+    }
+
+    protected EventLoopGroup createBossEventLoopGroup() {
+        return new NioEventLoopGroup();
+    }
+
+    protected EventLoopGroup createWorkerEventLoopGroup() {
+        return new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
     }
 }
