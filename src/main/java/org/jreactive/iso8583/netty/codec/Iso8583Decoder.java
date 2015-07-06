@@ -8,11 +8,11 @@ import io.netty.handler.codec.ByteToMessageCodec;
 
 import java.util.List;
 
-public class Iso8583Codec extends ByteToMessageCodec<IsoMessage> {
+public class Iso8583Decoder extends ByteToMessageCodec<IsoMessage> {
 
     private final MessageFactory messageFactory;
 
-    public Iso8583Codec(MessageFactory messageFactory) {
+    public Iso8583Decoder(MessageFactory messageFactory) {
         this.messageFactory = messageFactory;
     }
 
@@ -33,6 +33,5 @@ public class Iso8583Codec extends ByteToMessageCodec<IsoMessage> {
     protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) throws Exception {
         final byte[] bytes = isoMessage.writeData();
         out.writeBytes(bytes);
-        ctx.flush();
     }
 }

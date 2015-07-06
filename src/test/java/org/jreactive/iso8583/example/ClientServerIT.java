@@ -28,6 +28,7 @@ public class ClientServerIT extends AbstractIT {
                 capturedRequest = isoMessage;
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
+                response.setField(60, IsoType.LLLVAR.value("XXX", 3));
                 ctx.write(response);
             }
         });
