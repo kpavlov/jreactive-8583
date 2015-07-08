@@ -43,7 +43,7 @@ public class ClientServerIT extends AbstractIT {
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         client.send(finMessage);
 
-        Thread.sleep(500L);
+        TestUtil.waitFor("capture request received", ()->(capturedRequest != null));
 
         assertThat("fin request", capturedRequest, notNullValue());
         assertThat("fin request", capturedRequest.debugString(), equalTo(finMessage.debugString()));
