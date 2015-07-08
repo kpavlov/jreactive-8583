@@ -30,8 +30,10 @@ The high byte of value is transmitted first, and the low byte of value is transm
 
 * Client and Server endpoints.
 * Support ISO8583 messages using [j8583][j8583] library.
+* Customizable [ISO MessageFactory][j8583-message-factory].
 * Automatic responding to Echo messages.
-* Customizable ISO MessageFactory
+* Automatic client reconnection.
+
 
 ## ISO 8583 Links 
 
@@ -42,4 +44,5 @@ The high byte of value is transmitted first, and the low byte of value is transm
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
 [j8583-example]: https://krishnarag.wordpress.com/2014/06/18/iso-8583-j8583-java-library/
 [j8583]: https://github.com/chochos/j8583 "Java implementation of the ISO8583 protocol."
+[j8583-message-factory]: https://github.com/chochos/j8583/blob/master/src/main/java/com/solab/iso8583/IsoMessage.java
 [jpos]: http://jpos.org 
