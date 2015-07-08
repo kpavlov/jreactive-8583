@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>JReactive-8583 by kpavlov</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>JReactive-8583</h1>
+        <p>ISO8583 Java Connector</p>
+
+        <p class="view"><a href="https://github.com/kpavlov/jreactive-8583">View the Project on GitHub <small>kpavlov/jreactive-8583</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/kpavlov/jreactive-8583/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kpavlov/jreactive-8583/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kpavlov/jreactive-8583">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="jreactive-8583" class="anchor" href="#jreactive-8583" aria-hidden="true"><span class="octicon octicon-link"></span></a>JReactive-8583</h1>
+
+<p>ISO8583 Java Connector</p>
+
+<p><a href="https://travis-ci.org/kpavlov/jreactive-8583"><img src="https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h2>
+
+<ol>
+<li>
+<a href="http://jpos.org">jPOS</a> library is not free for commercial use. </li>
+<li>
+<a href="https://github.com/chochos/j8583" title="Java implementation of the ISO8583 protocol.">j8583</a> is free but does not offer network client</li>
+</ol>
+
+<p>Solution: <strong>"J-Reactive-8583"</strong> ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583.</p>
+
+<p>For data transmission TCP/IP uses sessions.
+Each session is a bi-directional data stream. 
+The protocol uses a single TCP/IP session to transfer data between hosts in both directions. </p>
+
+<p>The continuous TCP/IP data stream is split into frames. 
+Each <a href="https://en.wikipedia.org/wiki/ISO_8583">ISO8583</a> message is sent in a separate frame. </p>
+
+<p>A Frame consists of a 2-byte length header and a message body. 
+The header contains the length of the following message.
+The high byte of value is transmitted first, and the low byte of value is transmitted second.</p>
+
+<table>
+<thead>
+<tr>
+<th>2 bytes</th>
+<th>N bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message Length = N</td>
+<td>ISO – 8583 Message</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="supported-features" class="anchor" href="#supported-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Features</h2>
+
+<ul>
+<li>Client and Server endpoints.</li>
+<li>Support ISO8583 messages using <a href="https://github.com/chochos/j8583" title="Java implementation of the ISO8583 protocol.">j8583</a> library.</li>
+<li>Customizable <a href="https://github.com/chochos/j8583/blob/master/src/main/java/com/solab/iso8583/IsoMessage.java">ISO MessageFactory</a>.</li>
+<li>Automatic responding to Echo messages.</li>
+<li>Automatic client reconnection.</li>
+</ul>
+
+<h2>
+<a id="iso-8583-links" class="anchor" href="#iso-8583-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>ISO 8583 Links</h2>
+
+<ul>
+<li>Beginner's guide: <a href="http://www.lytsing.org/downloads/iso8583.pdf">http://www.lytsing.org/downloads/iso8583.pdf</a>.</li>
+<li>Introduction to ISO8583: <a href="http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583">http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583</a>.</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/kpavlov">kpavlov</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-2530248-20");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
