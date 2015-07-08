@@ -4,11 +4,11 @@ import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageCodec;
+import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class Iso8583Decoder extends ByteToMessageCodec<IsoMessage> {
+public class Iso8583Decoder extends ByteToMessageDecoder {
 
     private final MessageFactory messageFactory;
 
@@ -17,7 +17,7 @@ public class Iso8583Decoder extends ByteToMessageCodec<IsoMessage> {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List list) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List out) throws Exception {
         //message body starts immediately, no length header
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
@@ -25,13 +25,7 @@ public class Iso8583Decoder extends ByteToMessageCodec<IsoMessage> {
         final IsoMessage isoMessage = messageFactory.parseMessage(bytes, 0);
         if (isoMessage != null) {
             //noinspection unchecked
-            list.add(isoMessage);
+            out.add(isoMessage);
         }
-    }
-
-    @Override
-    protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) throws Exception {
-        final byte[] bytes = isoMessage.writeData();
-        out.writeBytes(bytes);
     }
 }
