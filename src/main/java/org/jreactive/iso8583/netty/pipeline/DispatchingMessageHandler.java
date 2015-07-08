@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+/**
+ * Dispatches {@link IsoMessage}s to appropriate {@link IsoMessageHandler}s based on message type.
+ */
 @ChannelHandler.Sharable
 public class DispatchingMessageHandler extends ChannelInboundHandlerAdapter {
 
@@ -42,7 +45,7 @@ public class DispatchingMessageHandler extends ChannelInboundHandlerAdapter {
         Objects.requireNonNull(handler);
         final int type = handler.getType();
         if (messageListeners.containsKey(type)) {
-            throw new IllegalStateException("Can't register two handlers for message type: "+type);
+            throw new IllegalStateException("Can't register two handlers for message type: " + type);
         }
         messageListeners.put(type, handler);
     }
