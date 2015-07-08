@@ -19,6 +19,9 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List out) throws Exception {
         //message body starts immediately, no length header
+        if (!byteBuf.isReadable()) {
+            return;
+        }
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
 
