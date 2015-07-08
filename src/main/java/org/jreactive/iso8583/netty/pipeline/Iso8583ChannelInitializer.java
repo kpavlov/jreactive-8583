@@ -17,6 +17,7 @@
 package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.MessageFactory;
+import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
@@ -25,14 +26,16 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.jreactive.iso8583.ConnectorConfigurer;
 import org.jreactive.iso8583.netty.codec.Iso8583Decoder;
 import org.jreactive.iso8583.netty.codec.Iso8583Encoder;
 
-public abstract class AbstractIso8583ChannelInitializer<C extends Channel> extends ChannelInitializer<C> {
+public class Iso8583ChannelInitializer<C extends Channel> extends ChannelInitializer<C> {
 
     public static final int DEFAULT_LENGTH_HEADER_LENGTH = 2;
     public static final int DEFAULT_IDLE_TIMEOUT = 30;
     public static final int DEFAULT_MAX_FRAME_LENGTH = 32768;
+    private final ConnectorConfigurer<? extends AbstractBootstrap> configurer;
     private final EventLoopGroup workerGroup;
     private final MessageFactory isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
@@ -42,9 +45,12 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
     private int idleTimeoutSeconds = DEFAULT_IDLE_TIMEOUT;
 
-    protected AbstractIso8583ChannelInitializer(EventLoopGroup workerGroup,
-                                                MessageFactory isoMessageFactory,
-                                                ChannelHandler... customChannelHandlers) {
+
+    public Iso8583ChannelInitializer(ConnectorConfigurer<? extends AbstractBootstrap> configurer,
+                                     EventLoopGroup workerGroup,
+                                     MessageFactory isoMessageFactory,
+                                     ChannelHandler... customChannelHandlers) {
+        this.configurer = configurer;
         this.workerGroup = workerGroup;
         this.isoMessageFactory = isoMessageFactory;
         this.customChannelHandlers = customChannelHandlers;
@@ -69,16 +75,9 @@ public abstract class AbstractIso8583ChannelInitializer<C extends Channel> exten
             pipeline.addLast(workerGroup, customChannelHandlers);
         }
 
-        configure(pipeline);
-    }
-
-    /**
-     * Implement this method in subclass to customize {@link ChannelPipeline}
-     * <p>
-     * Base implementation was intentionally left blank.
-     */
-    protected void configure(ChannelPipeline pipeline) {
-        //implementation was intentionally left blank
+        if (configurer != null) {
+            configurer.configurePipeline(pipeline);
+        }
     }
 
     protected Iso8583Encoder createIso8583Encoder(int lengthHeaderLength) {

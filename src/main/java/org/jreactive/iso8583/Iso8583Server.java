@@ -7,7 +7,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
-import org.jreactive.iso8583.netty.pipeline.Iso8583AcceptorChannelInitializer;
+import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +36,8 @@ public class Iso8583Server extends AbstractIso8583Connector<ServerBootstrap> {
 
     @Override
     protected ServerBootstrap createBootstrap() {
-        final Iso8583AcceptorChannelInitializer<SocketChannel> channelInitializer = new Iso8583AcceptorChannelInitializer<>(
+        final Iso8583ChannelInitializer<SocketChannel> channelInitializer = new Iso8583ChannelInitializer<>(
+                getConfigurer(),
                 getWorkerEventLoopGroup(),
                 getIsoMessageFactory(),
                 getIsoMessageDispatcher()

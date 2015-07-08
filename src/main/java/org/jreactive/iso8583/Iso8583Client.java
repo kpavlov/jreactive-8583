@@ -6,7 +6,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.jreactive.iso8583.netty.pipeline.Iso8583InitiatorChannelInitializer;
+import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 import org.jreactive.iso8583.netty.pipeline.ReconnectOnCloseListener;
 
 import java.net.InetSocketAddress;
@@ -18,7 +18,6 @@ public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
 
     private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
     private ReconnectOnCloseListener reconnectOnCloseListener;
-    //    private final AtomicBoolean disconnectRequested = new AtomicBoolean(false);
 
     public Iso8583Client(SocketAddress socketAddress, MessageFactory isoMessageFactory) {
         super(isoMessageFactory);
@@ -91,7 +90,8 @@ public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
                 .channel(NioSocketChannel.class)
                 .remoteAddress(getSocketAddress())
 
-                .handler(new Iso8583InitiatorChannelInitializer<>(
+                .handler(new Iso8583ChannelInitializer<>(
+                        getConfigurer(),
                         getWorkerEventLoopGroup(),
                         getIsoMessageFactory(),
                         getIsoMessageDispatcher()
@@ -120,7 +120,7 @@ public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
 
     public void disconnect() throws InterruptedException {
         final ChannelFuture disconnectFuture = disconnectAsync();
-        if (disconnectFuture!= null) {
+        if (disconnectFuture != null) {
             disconnectFuture.await();
         }
     }

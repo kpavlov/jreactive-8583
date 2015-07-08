@@ -19,6 +19,7 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final MessageFactory isoMessageFactory;
     private final DispatchingMessageHandler messageListener;
+    private ConnectorConfigurer<B> configurer;
     private final AtomicReference<Channel> channelRef = new AtomicReference<>();
     private SocketAddress socketAddress;
     private int idleTimeout;
@@ -32,11 +33,9 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
         messageListener.addIsoMessageHandler(new EchoMessageHandler(isoMessageFactory));
     }
 
-
     public void addMessageListener(IsoMessageHandler handler) {
         messageListener.addIsoMessageHandler(handler);
     }
-
 
     /**
      * Making connector ready to create a connection / bind to port.
@@ -62,11 +61,23 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
         }
     }
 
-    protected void configureBootstrap(AbstractBootstrap bootstrap) {
+    protected void configureBootstrap(B bootstrap) {
         bootstrap.option(ChannelOption.TCP_NODELAY,
                 Boolean.parseBoolean(System.getProperty(
                         "nfs.rpc.tcp.nodelay", "true")))
                 .option(ChannelOption.AUTO_READ, true);
+
+        if (configurer != null) {
+            configurer.configureBootstrap(bootstrap);
+        }
+    }
+
+    public void setConfigurer(ConnectorConfigurer<B> connectorConfigurer) {
+        this.configurer = connectorConfigurer;
+    }
+
+    protected ConnectorConfigurer<B> getConfigurer() {
+        return configurer;
     }
 
     public SocketAddress getSocketAddress() {
