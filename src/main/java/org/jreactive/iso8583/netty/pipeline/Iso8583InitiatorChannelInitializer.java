@@ -18,11 +18,17 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.MessageFactory;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 
 public class Iso8583InitiatorChannelInitializer<C extends Channel> extends AbstractIso8583ChannelInitializer<C> {
 
     public Iso8583InitiatorChannelInitializer(EventLoopGroup workerGroup, MessageFactory messageFactory, DispatchingMessageHandler messageListener) {
         super(workerGroup, messageFactory, messageListener);
+    }
+
+    @Override
+    protected void configure(ChannelPipeline pipeline) {
+        super.configure(pipeline);
     }
 }

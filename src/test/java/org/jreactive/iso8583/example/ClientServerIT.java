@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -37,8 +36,8 @@ public class ClientServerIT extends AbstractIT {
 
     @Test
     public void testConnected() throws Exception {
-        assertThat(server.isStarted(), is(true));
-        assertThat(client.isConnected(), is(true));
+        TestUtil.waitFor("server started", server::isStarted);
+        TestUtil.waitFor("client connected", client::isConnected);
 
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));

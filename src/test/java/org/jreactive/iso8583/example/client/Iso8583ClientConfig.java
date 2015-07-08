@@ -34,7 +34,7 @@ public class Iso8583ClientConfig {
     }
 
     private MessageFactory clientMessageFactory() throws IOException {
-        final MessageFactory messageFactory =  ConfigParser.createFromClasspathConfig("iso8583-config.xml");
+        final MessageFactory messageFactory = ConfigParser.createDefault();
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);

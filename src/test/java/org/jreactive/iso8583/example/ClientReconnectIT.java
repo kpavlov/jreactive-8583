@@ -2,22 +2,18 @@ package org.jreactive.iso8583.example;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 
 public class ClientReconnectIT extends AbstractIT {
 
     @Test
     public void testClientReconnect() throws Exception {
-        assertThat(server.isStarted(), is(true));
-        assertThat(client.isConnected(), is(true));
+        TestUtil.waitFor("server started", server::isStarted);
+        TestUtil.waitFor("client connected", client::isConnected);
         server.shutdown();
-        Thread.sleep(100L);
-        assertThat(client.isConnected(), is(false));
+        TestUtil.waitFor("client was disconnected", () -> (!client.isConnected()));
+        server.init();
         server.start();
-        assertThat("server started", server.isStarted(), is(true));
-        Thread.sleep(10000L);
-        assertThat("client re-connected", client.isConnected(), is(true));
+        TestUtil.waitFor("server started", server::isStarted);
+        TestUtil.waitFor("client connected", client::isConnected);
     }
 }

@@ -4,22 +4,15 @@ import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.MultithreadEventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.jreactive.iso8583.netty.pipeline.Iso8583AcceptorChannelInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
-public class Iso8583Server extends AbstractIso8583Connector {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Iso8583Server.class);
-    private volatile Channel channel;
-    private MultithreadEventLoopGroup bossGroup;
-    private MultithreadEventLoopGroup workerGroup;
+public class Iso8583Server extends AbstractIso8583Connector<ServerBootstrap> {
 
     public Iso8583Server(int port, MessageFactory messageFactory) {
         super(messageFactory);
@@ -27,51 +20,67 @@ public class Iso8583Server extends AbstractIso8583Connector {
     }
 
     public void start() throws InterruptedException {
-        bossGroup = new NioEventLoopGroup();
-        workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
-        final ServerBootstrap bootstrap = new ServerBootstrap();
+
+        getBootstrap().bind().addListener(
+                new GenericFutureListener<ChannelFuture>() {
+
+                    @Override
+                    public void operationComplete(ChannelFuture future) throws Exception {
+                        final Channel channel = future.channel();
+                        setChannel(channel);
+                        logger.info("Server is started and listening at {}", channel.localAddress());
+                    }
+                }
+        ).sync().await();
+    }
+
+    @Override
+    protected ServerBootstrap createBootstrap() {
         final Iso8583AcceptorChannelInitializer<SocketChannel> channelInitializer = new Iso8583AcceptorChannelInitializer<>(
-                workerGroup,
+                getWorkerEventLoopGroup(),
                 getIsoMessageFactory(),
                 getIsoMessageDispatcher()
         );
 
-        configureBootstrap(bootstrap);
-
-        bootstrap.group(bossGroup, workerGroup)
+        final ServerBootstrap bootstrap = new ServerBootstrap();
+        bootstrap.group(getBossEventLoopGroup(), getWorkerEventLoopGroup())
                 .channel(NioServerSocketChannel.class)
                 .localAddress(getSocketAddress())
                 .childHandler(channelInitializer);
 
+        configureBootstrap(bootstrap);
+
         bootstrap.validate();
 
-        ChannelFuture f = bootstrap.bind().sync();
-        LOGGER.info("Server is started and listening at {}", f.channel().localAddress());
-        channel = f.channel();
+        return bootstrap;
     }
 
     public void shutdown() {
-        if (channel == null) {
-            throw new IllegalStateException("Server is not started.");
-        }
-        LOGGER.info("Stopping the Server");
-        try {
-            channel.close().sync();
-            channel = null;
-        } catch (InterruptedException e) {
-            LOGGER.error("Error while stopping the server", e);
-        } finally {
-            bossGroup.shutdownGracefully();
-            bossGroup = null;
-            workerGroup.shutdownGracefully();
-            workerGroup = null;
-        }
+        stop();
+        super.shutdown();
     }
 
     /**
      * @return True if server is ready to accept connections.
      */
     public boolean isStarted() {
+        final Channel channel = getChannel();
         return channel != null && channel.isOpen();
+    }
+
+    public void stop() {
+        final Channel channel = getChannel();
+        if (channel == null) {
+            throw new IllegalStateException("Server is not started.");
+        }
+        logger.info("Stopping the Server...");
+        try {
+            channel.deregister();
+            channel.close().sync().await(10, TimeUnit.SECONDS);
+            logger.info("Server was Stopped.");
+        } catch (InterruptedException e) {
+            logger.error("Error while stopping the server", e);
+        }
+
     }
 }
