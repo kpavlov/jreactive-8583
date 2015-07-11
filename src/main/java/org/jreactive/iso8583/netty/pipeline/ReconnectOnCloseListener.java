@@ -2,7 +2,7 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
+import io.netty.channel.ChannelFutureListener;
 import org.jreactive.iso8583.Iso8583Client;
 import org.slf4j.Logger;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ReconnectOnCloseListener implements GenericFutureListener<ChannelFuture> {
+public class ReconnectOnCloseListener implements ChannelFutureListener {
 
     private final Logger logger = getLogger(ReconnectOnCloseListener.class);
 
