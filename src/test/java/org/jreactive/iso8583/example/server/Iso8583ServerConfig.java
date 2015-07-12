@@ -2,7 +2,7 @@ package org.jreactive.iso8583.example.server;
 
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
-import org.jreactive.iso8583.Iso8583Server;
+import org.jreactive.iso8583.server.Iso8583Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

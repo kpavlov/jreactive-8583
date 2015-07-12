@@ -3,7 +3,7 @@ package org.jreactive.iso8583.example.client;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.impl.SimpleTraceGenerator;
 import com.solab.iso8583.parse.ConfigParser;
-import org.jreactive.iso8583.Iso8583Client;
+import org.jreactive.iso8583.client.Iso8583Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class Iso8583ClientConfig {
     public Iso8583Client iso8583Client() throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(host, port);
         final Iso8583Client client = new Iso8583Client(socketAddress, clientMessageFactory());
-        client.setIdleTimeout(idleTimeout);
+        client.getConfiguration().setIdleTimeout(idleTimeout);
         return client;
     }
 

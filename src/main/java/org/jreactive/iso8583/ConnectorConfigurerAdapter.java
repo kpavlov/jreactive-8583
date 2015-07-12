@@ -3,14 +3,14 @@ package org.jreactive.iso8583;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.ChannelPipeline;
 
-public class ConnectorConfigurerAdapter<B extends AbstractBootstrap> implements ConnectorConfigurer<B> {
+public class ConnectorConfigurerAdapter<C extends ConnectorConfiguration, B extends AbstractBootstrap> implements ConnectorConfigurer<C, B> {
 
     @Override
-    public void configureBootstrap(B bootstrap) {
+    public void configureBootstrap(B bootstrap, C configuration) {
     }
 
     @Override
-    public void configurePipeline(ChannelPipeline pipeline) {
+    public void configurePipeline(ChannelPipeline pipeline, C configuration) {
     }
 
 }

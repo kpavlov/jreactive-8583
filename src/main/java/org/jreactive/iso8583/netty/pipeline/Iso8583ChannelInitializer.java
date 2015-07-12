@@ -18,38 +18,35 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.jreactive.iso8583.ConnectorConfiguration;
 import org.jreactive.iso8583.ConnectorConfigurer;
 import org.jreactive.iso8583.netty.codec.Iso8583Decoder;
 import org.jreactive.iso8583.netty.codec.Iso8583Encoder;
 
-public class Iso8583ChannelInitializer<C extends Channel> extends ChannelInitializer<C> {
+public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBootstrap, G extends ConnectorConfiguration> extends ChannelInitializer<C> {
 
     public static final int DEFAULT_LENGTH_HEADER_LENGTH = 2;
-    public static final int DEFAULT_IDLE_TIMEOUT = 30;
-    public static final int DEFAULT_MAX_FRAME_LENGTH = 32768;
-    private final ConnectorConfigurer<? extends AbstractBootstrap> configurer;
+
+    private final G configuration;
+    private final ConnectorConfigurer<G, B> configurer;
     private final EventLoopGroup workerGroup;
     private final MessageFactory isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
     private final Iso8583Encoder isoMessageEncoder;
     private ChannelHandler loggingHandler;
     private int headerLength = DEFAULT_LENGTH_HEADER_LENGTH;
-    private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
-    private int idleTimeoutSeconds = DEFAULT_IDLE_TIMEOUT;
 
-
-    public Iso8583ChannelInitializer(ConnectorConfigurer<? extends AbstractBootstrap> configurer,
-                                     EventLoopGroup workerGroup,
-                                     MessageFactory isoMessageFactory,
-                                     ChannelHandler... customChannelHandlers) {
+    public Iso8583ChannelInitializer(
+            G configuration,
+            ConnectorConfigurer<G, B> configurer,
+            EventLoopGroup workerGroup,
+            MessageFactory isoMessageFactory,
+            ChannelHandler... customChannelHandlers) {
+        this.configuration = configuration;
         this.configurer = configurer;
         this.workerGroup = workerGroup;
         this.isoMessageFactory = isoMessageFactory;
@@ -63,20 +60,21 @@ public class Iso8583ChannelInitializer<C extends Channel> extends ChannelInitial
     public void initChannel(C ch) throws Exception {
         final ChannelPipeline pipeline = ch.pipeline();
 
-        pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(maxFrameLength, 0, headerLength, 0, headerLength));
+        pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(
+                configuration.getMaxFrameLength(), 0, headerLength, 0, headerLength));
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory));
 
         pipeline.addLast("iso8583Encoder", isoMessageEncoder);
 
         pipeline.addLast(workerGroup, "logging", loggingHandler);
-        pipeline.addLast("idleState", new IdleStateHandler(0, 0, idleTimeoutSeconds));
+        pipeline.addLast("idleState", new IdleStateHandler(0, 0, configuration.getIdleTimeout()));
         pipeline.addLast("idleEventHandler", new IdleEventHandler(isoMessageFactory));
-        if (customChannelHandlers  != null){
+        if (customChannelHandlers != null) {
             pipeline.addLast(workerGroup, customChannelHandlers);
         }
 
         if (configurer != null) {
-            configurer.configurePipeline(pipeline);
+            configurer.configurePipeline(pipeline, configuration);
         }
     }
 

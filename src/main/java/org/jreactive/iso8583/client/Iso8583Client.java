@@ -1,4 +1,4 @@
-package org.jreactive.iso8583;
+package org.jreactive.iso8583.client;
 
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
@@ -6,26 +6,24 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.jreactive.iso8583.AbstractIso8583Connector;
 import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 import org.jreactive.iso8583.netty.pipeline.ReconnectOnCloseListener;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
-public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
+public class Iso8583Client extends AbstractIso8583Connector<ClientConfiguration, Bootstrap> {
 
-    private static final int DEFAULT_RECONNECT_INTERVAL = 100;
-
-    private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
     private ReconnectOnCloseListener reconnectOnCloseListener;
 
     public Iso8583Client(SocketAddress socketAddress, MessageFactory isoMessageFactory) {
-        super(isoMessageFactory);
+        this(isoMessageFactory);
         setSocketAddress(socketAddress);
     }
 
     public Iso8583Client(MessageFactory isoMessageFactory) {
-        super(isoMessageFactory);
+        super(new ClientConfiguration(), isoMessageFactory);
     }
 
     /**
@@ -91,6 +89,7 @@ public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
                 .remoteAddress(getSocketAddress())
 
                 .handler(new Iso8583ChannelInitializer<>(
+                        getConfiguration(),
                         getConfigurer(),
                         getWorkerEventLoopGroup(),
                         getIsoMessageFactory(),
@@ -101,7 +100,10 @@ public class Iso8583Client extends AbstractIso8583Connector<Bootstrap> {
 
         b.validate();
 
-        reconnectOnCloseListener = new ReconnectOnCloseListener(this, reconnectInterval, getBossEventLoopGroup());
+        reconnectOnCloseListener = new ReconnectOnCloseListener(this,
+                getConfiguration().getReconnectInterval(),
+                getBossEventLoopGroup()
+        );
 
         return b;
     }

@@ -1,8 +1,8 @@
 package org.jreactive.iso8583.example;
 
 import net.jcip.annotations.NotThreadSafe;
-import org.jreactive.iso8583.Iso8583Client;
-import org.jreactive.iso8583.Iso8583Server;
+import org.jreactive.iso8583.client.Iso8583Client;
+import org.jreactive.iso8583.server.Iso8583Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

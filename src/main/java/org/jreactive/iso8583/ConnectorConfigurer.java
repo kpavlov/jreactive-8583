@@ -3,7 +3,7 @@ package org.jreactive.iso8583;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.ChannelPipeline;
 
-public interface ConnectorConfigurer<B extends AbstractBootstrap> {
+public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends AbstractBootstrap> {
 
     /**
      * Hook added before completion of the bootstrap configuration.
@@ -12,7 +12,7 @@ public interface ConnectorConfigurer<B extends AbstractBootstrap> {
      *
      * @param bootstrap AbstractBootstrap to configure
      */
-    void configureBootstrap(B bootstrap);
+    void configureBootstrap(B bootstrap, C configuration);
 
-    void configurePipeline(ChannelPipeline pipeline);
+    void configurePipeline(ChannelPipeline pipeline, C configuration);
 }

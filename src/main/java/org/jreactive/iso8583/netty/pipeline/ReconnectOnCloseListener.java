@@ -3,7 +3,7 @@ package org.jreactive.iso8583.netty.pipeline;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import org.jreactive.iso8583.Iso8583Client;
+import org.jreactive.iso8583.client.Iso8583Client;
 import org.slf4j.Logger;
 
 import java.util.concurrent.ScheduledExecutorService;

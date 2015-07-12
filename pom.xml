@@ -6,7 +6,7 @@
 
     <groupId>org.jreactive</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>

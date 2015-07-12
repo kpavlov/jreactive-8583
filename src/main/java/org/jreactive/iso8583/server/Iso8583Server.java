@@ -1,21 +1,21 @@
-package org.jreactive.iso8583;
+package org.jreactive.iso8583.server;
 
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.jreactive.iso8583.AbstractIso8583Connector;
 import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class Iso8583Server extends AbstractIso8583Connector<ServerBootstrap> {
+public class Iso8583Server extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap> {
 
     public Iso8583Server(int port, MessageFactory messageFactory) {
-        super(messageFactory);
+        super(new ServerConfiguration(), messageFactory);
         setSocketAddress(new InetSocketAddress(port));
     }
 
@@ -36,18 +36,19 @@ public class Iso8583Server extends AbstractIso8583Connector<ServerBootstrap> {
 
     @Override
     protected ServerBootstrap createBootstrap() {
-        final Iso8583ChannelInitializer<SocketChannel> channelInitializer = new Iso8583ChannelInitializer<>(
-                getConfigurer(),
-                getWorkerEventLoopGroup(),
-                getIsoMessageFactory(),
-                getIsoMessageDispatcher()
-        );
 
         final ServerBootstrap bootstrap = new ServerBootstrap();
+
         bootstrap.group(getBossEventLoopGroup(), getWorkerEventLoopGroup())
                 .channel(NioServerSocketChannel.class)
                 .localAddress(getSocketAddress())
-                .childHandler(channelInitializer);
+                .childHandler(new Iso8583ChannelInitializer<>(
+                        getConfiguration(),
+                        getConfigurer(),
+                        getWorkerEventLoopGroup(),
+                        getIsoMessageFactory(),
+                        getIsoMessageDispatcher()
+                ));
 
         configureBootstrap(bootstrap);
 

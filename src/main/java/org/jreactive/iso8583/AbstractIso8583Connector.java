@@ -14,21 +14,22 @@ import org.slf4j.LoggerFactory;
 import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
+public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration, B extends AbstractBootstrap> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final MessageFactory isoMessageFactory;
     private final DispatchingMessageHandler messageListener;
-    private ConnectorConfigurer<B> configurer;
     private final AtomicReference<Channel> channelRef = new AtomicReference<>();
+    private final C configuration;
+    private ConnectorConfigurer<C, B> configurer;
     private SocketAddress socketAddress;
-    private int idleTimeout;
     private EventLoopGroup bossEventLoopGroup;
     private EventLoopGroup workerEventLoopGroup;
     private B bootstrap;
 
-    protected AbstractIso8583Connector(MessageFactory isoMessageFactory) {
+    protected AbstractIso8583Connector(C configuration, MessageFactory isoMessageFactory) {
         this.isoMessageFactory = isoMessageFactory;
+        this.configuration = configuration;
         messageListener = new DispatchingMessageHandler();
         messageListener.addIsoMessageHandler(new EchoMessageHandler(isoMessageFactory));
     }
@@ -67,17 +68,17 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
                         "nfs.rpc.tcp.nodelay", "true")))
                 .option(ChannelOption.AUTO_READ, true);
 
-        if (configurer != null) {
-            configurer.configureBootstrap(bootstrap);
+        if (configurer != null && configuration != null) {
+            configurer.configureBootstrap(bootstrap, configuration);
         }
     }
 
-    public void setConfigurer(ConnectorConfigurer<B> connectorConfigurer) {
-        this.configurer = connectorConfigurer;
+    protected ConnectorConfigurer<C, B> getConfigurer() {
+        return configurer;
     }
 
-    protected ConnectorConfigurer<B> getConfigurer() {
-        return configurer;
+    public void setConfigurer(ConnectorConfigurer<C, B> connectorConfigurer) {
+        this.configurer = connectorConfigurer;
     }
 
     public SocketAddress getSocketAddress() {
@@ -94,10 +95,6 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
 
     protected DispatchingMessageHandler getIsoMessageDispatcher() {
         return messageListener;
-    }
-
-    public void setIdleTimeout(int heartbeatInterval) {
-        this.idleTimeout = heartbeatInterval;
     }
 
     protected abstract B createBootstrap();
@@ -128,5 +125,9 @@ public abstract class AbstractIso8583Connector<B extends AbstractBootstrap> {
 
     protected void setChannel(Channel channel) {
         this.channelRef.set(channel);
+    }
+
+    public C getConfiguration() {
+        return configuration;
     }
 }
