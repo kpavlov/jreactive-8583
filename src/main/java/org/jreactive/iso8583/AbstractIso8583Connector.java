@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration, B extends AbstractBootstrap> {
@@ -28,8 +29,10 @@ public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration,
     private B bootstrap;
 
     protected AbstractIso8583Connector(C configuration, MessageFactory isoMessageFactory) {
-        this.isoMessageFactory = isoMessageFactory;
+        assert (configuration != null) : "Configuration must be provided";
+        Objects.requireNonNull(isoMessageFactory, "MessageFactory must be provided");
         this.configuration = configuration;
+        this.isoMessageFactory = isoMessageFactory;
         messageListener = new DispatchingMessageHandler();
         messageListener.addIsoMessageHandler(new EchoMessageHandler(isoMessageFactory));
     }
@@ -68,7 +71,7 @@ public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration,
                         "nfs.rpc.tcp.nodelay", "true")))
                 .option(ChannelOption.AUTO_READ, true);
 
-        if (configurer != null && configuration != null) {
+        if (configurer != null) {
             configurer.configureBootstrap(bootstrap, configuration);
         }
     }

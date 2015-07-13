@@ -4,6 +4,9 @@ import org.jreactive.iso8583.ConnectorConfiguration;
 
 public class ClientConfiguration extends ConnectorConfiguration {
 
+    /**
+     * Default client reconnect interval in milliseconds.
+     */
     private static final int DEFAULT_RECONNECT_INTERVAL = 100;
 
     private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
