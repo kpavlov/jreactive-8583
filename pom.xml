@@ -33,7 +33,7 @@
     <scm>
         <url>https://github.com/kpavlov/jreactive-8583.git</url>
         <connection>scm:git:git://github.com:kpavlov/jreactive-8583.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:kpavlov/jreactive-8583.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com:kpavlov/jreactive-8583.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
