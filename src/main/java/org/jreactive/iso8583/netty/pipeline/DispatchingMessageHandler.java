@@ -30,11 +30,11 @@ public class DispatchingMessageHandler extends ChannelInboundHandlerAdapter {
             final int type = isoMessage.getType();
             final IsoMessageHandler isoMessageHandler = messageListeners.get(type);
             if (isoMessageHandler != null) {
-                logger.debug("Handling IsoMessage[@type={}] with {}", type, isoMessageHandler);
+                logger.debug("Handling IsoMessage[@type=0x{}] with {}", String.format("%04X", type), isoMessageHandler);
                 isoMessageHandler.onMessage(ctx, isoMessage);
                 return;
             } else {
-                logger.debug("No handler is registered for IsoMessage[@type={}]", type);
+                logger.debug("No handler is registered for IsoMessage[@type=0x{}]", String.format("%04X", type));
             }
         }
 
