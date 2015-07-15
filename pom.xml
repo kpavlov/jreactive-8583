@@ -30,13 +30,19 @@
         <url>https://github.com/kpavlov/jreactive-8583/issues</url>
     </issueManagement>
 
+    <scm>
+        <url>https://github.com/kpavlov/jreactive-8583.git</url>
+        <connection>scm:git:git://github.com:kpavlov/jreactive-8583.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:kpavlov/jreactive-8583.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <inceptionYear>2015</inceptionYear>
 
     <licenses>
         <license>
-            <name>Apache License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-            <distribution>manual</distribution>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
 
