@@ -2,12 +2,21 @@ package org.jreactive.iso8583;
 
 public abstract class ConnectorConfiguration {
 
+    /**
+     *
+     */
     public static final int DEFAULT_IDLE_TIMEOUT = 30;
-    public static final int DEFAULT_MAX_FRAME_LENGTH = 32768;
+
+    /**
+     * Default {@link #maxFrameLength} (max message length) = 4096
+     */
+    public static final int DEFAULT_MAX_FRAME_LENGTH = 4096;
 
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
     private int idleTimeout = DEFAULT_IDLE_TIMEOUT;
+
+    private boolean addLoggingHandler = true;
 
     /**
      * Channel read/write idle timeout in seconds.
@@ -34,5 +43,20 @@ public abstract class ConnectorConfiguration {
 
     public void setMaxFrameLength(int maxFrameLength) {
         this.maxFrameLength = maxFrameLength;
+    }
+
+    public void setAddLoggingHandler(boolean addLoggingHandler) {
+        this.addLoggingHandler = addLoggingHandler;
+    }
+
+    /**
+     * Returns true is {@link org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler}
+     * <p>
+     * Allows to disable adding default logging handler to {@link io.netty.channel.ChannelPipeline}.
+     *
+     * @return true if {@link org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler} should be added.
+     */
+    public boolean addLoggingHandler() {
+        return addLoggingHandler;
     }
 }

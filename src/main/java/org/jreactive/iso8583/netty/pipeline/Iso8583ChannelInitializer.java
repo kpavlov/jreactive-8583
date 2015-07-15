@@ -18,7 +18,11 @@ package org.jreactive.iso8583.netty.pipeline;
 
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -66,7 +70,10 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
 
         pipeline.addLast("iso8583Encoder", isoMessageEncoder);
 
-        pipeline.addLast(workerGroup, "logging", loggingHandler);
+        if (configuration.addLoggingHandler()) {
+            pipeline.addLast(workerGroup, "logging", loggingHandler);
+        }
+
         pipeline.addLast("idleState", new IdleStateHandler(0, 0, configuration.getIdleTimeout()));
         pipeline.addLast("idleEventHandler", new IdleEventHandler(isoMessageFactory));
         if (customChannelHandlers != null) {
