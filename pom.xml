@@ -4,7 +4,7 @@
 
     <groupId>org.jreactive</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -31,7 +31,7 @@
     <scm>
         <url>https://github.com/kpavlov/jreactive-8583.git</url>
         <connection>scm:git:git://github.com:kpavlov/jreactive-8583.git</connection>
-        <developerConnection>scm:git:ssh://github.com:kpavlov/jreactive-8583.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com:kpavlov/jreactive-8583.git</developerConnection>
         <tag>netty-iso8583-0.1.0</tag>
     </scm>
 
