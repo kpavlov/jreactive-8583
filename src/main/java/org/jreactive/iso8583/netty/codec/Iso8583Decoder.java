@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class Iso8583Decoder extends ByteToMessageDecoder {
@@ -29,6 +30,8 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
         if (isoMessage != null) {
             //noinspection unchecked
             out.add(isoMessage);
+        } else {
+            throw new ParseException("Can't parse ISO8583 message", 0);
         }
     }
 }

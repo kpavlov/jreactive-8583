@@ -15,6 +15,7 @@ public abstract class ConnectorConfiguration {
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
     private int idleTimeout = DEFAULT_IDLE_TIMEOUT;
+    private boolean replyOnError = false;
 
     private boolean addLoggingHandler = true;
 
@@ -58,5 +59,12 @@ public abstract class ConnectorConfiguration {
      */
     public boolean addLoggingHandler() {
         return addLoggingHandler;
+    }
+
+    /**
+     * Whether to reply with administrative message in case of message syntax errors. Default value is <code>false.</code>
+     */
+    public boolean replyOnError() {
+        return replyOnError;
     }
 }
