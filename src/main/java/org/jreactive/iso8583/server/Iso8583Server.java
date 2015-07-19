@@ -1,5 +1,6 @@
 package org.jreactive.iso8583.server;
 
+import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -12,9 +13,9 @@ import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class Iso8583Server extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap> {
+public class Iso8583Server<T extends IsoMessage>  extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
 
-    public Iso8583Server(int port, MessageFactory messageFactory) {
+    public Iso8583Server(int port, MessageFactory<T> messageFactory) {
         super(new ServerConfiguration(), messageFactory);
         setSocketAddress(new InetSocketAddress(port));
     }
@@ -47,7 +48,7 @@ public class Iso8583Server extends AbstractIso8583Connector<ServerConfiguration,
                         getConfigurer(),
                         getWorkerEventLoopGroup(),
                         getIsoMessageFactory(),
-                        getIsoMessageDispatcher()
+                        getMessageHandler()
                 ));
 
         configureBootstrap(bootstrap);

@@ -13,16 +13,16 @@ import org.jreactive.iso8583.netty.pipeline.ReconnectOnCloseListener;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
-public class Iso8583Client extends AbstractIso8583Connector<ClientConfiguration, Bootstrap> {
+public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
 
     private ReconnectOnCloseListener reconnectOnCloseListener;
 
-    public Iso8583Client(SocketAddress socketAddress, MessageFactory isoMessageFactory) {
+    public Iso8583Client(SocketAddress socketAddress, MessageFactory<T> isoMessageFactory) {
         this(isoMessageFactory);
         setSocketAddress(socketAddress);
     }
 
-    public Iso8583Client(MessageFactory isoMessageFactory) {
+    public Iso8583Client(MessageFactory<T> isoMessageFactory) {
         super(new ClientConfiguration(), isoMessageFactory);
     }
 
@@ -93,7 +93,7 @@ public class Iso8583Client extends AbstractIso8583Connector<ClientConfiguration,
                         getConfigurer(),
                         getWorkerEventLoopGroup(),
                         getIsoMessageFactory(),
-                        getIsoMessageDispatcher()
+                        getMessageHandler()
                 ));
 
         configureBootstrap(b);

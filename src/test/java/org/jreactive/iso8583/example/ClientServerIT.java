@@ -3,7 +3,7 @@ package org.jreactive.iso8583.example;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
-import org.jreactive.iso8583.IsoMessageHandler;
+import org.jreactive.iso8583.IsoMessageListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,19 +17,21 @@ public class ClientServerIT extends AbstractIT {
 
     @Before
     public void beforeTest() {
-        server.addMessageListener(new IsoMessageHandler() {
+        server.addMessageListener(new IsoMessageListener() {
+
             @Override
-            public int getType() {
-                return 0x200;
+            public boolean applies(IsoMessage isoMessage) {
+                return isoMessage.getType() ==  0x200;
             }
 
             @Override
-            public void onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
+            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
                 capturedRequest = isoMessage;
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
-                ctx.write(response);
+                ctx.writeAndFlush(response);
+                return false;
             }
         });
     }

@@ -53,7 +53,7 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
         this.customChannelHandlers = customChannelHandlers;
 
         this.isoMessageEncoder = createIso8583Encoder(headerLength);
-        this.loggingHandler = createLoggingHandler();
+        this.loggingHandler = createLoggingHandler(configuration);
     }
 
     @Override
@@ -93,8 +93,11 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
         return new Iso8583Decoder(messageFactory);
     }
 
-    protected ChannelHandler createLoggingHandler() {
-        return new IsoMessageLoggingHandler(LogLevel.DEBUG);
+    protected ChannelHandler createLoggingHandler(G configuration) {
+        return new IsoMessageLoggingHandler(LogLevel.DEBUG,
+                configuration.logSensitiveData(),
+                configuration.logFieldDescription(),
+                configuration.getSensitiveDataFields());
     }
 
 

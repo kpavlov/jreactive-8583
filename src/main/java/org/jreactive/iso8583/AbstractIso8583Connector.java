@@ -1,13 +1,14 @@
 package org.jreactive.iso8583;
 
+import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import org.jreactive.iso8583.netty.pipeline.DispatchingMessageHandler;
-import org.jreactive.iso8583.netty.pipeline.EchoMessageHandler;
+import org.jreactive.iso8583.netty.pipeline.CompositeIsoMessageHandler;
+import org.jreactive.iso8583.netty.pipeline.EchoMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +16,14 @@ import java.net.SocketAddress;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration, B extends AbstractBootstrap> {
+public abstract class AbstractIso8583Connector<
+        C extends ConnectorConfiguration,
+        B extends AbstractBootstrap,
+        M extends IsoMessage> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    private final MessageFactory isoMessageFactory;
-    private final DispatchingMessageHandler messageListener;
+    private final MessageFactory<M> isoMessageFactory;
+    private final CompositeIsoMessageHandler<M> messageHandler;
     private final AtomicReference<Channel> channelRef = new AtomicReference<>();
     private final C configuration;
     private ConnectorConfigurer<C, B> configurer;
@@ -28,17 +32,17 @@ public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration,
     private EventLoopGroup workerEventLoopGroup;
     private B bootstrap;
 
-    protected AbstractIso8583Connector(C configuration, MessageFactory isoMessageFactory) {
+    protected AbstractIso8583Connector(C configuration, MessageFactory<M> isoMessageFactory) {
         assert (configuration != null) : "Configuration must be provided";
         Objects.requireNonNull(isoMessageFactory, "MessageFactory must be provided");
         this.configuration = configuration;
         this.isoMessageFactory = isoMessageFactory;
-        messageListener = new DispatchingMessageHandler();
-        messageListener.addIsoMessageHandler(new EchoMessageHandler(isoMessageFactory));
+        messageHandler = new CompositeIsoMessageHandler<>();
+        messageHandler.addListener(new EchoMessageListener<>(isoMessageFactory));
     }
 
-    public void addMessageListener(IsoMessageHandler handler) {
-        messageListener.addIsoMessageHandler(handler);
+    public void addMessageListener(IsoMessageListener<M> handler) {
+        messageHandler.addListener(handler);
     }
 
     /**
@@ -92,12 +96,12 @@ public abstract class AbstractIso8583Connector<C extends ConnectorConfiguration,
         this.socketAddress = socketAddress;
     }
 
-    public MessageFactory getIsoMessageFactory() {
+    public MessageFactory<M> getIsoMessageFactory() {
         return isoMessageFactory;
     }
 
-    protected DispatchingMessageHandler getIsoMessageDispatcher() {
-        return messageListener;
+    protected CompositeIsoMessageHandler<M> getMessageHandler() {
+        return messageHandler;
     }
 
     protected abstract B createBootstrap();

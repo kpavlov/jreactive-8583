@@ -8,17 +8,26 @@ import io.netty.handler.logging.LoggingHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
  * ChannelHandler responsible for logging messages.
- * <p>
- * According to PCI DSS, sensitive cardholder data should not be exposed.
- * When running in secure mode, ensitive cardholder data will be printed masked.
+ * <p/>
+ * According to PCI DSS, sensitive cardholder data, like PAN and track data, should not be exposed.
+ * When running in secure mode, sensitive cardholder data will be printed masked.
  */
 @ChannelHandler.Sharable
 public class IsoMessageLoggingHandler extends LoggingHandler {
 
+    private static final char MASK_CHAR = '*';
+    private static final int[] DEFAULT_MASKED_FIELDS = {
+            34,// PAN extended
+            35,// track 2
+            36,// track 3
+            45// track 1
+    };
+    private static char[] MASKED_VALUE = "***".toCharArray();
     private static String[] FIELD_NAMES = new String[128];
 
     static {
@@ -36,16 +45,28 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
 
     private final boolean printSensitiveData;
     private final boolean printFieldDescriptions;
+    private final int[] maskedFields;
 
-
-    public IsoMessageLoggingHandler(LogLevel level, boolean printSensitiveData, boolean printFieldDescriptions) {
+    public IsoMessageLoggingHandler(LogLevel level,
+                                    boolean printSensitiveData,
+                                    boolean printFieldDescriptions,
+                                    int... maskedFields) {
         super(level);
         this.printSensitiveData = printSensitiveData;
         this.printFieldDescriptions = printFieldDescriptions;
+        this.maskedFields = (maskedFields != null && maskedFields.length > 0) ? maskedFields : DEFAULT_MASKED_FIELDS;
     }
 
     public IsoMessageLoggingHandler(LogLevel level) {
         this(level, true, true);
+    }
+
+    private static char[] maskPAN(String fullPan) {
+        char[] maskedPan = fullPan.toCharArray();
+        for (int i = 6; i < maskedPan.length - 4; i++) {
+            maskedPan[i] = MASK_CHAR;
+        }
+        return maskedPan;
     }
 
     @Override
@@ -73,10 +94,22 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
                 if (printFieldDescriptions) {
                     sb.append(FIELD_NAMES[i - 1]).append(':');
                 }
+
+                char[] formattedValue;
+                if (printSensitiveData) {
+                    formattedValue = field.toString().toCharArray();
+                } else {
+                    if (i == 2) {
+                        formattedValue = maskPAN(field.toString());
+                    } else if (Arrays.binarySearch(maskedFields, i) >= 0) {
+                        formattedValue = MASKED_VALUE;
+                    } else {
+                        formattedValue = field.toString().toCharArray();
+                    }
+
+                }
                 sb.append(field.getType()).append('(').append(field.getLength())
-                        .append(")] = ")
-                        .append(String.valueOf(objectValue))
-                        .append(" -> '").append(field.toString()).append('\'');
+                        .append(")] = '").append(formattedValue).append('\'');
 
             }
         }
