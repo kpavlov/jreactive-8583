@@ -28,8 +28,8 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Channel read/write idle timeout in seconds.
-     * <p/>
-     * If no message was received/sent during specified time interval then `Echo` message will be sent.
+     * <p>
+     * If no message was received/sent during specified time interval then `Echo` message will be sent.</p>
      *
      * @return timeout in seconds
      */
@@ -39,11 +39,12 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Set Idle Timeout in seconds
+     *
+     * @param idleTimeoutSeconds Idle timeout in seconds
      */
     public void setIdleTimeout(int idleTimeoutSeconds) {
         this.idleTimeout = idleTimeoutSeconds;
     }
-
 
     public int getMaxFrameLength() {
         return maxFrameLength;
@@ -59,8 +60,7 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns true is {@link org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler}
-     * <p/>
-     * Allows to disable adding default logging handler to {@link io.netty.channel.ChannelPipeline}.
+     * <p>Allows to disable adding default logging handler to {@link io.netty.channel.ChannelPipeline}.</p>
      *
      * @return true if {@link org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler} should be added.
      */
@@ -70,6 +70,8 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Whether to reply with administrative message in case of message syntax errors. Default value is <code>false.</code>
+     *
+     * @return true if reply message should be sent in case of error parsing the message.
      */
     public boolean replyOnError() {
         return replyOnError;
@@ -77,8 +79,11 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns <code>true</code> if sensitive information like PAN, CVV/CVV2, and Track2 should be printed to log.
-     * <p/>
-     * Default value is true.
+     * <p>
+     * Default value is <code>true</code>.
+     * </p>
+     *
+     * @return <code>true</code> if sensitive data should be printed to log
      */
     public boolean logSensitiveData() {
         return logSensitiveData;
@@ -100,7 +105,7 @@ public abstract class ConnectorConfiguration {
      * Returns field numbers to be treated as sensitive data.
      * Use <code>null</code> to use default ones
      *
-     * @return array of sensitive field numbers to be masked, or <code>null</code> to use default fields.
+     * @return array of ISO8583 sensitive field numbers to be masked, or <code>null</code> to use default fields.
      * @see org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler
      * @see org.jreactive.iso8583.netty.pipeline.IsoMessageLoggingHandler#DEFAULT_MASKED_FIELDS
      */

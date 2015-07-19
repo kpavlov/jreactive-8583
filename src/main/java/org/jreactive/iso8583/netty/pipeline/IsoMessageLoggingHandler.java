@@ -13,9 +13,8 @@ import java.util.Properties;
 
 /**
  * ChannelHandler responsible for logging messages.
- * <p/>
- * According to PCI DSS, sensitive cardholder data, like PAN and track data, should not be exposed.
- * When running in secure mode, sensitive cardholder data will be printed masked.
+ * <p>
+ * According to PCI DSS, sensitive cardholder data, like PAN and track data, should not be exposed. When running in secure mode, sensitive cardholder data will be printed masked. </p>
  */
 @ChannelHandler.Sharable
 public class IsoMessageLoggingHandler extends LoggingHandler {

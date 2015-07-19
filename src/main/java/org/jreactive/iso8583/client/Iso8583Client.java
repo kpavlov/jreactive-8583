@@ -31,7 +31,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      *
      * @return Returns the {@link ChannelFuture} which will be notified when this
      * channel is closed.
-     * @throws InterruptedException
+     * @throws InterruptedException if connection process was interrupted
      * @see #setSocketAddress(SocketAddress)
      */
     public ChannelFuture connect() throws InterruptedException {
@@ -43,6 +43,11 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     /**
      * Connect synchronously to  specified host and port.
+     *
+     * @param host A server host to connect to
+     * @param port A server port to connect to
+     * @return {@link ChannelFuture} which will be notified when connection is established.
+     * @throws InterruptedException if connection process was interrupted
      */
     public ChannelFuture connect(String host, int port) throws InterruptedException {
         return connect(new InetSocketAddress(host, port));
@@ -50,6 +55,10 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     /**
      * Connects synchronously to specified remote address.
+     *
+     * @param serverAddress A server address to connect to
+     * @return {@link ChannelFuture} which will be notified when connection is established.
+     * @throws InterruptedException if connection process was interrupted
      */
     public ChannelFuture connect(SocketAddress serverAddress) throws InterruptedException {
         setSocketAddress(serverAddress);
@@ -129,6 +138,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     /**
      * Sends asynchronously and returns a {@link ChannelFuture}
+     *
+     * @param isoMessage A message to send
+     * @return ChannelFuture which will be notified when message is sent
      */
     public ChannelFuture sendAsync(IsoMessage isoMessage) {
         Channel channel = getChannel();

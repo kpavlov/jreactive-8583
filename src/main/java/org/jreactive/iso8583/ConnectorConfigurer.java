@@ -9,8 +9,10 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * Hook added before completion of the bootstrap configuration.
      * <p>
      * This method is called during {@link AbstractIso8583Connector#init()} phase.
+     * </p>
      *
-     * @param bootstrap AbstractBootstrap to configure
+     * @param bootstrap     AbstractBootstrap to configure.
+     * @param configuration A {@link ConnectorConfiguration} to use.
      */
     void configureBootstrap(B bootstrap, C configuration);
 
