@@ -31,9 +31,9 @@
         <h1>
 <a id="jreactive-8583" class="anchor" href="#jreactive-8583" aria-hidden="true"><span class="octicon octicon-link"></span></a>JReactive-8583</h1>
 
-<p>ISO8583 Java Connector</p>
+<p>Free ISO8583 Java Connector </p>
 
-<p><a href="https://travis-ci.org/kpavlov/jreactive-8583"><img src="https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master" alt="Build Status"></a></p>
+<p><a href="https://travis-ci.org/kpavlov/jreactive-8583"><img src="https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master" alt="Build Status"></a> <a href="https://drone.io/github.com/kpavlov/jreactive-8583/latest"><img src="https://drone.io/github.com/kpavlov/jreactive-8583/status.png" alt="Build Status"></a></p>
 
 <h2>
 <a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h2>
@@ -45,33 +45,7 @@
 <a href="https://github.com/chochos/j8583" title="Java implementation of the ISO8583 protocol.">j8583</a> is free but does not offer network client</li>
 </ol>
 
-<p>Solution: <strong>"J-Reactive-8583"</strong> ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583.</p>
-
-<p>For data transmission TCP/IP uses sessions.
-Each session is a bi-directional data stream. 
-The protocol uses a single TCP/IP session to transfer data between hosts in both directions. </p>
-
-<p>The continuous TCP/IP data stream is split into frames. 
-Each <a href="https://en.wikipedia.org/wiki/ISO_8583">ISO8583</a> message is sent in a separate frame. </p>
-
-<p>A Frame consists of a 2-byte length header and a message body. 
-The header contains the length of the following message.
-The high byte of value is transmitted first, and the low byte of value is transmitted second.</p>
-
-<table>
-<thead>
-<tr>
-<th>2 bytes</th>
-<th>N bytes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Message Length = N</td>
-<td>ISO – 8583 Message</td>
-</tr>
-</tbody>
-</table>
+<p>Solution: <strong>"J-Reactive-8583"</strong> ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583. It is distributed under Apache License 2.0.</p>
 
 <h2>
 <a id="supported-features" class="anchor" href="#supported-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Features</h2>
@@ -82,7 +56,168 @@ The high byte of value is transmitted first, and the low byte of value is transm
 <li>Customizable <a href="https://github.com/chochos/j8583/blob/master/src/main/java/com/solab/iso8583/IsoMessage.java">ISO MessageFactory</a>.</li>
 <li>Automatic responding to Echo messages.</li>
 <li>Automatic client reconnection.</li>
+<li>Secure <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/netty/pipeline/IsoMessageLoggingHandler.java">message logger</a>: mask PAN and track data or any any other field (customizable). Optionally prints field descriptions.
+
+<ul>
+<li>Configurable netty <a href="https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/bootstrap/Bootstrap.java">Bootstrap</a> and <a href="https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/channel/ChannelPipeline.java">ChannelPipeline</a>
+</li>
 </ul>
+</li>
+</ul>
+
+<h2>
+<a id="iso8583-tcpip-transport" class="anchor" href="#iso8583-tcpip-transport" aria-hidden="true"><span class="octicon octicon-link"></span></a>ISO8583 TCP/IP Transport</h2>
+
+<p>For data transmission TCP/IP uses sessions.
+Each session is a bi-directional data stream. 
+The protocol uses a single TCP/IP session to transfer data between hosts in both directions. </p>
+
+<p>The continuous TCP/IP data stream is split into frames. 
+Each <a href="https://en.wikipedia.org/wiki/ISO_8583">ISO8583</a> message is sent in a separate frame. </p>
+
+<p>A Frame consists of a N-byte length header and a message body.
+Usually, N==2.
+The header contains the length of the following message.
+The high byte of value is transmitted first, and the low byte of value is transmitted second.</p>
+
+<table>
+<thead>
+<tr>
+<th>N bytes</th>
+<th>M bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message Length = M</td>
+<td>ISO–8583 Message</td>
+</tr>
+</tbody>
+</table>
+
+<h1>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
+
+<p>First, you need to <a href="https://github.com/kpavlov/jreactive-8583/releases">download latest release</a> or clone this repository and build artifact with maven manually. </p>
+
+<p>Then add dependency to your project:</p>
+
+<pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.jreactive&lt;/groupId&gt;
+        &lt;artifactId&gt;netty-iso8583&lt;/artifactId&gt;
+        &lt;version&gt;0.1.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    ...
+&lt;dependencies&gt;
+</code></pre>
+
+<p>Now you may use ISO8583 client or server in your code.</p>
+
+<h2>
+<a id="creating-and-using-iso-8583-client" class="anchor" href="#creating-and-using-iso-8583-client" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating and Using ISO-8583 Client</h2>
+
+<p>The minimal client workflow includes:</p>
+
+<pre><code>MessageFactory&lt;IsoMessage&gt; messageFactory = ConfigParser.createDefault();// [1]
+Iso8583Client&lt;IsoMessage&gt; client = new Iso8583Client&lt;&gt;(clientMessageFactory());// [2]
+
+client.addMessageListener(new IsoMessageListener&lt;IsoMessage&gt;() { // [3]
+    ...
+});
+client.getConfiguration().replyOnError(true);// [4]
+client.init();// [5]
+
+client.connect(host, port);// [6]
+if (client.isConnected()) { // [7]
+
+    IsoMessage message = messageFactory.newMessage(...);
+    ...
+    client.send(message);// [8]
+}
+
+...
+client.shutdown();// [9]
+</code></pre>
+
+<ol>
+<li>First you need to create a <code>MessageFactory</code>
+</li>
+<li>Then you create a <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/client/Iso8583Client.java"><code>Iso8583Client</code></a> providing <code>MessageFactory</code> and, optionally, <code>SocketAddress</code> </li>
+<li>Add one or more custom <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/IsoMessageListener.java"><code>IsoMessageListener</code></a>s to handle <code>IsoMessage</code>s.</li>
+<li>Configure the client. You may omit this step if you're fine with default configuration.</li>
+<li>Initialize client. Now it is ready to connect.</li>
+<li>Establish a connection. By default, if connection will is lost, it reconnects automatically. You may disable this behaviour or change <em>reconnectInterval</em>.</li>
+<li>Verify that connection is established</li>
+<li>Send <code>IsoMessage</code>
+</li>
+<li>Disconnect when you're done.</li>
+</ol>
+
+<h2>
+<a id="creating-and-using-iso-8583-server" class="anchor" href="#creating-and-using-iso-8583-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating and Using ISO-8583 Server</h2>
+
+<p>Typical server workflow includes:</p>
+
+<pre><code>MessageFactory&lt;IsoMessage&gt; messageFactory = ConfigParser.createDefault();// [1]
+Iso8583Server&lt;IsoMessage&gt; server = new Iso8583Server&lt;&gt;(port, serverMessageFactory());// [2]
+
+server.addMessageListener(new IsoMessageListener&lt;IsoMessage&gt;() { // [3]
+    ...
+});
+server.getConfiguration().replyOnError(true);// [4]
+server.init();// [5]
+
+server.start();// [6]
+if (server.isStarted()) { // [7]
+    ...
+}
+
+...
+server.shutdown();// [8]
+</code></pre>
+
+<ol>
+<li>First you need to create a <code>MessageFactory</code>
+</li>
+<li>Then you create a <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/server/Iso8583Server.java"><code>Iso8583Server</code></a> providing <code>MessageFactory</code> and port to bind to </li>
+<li>Add one or more custom <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/IsoMessageListener.java"><code>IsoMessageListener</code></a>s to handle <code>IsoMessage</code>s.</li>
+<li>Configure the server. You may omit this step if you're fine with default configuration.</li>
+<li>Initialize server. Now it is ready to start.</li>
+<li>Start server. Now it is ready to accept client connections.</li>
+<li>Verify that the server is started</li>
+<li>Shutdown server when you're done.</li>
+</ol>
+
+<h2>
+<a id="logging" class="anchor" href="#logging" aria-hidden="true"><span class="octicon octicon-link"></span></a>Logging</h2>
+
+<p>Default <a href="https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/netty/pipeline/IsoMessageLoggingHandler.java"><code>IsoMessageLoggingHandler</code></a> may produce output like:</p>
+
+<pre><code>312 [nioEventLoopGroup-5-1] DEBUG IsoMessageLoggingHandler - [id: 0xa72cc005, /127.0.0.1:50853 =&gt; /127.0.0.1:9876] MTI: 0x0200
+  2: [Primary account number (PAN):NUMERIC(19)] = '000400*********0002'
+  3: [Processing code:NUMERIC(6)] = '650000'
+  7: [Transmission date &amp; time:DATE10(10)] = '0720233443'
+  11: [System trace audit number:NUMERIC(6)] = '483248'
+  32: [Acquiring institution identification code:LLVAR(3)] = '456'
+  35: [Track 2 data:LLVAR(17)] = '***'
+  43: [Card acceptor name/location (1-23 address 24-36 city 37-38 state 39-40 country):ALPHA(40)] = 'SOLABTEST TEST-3 DF MX                  '
+  49: [Currency code, transaction:ALPHA(3)] = '484'
+  60: [Reserved national:LLLVAR(3)] = 'foo'
+  61: [Reserved private:LLLVAR(5)] = '1234P'
+  100: [Receiving institution identification code:LLVAR(3)] = '999'
+  102: [Account identification 1:LLVAR(4)] = 'ABCD'
+</code></pre>
+
+<p>Using client or server configurationYou may :</p>
+
+<ul>
+<li>enable and disable printing of sensitive information, like PAN</li>
+<li>customize which fields should be masked in logs</li>
+<li>enable and disable printing field descriptions</li>
+</ul>
+
+<p>You may provide your own logging handler and disable default one by using <code>org.jreactive.iso8583.ConnectorConfiguration.addLoggingHandler(boolean)</code> method and customizing ChannelPipeline.</p>
 
 <h2>
 <a id="iso-8583-links" class="anchor" href="#iso-8583-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>ISO 8583 Links</h2>
