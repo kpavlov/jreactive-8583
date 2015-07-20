@@ -1,15 +1,15 @@
 # JReactive-8583
 
-ISO8583 Java Connector
+Free ISO8583 Java Connector 
 
-[![Build Status](https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master)](https://travis-ci.org/kpavlov/jreactive-8583)
+[![Build Status](https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
 
 ## Motivation
 
 1. [jPOS][jpos] library is not free for commercial use. 
 2. [j8583][j8583] is free but does not offer network client
 
-Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583.
+Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583. It is distributed under Apache License 2.0.
 
 ## Supported Features
 
