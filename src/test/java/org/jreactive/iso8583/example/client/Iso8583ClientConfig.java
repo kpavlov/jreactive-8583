@@ -1,5 +1,6 @@
 package org.jreactive.iso8583.example.client;
 
+import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.impl.SimpleTraceGenerator;
 import com.solab.iso8583.parse.ConfigParser;
@@ -26,15 +27,15 @@ public class Iso8583ClientConfig {
     int idleTimeout;
 
     @Bean
-    public Iso8583Client iso8583Client() throws IOException {
+    public Iso8583Client<IsoMessage> iso8583Client() throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(host, port);
-        final Iso8583Client client = new Iso8583Client(socketAddress, clientMessageFactory());
+        final Iso8583Client<IsoMessage> client = new Iso8583Client<>(socketAddress, clientMessageFactory());
         client.getConfiguration().setIdleTimeout(idleTimeout);
         return client;
     }
 
-    private MessageFactory clientMessageFactory() throws IOException {
-        final MessageFactory messageFactory = ConfigParser.createDefault();
+    private MessageFactory<IsoMessage> clientMessageFactory() throws IOException {
+        final MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);

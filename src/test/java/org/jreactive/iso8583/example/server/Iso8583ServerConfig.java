@@ -1,5 +1,6 @@
 package org.jreactive.iso8583.example.server;
 
+import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 import org.jreactive.iso8583.server.Iso8583Server;
@@ -17,13 +18,13 @@ public class Iso8583ServerConfig {
     int port;
 
     @Bean
-    public Iso8583Server iso8583Server() throws IOException {
-        return new Iso8583Server(port, serverMessageFactory());
+    public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
+        return new Iso8583Server<>(port, serverMessageFactory());
     }
 
     @Bean
-    MessageFactory serverMessageFactory() throws IOException {
-        final MessageFactory messageFactory = ConfigParser.createDefault();
+    MessageFactory<IsoMessage> serverMessageFactory() throws IOException {
+        final MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);

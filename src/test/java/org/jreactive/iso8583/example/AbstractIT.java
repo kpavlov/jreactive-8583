@@ -1,5 +1,6 @@
 package org.jreactive.iso8583.example;
 
+import com.solab.iso8583.IsoMessage;
 import net.jcip.annotations.NotThreadSafe;
 import org.jreactive.iso8583.client.Iso8583Client;
 import org.jreactive.iso8583.server.Iso8583Server;
@@ -16,10 +17,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class AbstractIT {
 
         @Autowired
-        protected Iso8583Client client;
+        protected Iso8583Client<IsoMessage> client;
 
         @Autowired
-        protected Iso8583Server server;
+        protected Iso8583Server<IsoMessage> server;
 
         @Before
         public void before() throws Exception {

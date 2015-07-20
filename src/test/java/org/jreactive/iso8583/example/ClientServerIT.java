@@ -17,7 +17,7 @@ public class ClientServerIT extends AbstractIT {
 
     @Before
     public void beforeTest() {
-        server.addMessageListener(new IsoMessageListener() {
+        server.addMessageListener(new IsoMessageListener<IsoMessage>() {
 
             @Override
             public boolean applies(IsoMessage isoMessage) {
