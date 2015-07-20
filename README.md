@@ -56,7 +56,7 @@ Then add dependency to your project:
     
 Now you may use ISO8583 client or server in your code.
 
-# Creating and Using ISO-8583 Client
+## Creating and Using ISO-8583 Client
 
 The minimal client workflow includes:
 
@@ -90,7 +90,7 @@ The minimal client workflow includes:
 8. Send `IsoMessage`
 9. Disconnect when you're done.
 
-# Creating and Using ISO-8583 Server
+## Creating and Using ISO-8583 Server
 
 Typical server workflow includes:
 
@@ -120,6 +120,32 @@ Typical server workflow includes:
 7. Verify that the server is started
 9. Shutdown server when you're done.
 
+## Logging
+
+Default [`IsoMessageLoggingHandler`][IsoMessageLoggingHandler] may produce output like:
+
+    312 [nioEventLoopGroup-5-1] DEBUG IsoMessageLoggingHandler - [id: 0xa72cc005, /127.0.0.1:50853 => /127.0.0.1:9876] MTI: 0x0200
+      2: [Primary account number (PAN):NUMERIC(19)] = '000400*********0002'
+      3: [Processing code:NUMERIC(6)] = '650000'
+      7: [Transmission date & time:DATE10(10)] = '0720233443'
+      11: [System trace audit number:NUMERIC(6)] = '483248'
+      32: [Acquiring institution identification code:LLVAR(3)] = '456'
+      35: [Track 2 data:LLVAR(17)] = '***'
+      43: [Card acceptor name/location (1-23 address 24-36 city 37-38 state 39-40 country):ALPHA(40)] = 'SOLABTEST TEST-3 DF MX                  '
+      49: [Currency code, transaction:ALPHA(3)] = '484'
+      60: [Reserved national:LLLVAR(3)] = 'foo'
+      61: [Reserved private:LLLVAR(5)] = '1234P'
+      100: [Receiving institution identification code:LLVAR(3)] = '999'
+      102: [Account identification 1:LLVAR(4)] = 'ABCD'
+
+Using client or server configurationYou may :
+
+- enable and disable printing of sensitive information, like PAN
+- customize which fields should be masked in logs
+- enable and disable printing field descriptions
+
+You may provide your own logging handler and disable default one by using `org.jreactive.iso8583.ConnectorConfiguration.addLoggingHandler(boolean)` method and customizing ChannelPipeline.
+
 ## ISO 8583 Links 
 
 - Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf.
@@ -135,3 +161,4 @@ Typical server workflow includes:
 [Iso8583Client]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/client/Iso8583Client.java
 [Iso8583Server]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/server/Iso8583Server.java
 [IsoMessageListener]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/IsoMessageListener.java
+[IsoMessageLoggingHandler]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/netty/pipeline/IsoMessageLoggingHandler.java

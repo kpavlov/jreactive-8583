@@ -77,10 +77,14 @@ public abstract class ConnectorConfiguration {
         return replyOnError;
     }
 
+    public void setReplyOnError(boolean replyOnError) {
+        this.replyOnError = replyOnError;
+    }
+
     /**
      * Returns <code>true</code> if sensitive information like PAN, CVV/CVV2, and Track2 should be printed to log.
      * <p>
-     * Default value is <code>true</code>.
+     * Default value is <code>true</code> (sensitive data is printed).
      * </p>
      *
      * @return <code>true</code> if sensitive data should be printed to log
