@@ -42,7 +42,6 @@ public class ClientServerIT extends AbstractIT {
         TestUtil.waitFor("client connected", client::isConnected);
 
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
-        finMessage.setValue(2, "4000000000000002", IsoType.NUMERIC, 19);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         client.send(finMessage);
 
