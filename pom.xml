@@ -21,9 +21,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <j8583.version>1.11.0</j8583.version>
-        <netty.version>[4.0.29.Final, 4.0.100)</netty.version>
-        <slf4j.version>[1.7.12,1.8)</slf4j.version>
-        <spring.version>4.1.7.RELEASE</spring.version>
+        <netty.version>4.0.33.Final</netty.version>
+        <slf4j.version>1.7.13</slf4j.version>
+        <spring.version>4.2.4.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
     </properties>
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[${junit.version},)</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
