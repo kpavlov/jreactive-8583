@@ -86,7 +86,6 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
         for (int i = 2; i < 128; i++) {
             if (m.hasField(i)) {
                 final IsoValue<Object> field = m.getField(i);
-                final Object objectValue = m.getObjectValue(i);
                 sb.append("\n  ").append(i)
                         .append(": [");
 
