@@ -9,7 +9,7 @@ Free ISO8583 Java Connector
 1. [jPOS][jpos] library is not free for commercial use. 
 2. [j8583][j8583] is free but does not offer network client
 
-Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excellent Netty asynchronous messaging framework with the help of j8583. It is distributed under Apache License 2.0.
+Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excellent [Netty][netty] asynchronous messaging framework with the help of [j8583][j8583] for encoding/decoding. It is distributed under Apache License 2.0.
 
 ## Supported Features
 
@@ -157,6 +157,7 @@ You may provide your own logging handler and disable default one by using `org.j
 [j8583]: https://github.com/chochos/j8583 "Java implementation of the ISO8583 protocol."
 [j8583-message-factory]: https://github.com/chochos/j8583/blob/master/src/main/java/com/solab/iso8583/IsoMessage.java
 [jpos]: http://jpos.org 
+[netty]: //netty.io 
 
 [Iso8583Client]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/client/Iso8583Client.java
 [Iso8583Server]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/server/Iso8583Server.java
