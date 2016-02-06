@@ -146,6 +146,9 @@ Using client or server configurationYou may :
 
 You may provide your own logging handler and disable default one by using `org.jreactive.iso8583.ConnectorConfiguration.addLoggingHandler(boolean)` method and customizing ChannelPipeline.
 
+---
+For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ) page.
+
 ## ISO 8583 Links 
 
 - Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf.
