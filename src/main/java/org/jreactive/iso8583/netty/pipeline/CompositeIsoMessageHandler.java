@@ -22,10 +22,10 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
     private final Logger logger = getLogger(CompositeIsoMessageHandler.class);
 
     private final List<IsoMessageListener<T>> messageListeners = new CopyOnWriteArrayList<>();
-    private final boolean failFast;
+    private final boolean failOnError;
 
-    public CompositeIsoMessageHandler(boolean failFast) {
-        this.failFast = failFast;
+    public CompositeIsoMessageHandler(boolean failOnError) {
+        this.failOnError = failOnError;
     }
 
     public CompositeIsoMessageHandler() {
@@ -50,17 +50,22 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
             return;
         }
 
-        for (IsoMessageListener<T> messageListener : messageListeners) {
+        boolean applyNextListener = true;
+        for (int i = 0, size = messageListeners.size(); applyNextListener && i < size; i++) {
+            IsoMessageListener<T> messageListener = messageListeners.get(i);
             try {
                 if (messageListener.applies(isoMessage)) {
                     logger.debug(
                             "Handling IsoMessage[@type=0x{}] with {}",
                             String.format("%04X", isoMessage.getType()), messageListener);
-                    messageListener.onMessage(ctx, isoMessage);
+                    applyNextListener = messageListener.onMessage(ctx, isoMessage);
+                    if (!applyNextListener) {
+                        logger.debug("Stopping further procession of message {} after handler {}", isoMessage, messageListener);
+                    }
                 }
             } catch (Exception e) {
                 logger.debug("Can't evaluate {}.apply({})", messageListener, isoMessage.getClass(), e);
-                if (failFast) {
+                if (failOnError) {
                     throw e;
                 }
             }
@@ -70,5 +75,12 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
     public void addListener(IsoMessageListener<T> listener) {
         Objects.requireNonNull(listener, "IsoMessageListener is required");
         messageListeners.add(listener);
+    }
+
+    public void addListeners(IsoMessageListener<T>... listeners) {
+        Objects.requireNonNull(listeners, "IsoMessageListeners must not be null");
+        for (IsoMessageListener<T> listener : listeners) {
+            addListener(listener);
+        }
     }
 }
