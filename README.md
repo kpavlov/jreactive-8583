@@ -59,27 +59,27 @@ Now you may use ISO8583 client or server in your code.
 ## Creating and Using ISO-8583 Client
 
 The minimal client workflow includes:
+```java
+MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
+Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
 
-    MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
-    Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
-
-    client.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
-        ...
-    });
-    client.getConfiguration().replyOnError(true);// [4]
-    client.init();// [5]
-    
-    client.connect(host, port);// [6]
-    if (client.isConnected()) { // [7]
-    
-        IsoMessage message = messageFactory.newMessage(...);
-        ...
-        client.send(message);// [8]
-    }
-    
+client.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
     ...
-    client.shutdown();// [9]
+});
+client.getConfiguration().replyOnError(true);// [4]
+client.init();// [5]
     
+client.connect(host, port);// [6]
+if (client.isConnected()) { // [7]
+
+    IsoMessage message = messageFactory.newMessage(...);
+    ...
+    client.send(message);// [8]
+}
+    
+...
+client.shutdown();// [9]
+```    
 1. First you need to create a `MessageFactory`
 2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and, optionally, `SocketAddress` 
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
@@ -93,24 +93,24 @@ The minimal client workflow includes:
 ## Creating and Using ISO-8583 Server
 
 Typical server workflow includes:
+```java
+MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
+Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
 
-    MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
-    Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
-
-    server.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
-        ...
-    });
-    server.getConfiguration().replyOnError(true);// [4]
-    server.init();// [5]
-    
-    server.start();// [6]
-    if (server.isStarted()) { // [7]
-        ...
-    }
-    
+server.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
     ...
-    server.shutdown();// [8]
+});
+server.getConfiguration().replyOnError(true);// [4]
+server.init();// [5]
     
+server.start();// [6]
+if (server.isStarted()) { // [7]
+    ...
+}
+    
+...
+server.shutdown();// [8]
+```    
 1. First you need to create a `MessageFactory`
 2. Then you create a [`Iso8583Server`][Iso8583Server] providing `MessageFactory` and port to bind to 
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
