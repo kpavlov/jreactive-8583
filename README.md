@@ -2,7 +2,8 @@
 
 Free ISO8583 Java Connector 
 
-[![Build Status](https://travis-ci.org/kpavlov/jreactive-8583.png?branch=master)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
+[![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
+![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
 
 ## Motivation
 
