@@ -46,6 +46,10 @@ public abstract class AbstractIso8583Connector<
         messageHandler.addListener(handler);
     }
 
+    public void removeMessageListener(IsoMessageListener<M> handler) {
+        messageHandler.removeListener(handler);
+    }
+
     /**
      * Making connector ready to create a connection / bind to port.
      * Creates a Bootstrap
