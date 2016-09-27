@@ -77,10 +77,15 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
         messageListeners.add(listener);
     }
 
-    public void addListeners(IsoMessageListener<T>... listeners) {
+    @SafeVarargs
+    public final void addListeners(IsoMessageListener<T>... listeners) {
         Objects.requireNonNull(listeners, "IsoMessageListeners must not be null");
         for (IsoMessageListener<T> listener : listeners) {
             addListener(listener);
         }
+    }
+
+    public void removeListener(IsoMessageListener<T> listener) {
+        messageListeners.remove(listener);
     }
 }
