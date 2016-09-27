@@ -25,7 +25,8 @@ public abstract class ConnectorConfiguration {
     private boolean logSensitiveData = true;
     private boolean logFieldDescription = true;
     private int[] sensitiveDataFields;
-
+    private boolean addEchoMessageListener = true;
+    
     /**
      * Channel read/write idle timeout in seconds.
      * <p>
@@ -120,4 +121,22 @@ public abstract class ConnectorConfiguration {
     public void setSensitiveDataFields(int[] sensitiveDataFields) {
         this.sensitiveDataFields = sensitiveDataFields;
     }
+
+    /**
+     * Returns true is {@link org.jreactive.iso8583.netty.pipeline.EchoMessageListener}
+     * <p>Allows to disable adding default network management or echo message listener to {@link org.jreactive.iso8583.AbstractIso8583Connector}.</p>
+     *
+     * @return true if {@link org.jreactive.iso8583.netty.pipeline.EchoMessageListener} should be added.
+     */
+		public boolean addEchoMessageListener() {
+			return addEchoMessageListener;
+		}
+
+		/**
+		 * see {@link #addEchoMessageListener()}
+		 * @param addEchoMessageListener the addEchoMessageListener to set
+		 */
+		public void addEchoMessageListener(boolean addEchoMessageListener) {
+			this.addEchoMessageListener = addEchoMessageListener;
+		}
 }

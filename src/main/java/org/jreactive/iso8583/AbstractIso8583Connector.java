@@ -38,7 +38,8 @@ public abstract class AbstractIso8583Connector<
         this.configuration = configuration;
         this.isoMessageFactory = isoMessageFactory;
         messageHandler = new CompositeIsoMessageHandler<>();
-        messageHandler.addListener(new EchoMessageListener<>(isoMessageFactory));
+        if(configuration.addEchoMessageListener())
+        	messageHandler.addListener(new EchoMessageListener<>(isoMessageFactory));
     }
 
     public void addMessageListener(IsoMessageListener<M> handler) {
