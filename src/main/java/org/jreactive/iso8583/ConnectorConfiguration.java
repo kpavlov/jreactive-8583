@@ -7,7 +7,7 @@ public abstract class ConnectorConfiguration {
      *
      * @see #setIdleTimeout(int)
      */
-    public static final int DEFAULT_IDLE_TIMEOUT = 30;
+    public static final int DEFAULT_IDLE_TIMEOUT_SECONDS = 30;
 
     /**
      * Default {@link #maxFrameLength} (max message length) = 8192
@@ -18,7 +18,7 @@ public abstract class ConnectorConfiguration {
 
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
-    private int idleTimeout = DEFAULT_IDLE_TIMEOUT;
+    private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
     private boolean replyOnError = false;
 
     private boolean addLoggingHandler = true;

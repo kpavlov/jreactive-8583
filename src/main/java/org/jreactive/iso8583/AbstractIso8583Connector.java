@@ -8,7 +8,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import org.jreactive.iso8583.netty.pipeline.CompositeIsoMessageHandler;
-import org.jreactive.iso8583.netty.pipeline.EchoMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +37,14 @@ public abstract class AbstractIso8583Connector<
         this.configuration = configuration;
         this.isoMessageFactory = isoMessageFactory;
         messageHandler = new CompositeIsoMessageHandler<>();
-        messageHandler.addListener(new EchoMessageListener<>(isoMessageFactory));
     }
 
     public void addMessageListener(IsoMessageListener<M> handler) {
         messageHandler.addListener(handler);
+    }
+
+    public void removeMessageListener(IsoMessageListener<M> handler) {
+        messageHandler.removeListener(handler);
     }
 
     /**
