@@ -17,11 +17,19 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     private ReconnectOnCloseListener reconnectOnCloseListener;
 
-    public Iso8583Client(SocketAddress socketAddress, MessageFactory<T> isoMessageFactory) {
-        this(isoMessageFactory);
+    public Iso8583Client(SocketAddress socketAddress, ClientConfiguration config, MessageFactory<T> isoMessageFactory) {
+        super(config, isoMessageFactory);
         setSocketAddress(socketAddress);
     }
 
+    public Iso8583Client(SocketAddress socketAddress, MessageFactory<T> isoMessageFactory) {
+        this(socketAddress, new ClientConfiguration(), isoMessageFactory);
+    }
+
+    /**
+     * @deprecated Use {@link #Iso8583Client(SocketAddress, ClientConfiguration, MessageFactory)}
+     */
+    @Deprecated
     public Iso8583Client(MessageFactory<T> isoMessageFactory) {
         super(new ClientConfiguration(), isoMessageFactory);
     }

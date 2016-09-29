@@ -11,6 +11,23 @@ public class ClientConfiguration extends ConnectorConfiguration {
 
     private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
 
+    public ClientConfiguration() {
+        this(newBuilder());
+    }
+
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
+    public ClientConfiguration(Builder builder) {
+        super(builder);
+        this.reconnectInterval = builder.reconnectInterval;
+    }
+
+    public static ClientConfiguration.Builder newBuilder() {
+        return new ClientConfiguration.Builder();
+    }
+
     /**
      * Client reconnect interval in milliseconds.
      *
@@ -20,7 +37,24 @@ public class ClientConfiguration extends ConnectorConfiguration {
         return reconnectInterval;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setReconnectInterval(int reconnectInterval) {
         this.reconnectInterval = reconnectInterval;
+    }
+
+    public static class Builder extends ConnectorConfiguration.Builder<ClientConfiguration> {
+        private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
+
+        public Builder withReconnectInterval(int reconnectInterval) {
+            this.reconnectInterval = reconnectInterval;
+            return this;
+        }
+
+        public ClientConfiguration build() {
+            return new ClientConfiguration(this);
+        }
     }
 }

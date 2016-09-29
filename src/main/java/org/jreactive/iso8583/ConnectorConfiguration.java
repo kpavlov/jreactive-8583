@@ -15,16 +15,36 @@ public abstract class ConnectorConfiguration {
      * @see #setMaxFrameLength(int)
      */
     public static final int DEFAULT_MAX_FRAME_LENGTH = 8192;
-
+    private final boolean addEchoMessageListener;
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
-
     private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
     private boolean replyOnError = false;
-
     private boolean addLoggingHandler = true;
     private boolean logSensitiveData = true;
     private boolean logFieldDescription = true;
     private int[] sensitiveDataFields;
+
+
+    protected ConnectorConfiguration(Builder builder) {
+        addLoggingHandler = builder.addLoggingHandler;
+        idleTimeout = builder.idleTimeout;
+        logFieldDescription = builder.logFieldDescription;
+        logSensitiveData = builder.logSensitiveData;
+        maxFrameLength = builder.maxFrameLength;
+        replyOnError = builder.replyOnError;
+        sensitiveDataFields = builder.sensitiveDataFields;
+        this.addEchoMessageListener = builder.addEchoMessageListener;
+    }
+
+    /**
+     * Allows to add default echo message listener to {@link org.jreactive.iso8583.AbstractIso8583Connector}.
+     *
+     * @return true if  {@link org.jreactive.iso8583.netty.pipeline.EchoMessageListener} should be added to {@link org.jreactive.iso8583.netty.pipeline.CompositeIsoMessageHandler}
+     */
+
+    public boolean shouldAddEchoMessageListener() {
+        return addEchoMessageListener;
+    }
 
     /**
      * Channel read/write idle timeout in seconds.
@@ -41,7 +61,9 @@ public abstract class ConnectorConfiguration {
      * Set Idle Timeout in seconds
      *
      * @param idleTimeoutSeconds Idle timeout in seconds
+     * @deprecated Use {@link Builder}
      */
+    @Deprecated
     public void setIdleTimeout(int idleTimeoutSeconds) {
         this.idleTimeout = idleTimeoutSeconds;
     }
@@ -50,10 +72,18 @@ public abstract class ConnectorConfiguration {
         return maxFrameLength;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setMaxFrameLength(int maxFrameLength) {
         this.maxFrameLength = maxFrameLength;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setAddLoggingHandler(boolean addLoggingHandler) {
         this.addLoggingHandler = addLoggingHandler;
     }
@@ -77,6 +107,10 @@ public abstract class ConnectorConfiguration {
         return replyOnError;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setReplyOnError(boolean replyOnError) {
         this.replyOnError = replyOnError;
     }
@@ -93,6 +127,10 @@ public abstract class ConnectorConfiguration {
         return logSensitiveData;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setLogSensitiveData(boolean logSensitiveData) {
         this.logSensitiveData = logSensitiveData;
     }
@@ -101,6 +139,10 @@ public abstract class ConnectorConfiguration {
         return logFieldDescription;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setLogFieldDescription(boolean logFieldDescription) {
         this.logFieldDescription = logFieldDescription;
     }
@@ -117,7 +159,67 @@ public abstract class ConnectorConfiguration {
         return sensitiveDataFields;
     }
 
+    /**
+     * @deprecated Use {@link Builder}
+     */
+    @Deprecated
     public void setSensitiveDataFields(int[] sensitiveDataFields) {
         this.sensitiveDataFields = sensitiveDataFields;
+    }
+
+
+    protected abstract static class Builder<T extends ConnectorConfiguration> {
+        private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
+
+        private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
+        private boolean replyOnError = false;
+
+        private boolean addLoggingHandler = true;
+        private boolean logSensitiveData = true;
+        private boolean logFieldDescription = true;
+        private int[] sensitiveDataFields;
+        private boolean addEchoMessageListener;
+
+        public Builder<T> withEchoMessageListener(boolean shouldAddEchoMessageListener) {
+            this.addEchoMessageListener = shouldAddEchoMessageListener;
+            return this;
+        }
+
+        public Builder<T> withMaxFrameLength(int maxFrameLength) {
+            this.maxFrameLength = maxFrameLength;
+            return this;
+        }
+
+        public Builder<T> withIdleTimeout(int idleTimeout) {
+            this.idleTimeout = idleTimeout;
+            return this;
+        }
+
+        public Builder<T> withReplyOnError(boolean replyOnError) {
+            this.replyOnError = replyOnError;
+            return this;
+        }
+
+        public Builder<T> withAddLoggingHandler(boolean addLoggingHandler) {
+            this.addLoggingHandler = addLoggingHandler;
+            return this;
+        }
+
+        public Builder<T> withLogSensitiveData(boolean logSensitiveData) {
+            this.logSensitiveData = logSensitiveData;
+            return this;
+        }
+
+        public Builder<T> withLogFieldDescription(boolean logFieldDescription) {
+            this.logFieldDescription = logFieldDescription;
+            return this;
+        }
+
+        public Builder<T> withSensitiveDataFields(int... sensitiveDataFields) {
+            this.sensitiveDataFields = sensitiveDataFields;
+            return this;
+        }
+
+
     }
 }
