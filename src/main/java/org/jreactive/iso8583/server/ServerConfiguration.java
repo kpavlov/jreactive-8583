@@ -20,7 +20,11 @@ public class ServerConfiguration extends ConnectorConfiguration {
         return new Builder();
     }
 
-    public static class Builder extends ConnectorConfiguration.Builder<ServerConfiguration> {
+    public static ServerConfiguration getDefault() {
+        return newBuilder().build();
+    }
+
+    public static class Builder extends ConnectorConfiguration.Builder<Builder> {
         public ServerConfiguration build() {
             return new ServerConfiguration(this);
         }

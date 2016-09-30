@@ -4,6 +4,7 @@ import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.impl.SimpleTraceGenerator;
 import com.solab.iso8583.parse.ConfigParser;
+import org.jreactive.iso8583.client.ClientConfiguration;
 import org.jreactive.iso8583.client.Iso8583Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,20 +19,24 @@ import java.nio.charset.StandardCharsets;
 public class Iso8583ClientConfig {
 
     @Value("${iso8583.connection.host}")
-    String host;
+    private String host;
 
     @Value("${iso8583.connection.port}")
-    int port;
+    private int port;
 
     @Value("${iso8583.connection.idleTimeout}")
-    int idleTimeout;
+    private int idleTimeout;
 
     @Bean
     public Iso8583Client<IsoMessage> iso8583Client() throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(host, port);
-        final Iso8583Client<IsoMessage> client = new Iso8583Client<>(socketAddress, clientMessageFactory());
-        client.getConfiguration().setIdleTimeout(idleTimeout);
-        client.getConfiguration().setLogSensitiveData(false);
+
+        final ClientConfiguration configuration = ClientConfiguration.newBuilder()
+                .withIdleTimeout(idleTimeout)
+                .withLogSensitiveData(false)
+                .build();
+
+        final Iso8583Client<IsoMessage> client = new Iso8583Client<>(socketAddress, configuration, clientMessageFactory());
 
         return client;
     }
