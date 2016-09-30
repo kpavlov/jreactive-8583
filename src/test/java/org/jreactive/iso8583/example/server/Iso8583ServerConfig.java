@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 public class Iso8583ServerConfig {
 
     @Value("${iso8583.connection.port}")
-    int port;
+    private int port;
 
     @Bean
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
@@ -27,8 +27,7 @@ public class Iso8583ServerConfig {
         return new Iso8583Server<>(port, configuration, serverMessageFactory());
     }
 
-    @Bean
-    MessageFactory<IsoMessage> serverMessageFactory() throws IOException {
+    private MessageFactory<IsoMessage> serverMessageFactory() throws IOException {
         final MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);

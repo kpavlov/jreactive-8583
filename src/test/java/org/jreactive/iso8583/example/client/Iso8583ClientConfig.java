@@ -19,13 +19,13 @@ import java.nio.charset.StandardCharsets;
 public class Iso8583ClientConfig {
 
     @Value("${iso8583.connection.host}")
-    String host;
+    private String host;
 
     @Value("${iso8583.connection.port}")
-    int port;
+    private int port;
 
     @Value("${iso8583.connection.idleTimeout}")
-    int idleTimeout;
+    private int idleTimeout;
 
     @Bean
     public Iso8583Client<IsoMessage> iso8583Client() throws IOException {
