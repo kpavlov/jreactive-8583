@@ -4,6 +4,7 @@ import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 import org.jreactive.iso8583.server.Iso8583Server;
+import org.jreactive.iso8583.server.ServerConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,11 @@ public class Iso8583ServerConfig {
 
     @Bean
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
-        return new Iso8583Server<>(port, serverMessageFactory());
+        final ServerConfiguration configuration = ServerConfiguration.newBuilder()
+                .withLogSensitiveData(false)
+                .build();
+
+        return new Iso8583Server<>(port, configuration, serverMessageFactory());
     }
 
     @Bean

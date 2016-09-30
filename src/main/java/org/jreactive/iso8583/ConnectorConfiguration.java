@@ -168,7 +168,8 @@ public abstract class ConnectorConfiguration {
     }
 
 
-    protected abstract static class Builder<T extends ConnectorConfiguration> {
+    @SuppressWarnings("unchecked")
+    protected abstract static class Builder<B extends Builder> {
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
         private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
@@ -180,44 +181,44 @@ public abstract class ConnectorConfiguration {
         private int[] sensitiveDataFields;
         private boolean addEchoMessageListener;
 
-        public Builder<T> withEchoMessageListener(boolean shouldAddEchoMessageListener) {
+        public B withEchoMessageListener(boolean shouldAddEchoMessageListener) {
             this.addEchoMessageListener = shouldAddEchoMessageListener;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withMaxFrameLength(int maxFrameLength) {
+        public B withMaxFrameLength(int maxFrameLength) {
             this.maxFrameLength = maxFrameLength;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withIdleTimeout(int idleTimeout) {
+        public B withIdleTimeout(int idleTimeout) {
             this.idleTimeout = idleTimeout;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withReplyOnError(boolean replyOnError) {
+        public B withReplyOnError(boolean replyOnError) {
             this.replyOnError = replyOnError;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withAddLoggingHandler(boolean addLoggingHandler) {
+        public B withAddLoggingHandler(boolean addLoggingHandler) {
             this.addLoggingHandler = addLoggingHandler;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withLogSensitiveData(boolean logSensitiveData) {
+        public B withLogSensitiveData(boolean logSensitiveData) {
             this.logSensitiveData = logSensitiveData;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withLogFieldDescription(boolean logFieldDescription) {
+        public B withLogFieldDescription(boolean logFieldDescription) {
             this.logFieldDescription = logFieldDescription;
-            return this;
+            return (B) this;
         }
 
-        public Builder<T> withSensitiveDataFields(int... sensitiveDataFields) {
+        public B withSensitiveDataFields(int... sensitiveDataFields) {
             this.sensitiveDataFields = sensitiveDataFields;
-            return this;
+            return (B) this;
         }
 
 

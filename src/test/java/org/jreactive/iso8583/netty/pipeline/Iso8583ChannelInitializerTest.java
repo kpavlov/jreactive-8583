@@ -20,15 +20,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Iso8583ChannelInitializerTest {
-
-    private Iso8583ChannelInitializer<Channel, io.netty.bootstrap.AbstractBootstrap, ConnectorConfiguration> channelInitializer;
-    private ConnectorConfiguration configuration;
 
     @Mock
     private EventLoopGroup workerGroup;
@@ -40,36 +35,50 @@ public class Iso8583ChannelInitializerTest {
     private Channel channel;
     @Mock
     private ChannelPipeline pipeline;
+    private ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer;
+    private ServerConfiguration.Builder configurationBuilder;
 
     @Before
     public void setUp() throws Exception {
-        configuration = new ServerConfiguration();
-        ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer = new ConnectorConfigurerAdapter<>();
-        channelInitializer = new Iso8583ChannelInitializer<>(
-                configuration,
-                configurer,
-                workerGroup,
-                messageFactory,
-                handlers);
+        configurationBuilder = ServerConfiguration.newBuilder();
+        configurer = new ConnectorConfigurerAdapter<>();
 
         when(channel.pipeline()).thenReturn(pipeline);
     }
 
     @Test
     public void testInitChannelWithLogger() throws Exception {
-        configuration.setAddLoggingHandler(true);
+        //given
+        configurationBuilder.withAddLoggingHandler(true);
+        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
+        // when
         channelInitializer.initChannel(channel);
 
+        //then
         verify(pipeline).addLast(same(workerGroup), eq("logging"), any(IsoMessageLoggingHandler.class));
     }
 
     @Test
     public void testInitChannelWithoutLogger() throws Exception {
-        configuration.setAddLoggingHandler(false);
+        //given
+        configurationBuilder.withAddLoggingHandler(false);
 
+        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+
+        //when
         channelInitializer.initChannel(channel);
 
+        //then
         verify(pipeline, never()).addLast(any(EventLoopGroup.class), anyString(), any(IsoMessageLoggingHandler.class));
+    }
+
+    private Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> createChannelInitializer(ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
+        return new Iso8583ChannelInitializer<>(
+                configurationBuilder.build(),
+                configurer,
+                workerGroup,
+                messageFactory,
+                handlers);
     }
 }
