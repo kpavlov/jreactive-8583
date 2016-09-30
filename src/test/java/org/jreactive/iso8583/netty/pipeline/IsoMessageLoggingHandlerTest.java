@@ -4,19 +4,27 @@ import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.local.LocalChannel;
 import io.netty.handler.logging.LogLevel;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class IsoMessageLoggingHandlerTest {
 
-    IsoMessageLoggingHandler handler;
+    private IsoMessageLoggingHandler handler;
+
     private String pan;
     private String cvv;
     private String track1;
@@ -25,8 +33,13 @@ public class IsoMessageLoggingHandlerTest {
 
     private IsoMessage message;
 
+    @Mock
+   private ChannelHandlerContext ctx;
+
     @Before
     public void setUp() throws Exception {
+
+        when(ctx.channel()).thenReturn(new LocalChannel());
 
         MessageFactory messageFactory = ConfigParser.createDefault();
         message = messageFactory.newMessage(0x0200);
@@ -48,7 +61,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testMaskSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, 34, 35, 36, 45, 112);
 
-        final String result = handler.formatMessage("someEvent", message);
+        final String result = handler.format(ctx, "someEvent", message);
 
         assertThat(result, not(CoreMatchers.containsString(pan)));
         assertThat(result, not(CoreMatchers.containsString(cvv)));
@@ -61,7 +74,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testMaskDefaultSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true);
 
-        final String result = handler.formatMessage("someEvent", message);
+        final String result = handler.format(ctx, "someEvent", message);
 
         assertThat(result, not(CoreMatchers.containsString(pan)));
         assertThat("track1",result, not(CoreMatchers.containsString(track1)));
@@ -75,7 +88,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testPrintSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG);
 
-        final String result = handler.formatMessage("someEvent", message);
+        final String result = handler.format(ctx, "someEvent", message);
 
         assertThat(result, CoreMatchers.containsString(pan));
         assertThat(result, CoreMatchers.containsString(cvv));
@@ -88,7 +101,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testHideFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false);
 
-        final String result = handler.formatMessage("someEvent", message);
+        final String result = handler.format(ctx, "someEvent", message);
 
         assertThat(result, not(CoreMatchers.containsString("Primary account number (PAN)")));
     }
@@ -97,7 +110,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testShowFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true);
 
-        final String result = handler.formatMessage("someEvent", message);
+        final String result = handler.format(ctx, "someEvent", message);
 
         assertThat(result, CoreMatchers.containsString("Primary account number (PAN)"));
     }

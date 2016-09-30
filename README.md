@@ -2,7 +2,9 @@
 
 Free ISO8583 Java Connector 
 
-[![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
+
+
+[![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
 [![Codacy Badge](https://img.shields.io/codacy/grade/c8d9680f5cae470ea7cbb152e1134ef5.svg?maxAge=2592000)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
 
