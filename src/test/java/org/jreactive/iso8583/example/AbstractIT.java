@@ -16,24 +16,34 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @NotThreadSafe
 public abstract class AbstractIT {
 
-        @Autowired
-        protected Iso8583Client<IsoMessage> client;
+    @Autowired
+    protected Iso8583Client<IsoMessage> client;
 
-        @Autowired
-        protected Iso8583Server<IsoMessage> server;
+    @Autowired
+    protected Iso8583Server<IsoMessage> server;
 
-        @Before
-        public void before() throws Exception {
-            server.init();
-            server.start();
+    @Before
+    public void before() throws Exception {
+        configureServer(server);
+        server.init();
+        server.start();
 
-            client.init();
-            client.connect();
-        }
+        configureClient(client);
+        client.init();
+        client.connect();
+    }
 
-        @After
-        public void after() throws Exception {
-            client.shutdown();
-            server.shutdown();
-        }
+    protected void configureClient(Iso8583Client<IsoMessage> client) {
+        // to be overridden in tests
+    }
+
+    protected void configureServer(Iso8583Server<IsoMessage> server) {
+        // to be overridden in tests
+    }
+
+    @After
+    public void after() throws Exception {
+        client.shutdown();
+        server.shutdown();
+    }
 }

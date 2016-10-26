@@ -6,16 +6,15 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.concurrent.GenericFutureListener;
 import org.jreactive.iso8583.AbstractIso8583Connector;
 import org.jreactive.iso8583.netty.pipeline.Iso8583ChannelInitializer;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class Iso8583Server<T extends IsoMessage>  extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
+public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
 
-    public Iso8583Server(int port, ServerConfiguration config,  MessageFactory<T> messageFactory) {
+    public Iso8583Server(int port, ServerConfiguration config, MessageFactory<T> messageFactory) {
         super(config, messageFactory);
         setSocketAddress(new InetSocketAddress(port));
     }
@@ -27,14 +26,10 @@ public class Iso8583Server<T extends IsoMessage>  extends AbstractIso8583Connect
     public void start() throws InterruptedException {
 
         getBootstrap().bind().addListener(
-                new GenericFutureListener<ChannelFuture>() {
-
-                    @Override
-                    public void operationComplete(ChannelFuture future) throws Exception {
-                        final Channel channel = future.channel();
-                        setChannel(channel);
-                        logger.info("Server is started and listening at {}", channel.localAddress());
-                    }
+                (ChannelFuture future) -> {
+                    final Channel channel = future.channel();
+                    setChannel(channel);
+                    logger.info("Server is started and listening at {}", channel.localAddress());
                 }
         ).sync().await();
     }
@@ -75,6 +70,8 @@ public class Iso8583Server<T extends IsoMessage>  extends AbstractIso8583Connect
         return channel != null && channel.isOpen();
     }
 
+
+    @SuppressWarnings("WeakerAccess")
     public void stop() {
         final Channel channel = getChannel();
         if (channel == null) {
