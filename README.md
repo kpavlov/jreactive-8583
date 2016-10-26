@@ -53,7 +53,7 @@ Then add dependency to your project:
         <dependency>
             <groupId>org.jreactive</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.3</version>
         </dependency>
         ...
     <dependencies>
