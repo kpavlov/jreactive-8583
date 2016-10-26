@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jreactive</groupId>
@@ -20,12 +21,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <j8583.version>1.11.0</j8583.version>
-        <netty.version>4.1.5.Final</netty.version>
+        <j8583.version>1.12.0</j8583.version>
+        <netty.version>4.1.6.Final</netty.version>
         <slf4j.version>1.7.13</slf4j.version>
-        <spring.version>4.2.4.RELEASE</spring.version>
+        <spring.version>4.3.2.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
+        <mockito.version>2.2.9</mockito.version>
     </properties>
 
     <issueManagement>
