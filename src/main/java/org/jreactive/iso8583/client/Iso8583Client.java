@@ -23,15 +23,17 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     }
 
     public Iso8583Client(SocketAddress socketAddress, MessageFactory<T> isoMessageFactory) {
-        this(socketAddress, new ClientConfiguration(), isoMessageFactory);
+        this(socketAddress, ClientConfiguration.getDefault(), isoMessageFactory);
     }
 
     /**
      * @deprecated Use {@link #Iso8583Client(SocketAddress, ClientConfiguration, MessageFactory)}
+     *
+     * @param isoMessageFactory message factory
      */
     @Deprecated
     public Iso8583Client(MessageFactory<T> isoMessageFactory) {
-        super(new ClientConfiguration(), isoMessageFactory);
+        super(ClientConfiguration.getDefault(), isoMessageFactory);
     }
 
     /**

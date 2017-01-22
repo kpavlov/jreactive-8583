@@ -19,11 +19,7 @@ public class ClientConfiguration extends ConnectorConfiguration {
         this(newBuilder());
     }
 
-    /**
-     * @deprecated Use {@link Builder}
-     */
-    @Deprecated
-    public ClientConfiguration(Builder builder) {
+    private ClientConfiguration(Builder builder) {
         super(builder);
         this.reconnectInterval = builder.reconnectInterval;
     }
@@ -47,6 +43,7 @@ public class ClientConfiguration extends ConnectorConfiguration {
 
     /**
      * @deprecated Use {@link Builder}
+     * @param reconnectInterval   interval between reconnects, in milliseconds.
      */
     @Deprecated
     public void setReconnectInterval(int reconnectInterval) {
