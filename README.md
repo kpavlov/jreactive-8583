@@ -158,6 +158,7 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 
 - Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf.
 - Introduction to ISO8583: http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583.
+- NPM package for Packing and unpacking ISO 8583 messages: https://www.npmjs.com/package/iso-8583
 
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
