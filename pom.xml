@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
 
     <name>ISO8583 Connector for Netty</name>
     <description>
@@ -49,7 +48,7 @@
         <connection>scm:git:git@github.com:kpavlov/jreactive-8583.git</connection>
         <developerConnection>scm:git:git@github.com:kpavlov/jreactive-8583.git</developerConnection>
         <url>https://github.com/kpavlov/jreactive-8583</url>
-        <tag>HEAD</tag>
+        <tag>v0.2.0</tag>
     </scm>
 
     <inceptionYear>2015</inceptionYear>
