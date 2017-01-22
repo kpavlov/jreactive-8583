@@ -6,7 +6,7 @@ Free ISO8583 Java Connector
 
 [![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
-[![Codacy Badge](https://img.shields.io/codacy/grade/c8d9680f5cae470ea7cbb152e1134ef5.svg?maxAge=2592000)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge][![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8d9680f5cae470ea7cbb152e1134ef5)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
 
 ## Motivation
 
@@ -22,7 +22,7 @@ Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excell
 * Customizable [ISO MessageFactory][j8583-message-factory].
 * Automatic responding to Echo messages.
 * Automatic client reconnection.
-* Secure [message logger](https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/netty/pipeline/IsoMessageLoggingHandler.java): mask PAN and track data or any any other field (customizable). Optionally prints field descriptions.
+* Secure [message logger](https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/netty/pipeline/IsoMessageLoggingHandler.java): mask PAN and track data or any any other field (customizable). Optionally prints field descriptions.
  * Configurable netty [Bootstrap](https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/bootstrap/Bootstrap.java) and [ChannelPipeline](https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/channel/ChannelPipeline.java)
 
 ## ISO8583 TCP/IP Transport
@@ -51,11 +51,10 @@ Then add dependency to your project:
 
     <dependencies>
         <dependency>
-            <groupId>org.jreactive</groupId>
+            <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>0.1.3</version>
+            <version>0.2.0</version>
         </dependency>
-        ...
     <dependencies>
     
 Now you may use ISO8583 client or server in your code.
@@ -63,6 +62,7 @@ Now you may use ISO8583 client or server in your code.
 ## Creating and Using ISO-8583 Client
 
 The minimal client workflow includes:
+
 ```java
 MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
 Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
@@ -97,6 +97,7 @@ client.shutdown();// [9]
 ## Creating and Using ISO-8583 Server
 
 Typical server workflow includes:
+
 ```java
 MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
 Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
@@ -148,7 +149,7 @@ Using client or server configurationYou may :
 - customize which fields should be masked in logs
 - enable and disable printing field descriptions
 
-You may provide your own logging handler and disable default one by using `org.jreactive.iso8583.ConnectorConfiguration.addLoggingHandler(boolean)` method and customizing ChannelPipeline.
+You may provide your own logging handler and disable default one by using `ConnectorConfiguration.addLoggingHandler(boolean)` method and customizing ChannelPipeline.
 
 ---
 For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ) page.
@@ -157,6 +158,7 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 
 - Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf.
 - Introduction to ISO8583: http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583.
+- NPM package for Packing and unpacking ISO 8583 messages: https://www.npmjs.com/package/iso-8583
 
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
@@ -166,7 +168,7 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 [jpos]: http://jpos.org 
 [netty]: //netty.io 
 
-[Iso8583Client]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/client/Iso8583Client.java
-[Iso8583Server]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/server/Iso8583Server.java
-[IsoMessageListener]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/IsoMessageListener.java
-[IsoMessageLoggingHandler]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/org/jreactive/iso8583/netty/pipeline/IsoMessageLoggingHandler.java
+[Iso8583Client]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/client/Iso8583Client.java
+[Iso8583Server]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/server/Iso8583Server.java
+[IsoMessageListener]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/IsoMessageListener.java
+[IsoMessageLoggingHandler]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/netty/pipeline/IsoMessageLoggingHandler.java
