@@ -51,7 +51,7 @@ Then add dependency to your project:
 
     <dependencies>
         <dependency>
-            <groupId>org.jreactive</groupId>
+            <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
             <version>0.1.3</version>
         </dependency>
