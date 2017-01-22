@@ -39,7 +39,7 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
                 FIELD_NAMES[field - 1] = (String) value;
             });
         } catch (IOException | NumberFormatException e) {
-            throw new Error("Unable to load ISO8583 field descriptions", e);
+            throw new IllegalStateException("Unable to load ISO8583 field descriptions", e);
         }
     }
 

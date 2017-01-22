@@ -51,7 +51,8 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
         }
 
         boolean applyNextListener = true;
-        for (int i = 0, size = messageListeners.size(); applyNextListener && i < size; i++) {
+        final int size = messageListeners.size();
+        for (int i = 0; applyNextListener && i < size; i++) {
             IsoMessageListener<T> messageListener = messageListeners.get(i);
             try {
                 if (messageListener.applies(isoMessage)) {
@@ -77,6 +78,7 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
         messageListeners.add(listener);
     }
 
+    @SuppressWarnings("WeakerAccess")
     @SafeVarargs
     public final void addListeners(IsoMessageListener<T>... listeners) {
         Objects.requireNonNull(listeners, "IsoMessageListeners must not be null");

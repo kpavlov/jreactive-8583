@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class ClientServerIT extends AbstractIT {
 
-    volatile IsoMessage capturedRequest;
+    private volatile IsoMessage capturedRequest;
 
     @Before
     public void beforeTest() {
