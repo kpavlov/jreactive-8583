@@ -1,7 +1,6 @@
 language: java
 jdk:
   - oraclejdk8
-script: "mvn verify"
 
 after_success:
   - mvn javadoc:javadoc

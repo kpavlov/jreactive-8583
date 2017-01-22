@@ -7,7 +7,7 @@
 
        <context:property-placeholder location="classpath:/application-test.properties"/>
 
-       <bean class="org.jreactive.iso8583.example.client.Iso8583ClientConfig"/>
-       <bean class="org.jreactive.iso8583.example.server.Iso8583ServerConfig"/>
+       <bean class="com.github.kpavlov.jreactive8583.example.client.Iso8583ClientConfig"/>
+       <bean class="com.github.kpavlov.jreactive8583.example.server.Iso8583ServerConfig"/>
 
 </beans>

@@ -5,7 +5,7 @@
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <name>ISO8583 Connector for Netty</name>
     <description>
