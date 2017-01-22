@@ -73,6 +73,7 @@ public abstract class ConnectorConfiguration {
     }
 
     /**
+     * @param maxFrameLength the maximum length of the frame.
      * @deprecated Use {@link Builder}
      */
     @Deprecated
@@ -82,6 +83,7 @@ public abstract class ConnectorConfiguration {
 
     /**
      * @deprecated Use {@link Builder}
+     * @param addLoggingHandler should logging handler be added to pipeline
      */
     @Deprecated
     public void setAddLoggingHandler(boolean addLoggingHandler) {
@@ -108,6 +110,7 @@ public abstract class ConnectorConfiguration {
     }
 
     /**
+     * @param replyOnError should reply on error
      * @deprecated Use {@link Builder}
      */
     @Deprecated
@@ -128,6 +131,7 @@ public abstract class ConnectorConfiguration {
     }
 
     /**
+     * @param logSensitiveData should log sensitive data
      * @deprecated Use {@link Builder}
      */
     @Deprecated
@@ -141,6 +145,7 @@ public abstract class ConnectorConfiguration {
 
     /**
      * @deprecated Use {@link Builder}
+     * @param logFieldDescription Should field descriptions be printed in log. Useful for when testing system integration.
      */
     @Deprecated
     public void setLogFieldDescription(boolean logFieldDescription) {
@@ -160,6 +165,7 @@ public abstract class ConnectorConfiguration {
     }
 
     /**
+     * @param sensitiveDataFields which fields may contain sensitive data
      * @deprecated Use {@link Builder}
      */
     @Deprecated
@@ -168,7 +174,7 @@ public abstract class ConnectorConfiguration {
     }
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     protected abstract static class Builder<B extends Builder> {
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
