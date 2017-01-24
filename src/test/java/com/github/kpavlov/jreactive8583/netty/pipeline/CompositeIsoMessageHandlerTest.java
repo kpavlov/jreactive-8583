@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -39,16 +39,12 @@ public class CompositeIsoMessageHandlerTest {
     public void shouldRemoveListener() throws Exception {
         //given
         when(listener1.applies(message)).thenReturn(true);
-        when(listener2.applies(message)).thenReturn(true);
         when(listener3.applies(message)).thenReturn(true);
         when(listener1.onMessage(ctx, message)).thenReturn(true);
-        when(listener2.onMessage(ctx, message)).thenReturn(true);
-        when(listener3.onMessage(ctx, message)).thenReturn(true);
 
         //when
         handler.removeListener(listener2);
         handler.channelRead(ctx, message);
-
 
         //then
         verify(listener1).onMessage(ctx, message);
@@ -62,9 +58,7 @@ public class CompositeIsoMessageHandlerTest {
         when(listener1.applies(message)).thenReturn(false);
         when(listener2.applies(message)).thenReturn(true);
         when(listener3.applies(message)).thenReturn(false);
-        when(listener1.onMessage(ctx, message)).thenReturn(true);
         when(listener2.onMessage(ctx, message)).thenReturn(true);
-        when(listener3.onMessage(ctx, message)).thenReturn(true);
 
         //when
         handler.channelRead(ctx, message);
@@ -80,10 +74,8 @@ public class CompositeIsoMessageHandlerTest {
         //given
         when(listener1.applies(message)).thenReturn(true);
         when(listener2.applies(message)).thenReturn(true);
-        when(listener3.applies(message)).thenReturn(true);
         when(listener1.onMessage(ctx, message)).thenReturn(true);
         when(listener2.onMessage(ctx, message)).thenReturn(false);
-        when(listener3.onMessage(ctx, message)).thenReturn(true);
 
         //when
         handler.channelRead(ctx, message);
@@ -105,8 +97,6 @@ public class CompositeIsoMessageHandlerTest {
         when(listener2.applies(message)).thenThrow(new RuntimeException("Expected exception"));
         when(listener3.applies(message)).thenReturn(true);
         when(listener1.onMessage(ctx, message)).thenReturn(true);
-        when(listener2.onMessage(ctx, message)).thenReturn(true);
-        when(listener3.onMessage(ctx, message)).thenReturn(true);
 
         // when
         handler.channelRead(ctx, message);

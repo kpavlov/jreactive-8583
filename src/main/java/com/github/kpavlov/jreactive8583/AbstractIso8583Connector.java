@@ -22,8 +22,9 @@ public abstract class AbstractIso8583Connector<
         M extends IsoMessage> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+    // @VisibleForTest
+    final CompositeIsoMessageHandler<M> messageHandler;
     private final MessageFactory<M> isoMessageFactory;
-    private final CompositeIsoMessageHandler<M> messageHandler;
     private final AtomicReference<Channel> channelRef = new AtomicReference<>();
     private final C configuration;
     private ConnectorConfigurer<C, B> configurer;

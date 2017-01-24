@@ -9,8 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.internal.util.reflection.Whitebox;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -44,7 +43,8 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
             }
         };
         //noinspection unchecked
-        compositeIsoMessageHandler = (CompositeIsoMessageHandler<M>) Whitebox.getInternalState(subject, "messageHandler");
+
+        compositeIsoMessageHandler = (CompositeIsoMessageHandler<M>) subject.messageHandler;
     }
 
     @Test
@@ -66,7 +66,6 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
         //given
         subject.addMessageListener(listener);
         IsoMessageListener listener = mock(IsoMessageListener.class);
-        when(listener.applies(message)).thenReturn(true);
 
         //when
         subject.removeMessageListener(listener);
