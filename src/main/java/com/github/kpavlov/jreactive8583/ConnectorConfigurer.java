@@ -1,7 +1,6 @@
 package com.github.kpavlov.jreactive8583;
 
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
 
 public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends AbstractBootstrap> {
@@ -24,7 +23,7 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * Hook added before completion of the pipeline configuration.
      * <p>
      * This method is called during
-     * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel(Channel)} phase.
+     * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel(io.netty.channel.Channel)} phase.
      * </p>
      *
      * @param pipeline      A {@link ChannelPipeline} being configured

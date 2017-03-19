@@ -19,38 +19,38 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
 
-    private AbstractIso8583Connector subject;
+    private AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M> subject;
 
     @Mock
     private ConnectorConfiguration config;
     @Mock
     private MessageFactory<M> messageFactory;
     @Mock
-    private IsoMessageListener<IsoMessage> listener;
+    private IsoMessageListener<M> listener;
 
     private CompositeIsoMessageHandler<M> compositeIsoMessageHandler;
     @Mock
     private ChannelHandlerContext ctx;
     @Mock
-    private IsoMessage message;
+    private M message;
 
     @Before
     public void setUp() throws Exception {
-        subject = new AbstractIso8583Connector(config, messageFactory) {
+        compositeIsoMessageHandler = new CompositeIsoMessageHandler<>();
+        subject = new AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M>(
+                config, messageFactory, compositeIsoMessageHandler
+        ) {
             @Override
             protected AbstractBootstrap createBootstrap() {
                 throw new UnsupportedOperationException("Method is not implemented: .createBootstrap");
             }
         };
-        //noinspection unchecked
-
-        compositeIsoMessageHandler = (CompositeIsoMessageHandler<M>) subject.messageHandler;
     }
 
     @Test
     public void addMessageListener() throws Exception {
         //given
-        IsoMessageListener listener = mock(IsoMessageListener.class);
+        @SuppressWarnings("unchecked") IsoMessageListener<M> listener = mock(IsoMessageListener.class);
         when(listener.applies(message)).thenReturn(true);
 
         //when
@@ -65,7 +65,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     public void removeMessageListener() throws Exception {
         //given
         subject.addMessageListener(listener);
-        IsoMessageListener listener = mock(IsoMessageListener.class);
+        @SuppressWarnings("unchecked") IsoMessageListener<M> listener = mock(IsoMessageListener.class);
 
         //when
         subject.removeMessageListener(listener);

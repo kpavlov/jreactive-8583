@@ -22,8 +22,8 @@ public abstract class AbstractIso8583Connector<
         M extends IsoMessage> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    // @VisibleForTest
-    final CompositeIsoMessageHandler<M> messageHandler;
+
+    private final CompositeIsoMessageHandler<M> messageHandler;
     private final MessageFactory<M> isoMessageFactory;
     private final AtomicReference<Channel> channelRef = new AtomicReference<>();
     private final C configuration;
@@ -33,15 +33,22 @@ public abstract class AbstractIso8583Connector<
     private EventLoopGroup workerEventLoopGroup;
     private B bootstrap;
 
-    protected AbstractIso8583Connector(C configuration, MessageFactory<M> isoMessageFactory) {
+    protected AbstractIso8583Connector(C configuration,
+                                       MessageFactory<M> isoMessageFactory,
+                                       CompositeIsoMessageHandler<M> messageHandler) {
         assert (configuration != null) : "Configuration must be provided";
         Objects.requireNonNull(isoMessageFactory, "MessageFactory must be provided");
         this.configuration = configuration;
         this.isoMessageFactory = isoMessageFactory;
-        messageHandler = new CompositeIsoMessageHandler<>();
+        this.messageHandler = messageHandler;
         if (configuration.shouldAddEchoMessageListener()) {
             messageHandler.addListener(new EchoMessageListener<>(isoMessageFactory));
         }
+    }
+
+    // @VisibleForTest
+    protected AbstractIso8583Connector(C configuration, MessageFactory<M> isoMessageFactory) {
+        this(configuration, isoMessageFactory, new CompositeIsoMessageHandler<>());
     }
 
     public void addMessageListener(IsoMessageListener<M> handler) {
