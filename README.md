@@ -4,9 +4,9 @@ Free ISO8583 Java Connector
 
 
 
-[![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583) [![Build Status](https://drone.io/github.com/kpavlov/jreactive-8583/status.png)](https://drone.io/github.com/kpavlov/jreactive-8583/latest)
+[![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
-[![Codacy Badge][![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8d9680f5cae470ea7cbb152e1134ef5)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8d9680f5cae470ea7cbb152e1134ef5)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
 
 ## Motivation
 
@@ -53,7 +53,7 @@ Then add dependency to your project:
         <dependency>
             <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
     <dependencies>
     

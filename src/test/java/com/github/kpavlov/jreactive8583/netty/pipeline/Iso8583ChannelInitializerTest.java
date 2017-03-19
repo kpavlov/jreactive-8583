@@ -2,7 +2,6 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
-import com.github.kpavlov.jreactive8583.ConnectorConfigurerAdapter;
 import com.github.kpavlov.jreactive8583.server.ServerConfiguration;
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
@@ -37,13 +36,14 @@ public class Iso8583ChannelInitializerTest {
     private Channel channel;
     @Mock
     private ChannelPipeline pipeline;
-    private ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer;
+    private ConnectorConfigurer configurer;
     private ServerConfiguration.Builder configurationBuilder;
 
     @Before
     public void setUp() throws Exception {
         configurationBuilder = ServerConfiguration.newBuilder();
-        configurer = new ConnectorConfigurerAdapter<>();
+        configurer = new ConnectorConfigurer() {
+        };
 
         when(channel.pipeline()).thenReturn(pipeline);
     }
