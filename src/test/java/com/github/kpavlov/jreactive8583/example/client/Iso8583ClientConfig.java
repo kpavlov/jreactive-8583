@@ -36,9 +36,7 @@ public class Iso8583ClientConfig {
                 .withLogSensitiveData(false)
                 .build();
 
-        final Iso8583Client<IsoMessage> client = new Iso8583Client<>(socketAddress, configuration, clientMessageFactory());
-
-        return client;
+        return new Iso8583Client<>(socketAddress, configuration, clientMessageFactory());
     }
 
     private MessageFactory<IsoMessage> clientMessageFactory() throws IOException {
