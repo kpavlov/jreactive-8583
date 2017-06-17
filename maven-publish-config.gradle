@@ -1,0 +1,25 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    repositories {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifactId ARTIFACT_ID
+            }
+        }
+
+        maven {
+            credentials {
+                username = REPOSITORY_USERNAME
+                password = REPOSITORY_PASSWORD
+            }
+
+            if (project.version.endsWith('-SNAPSHOT')) {
+                url SNAPSHOT_REPOSITORY_URL
+            } else {
+                url RELEASE_REPOSITORY_URL
+            }
+        }
+    }
+}
