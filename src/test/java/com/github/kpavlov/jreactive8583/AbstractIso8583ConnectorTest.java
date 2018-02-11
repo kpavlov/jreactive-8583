@@ -35,7 +35,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     private M message;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeIsoMessageHandler = new CompositeIsoMessageHandler<>();
         subject = new AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M>(
                 config, messageFactory, compositeIsoMessageHandler

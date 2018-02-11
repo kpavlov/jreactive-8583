@@ -18,7 +18,7 @@ public class Iso8583Encoder extends MessageToByteEncoder<IsoMessage> {
     }
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) {
         if (lengthHeaderLength == 0) {
             byte[] bytes = isoMessage.writeData();
             out.writeBytes(bytes);

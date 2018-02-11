@@ -39,7 +39,7 @@ public class ParseExceptionHandlerTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         handler = new ParseExceptionHandler(messageFactory, true);
     }
 

@@ -36,7 +36,7 @@ public class ReconnectOnCloseListener implements ChannelFutureListener {
     }
 
     @Override
-    public void operationComplete(ChannelFuture future) throws Exception {
+    public void operationComplete(ChannelFuture future) {
         final Channel channel = future.channel();
         logger.debug("Client connection was closed to {}", channel.remoteAddress());
         channel.disconnect();
