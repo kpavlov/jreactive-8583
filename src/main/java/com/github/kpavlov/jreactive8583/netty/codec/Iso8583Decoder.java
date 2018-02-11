@@ -17,9 +17,13 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
         this.messageFactory = messageFactory;
     }
 
+    /**
+     * @implNote Message body starts immediately, no length header,
+     * see <code>"lengthFieldFameDecoder"</code> in
+     * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel}
+     */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List out) throws Exception {
-        //message body starts immediately, no length header
         if (!byteBuf.isReadable()) {
             return;
         }

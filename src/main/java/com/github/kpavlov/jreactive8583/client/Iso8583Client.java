@@ -12,6 +12,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.concurrent.TimeUnit;
 
 public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
 
@@ -82,7 +83,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * channel is active.
      */
     public ChannelFuture connectAsync() {
-        logger.info("Connecting to {}", getSocketAddress());
+        logger.debug("Connecting to {}", getSocketAddress());
         final Bootstrap b = getBootstrap();
         reconnectOnCloseListener.requestReconnect();
         final ChannelFuture connectFuture = b.connect();
@@ -92,7 +93,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
                 return;
             }
             Channel channel = connectFuture.channel();
-            logger.info("Client is connected to {}", channel.remoteAddress());
+            logger.debug("Client is connected to {}", channel.remoteAddress());
             setChannel(channel);
             channel.closeFuture().addListener(reconnectOnCloseListener);
         });
@@ -165,6 +166,10 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     public void send(IsoMessage isoMessage) throws InterruptedException {
         sendAsync(isoMessage).sync().await();
+    }
+
+    public void send(IsoMessage isoMessage, long timeout, TimeUnit timeUnit) throws InterruptedException {
+        sendAsync(isoMessage).sync().await(timeout, timeUnit);
     }
 
     public boolean isConnected() {

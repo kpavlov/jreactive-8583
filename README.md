@@ -53,7 +53,7 @@ Then add dependency to your project:
         <dependency>
             <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>0.2.1</version>
+            <version>0.2.2</version>
         </dependency>
     <dependencies>
     
@@ -78,11 +78,15 @@ if (client.isConnected()) { // [7]
 
     IsoMessage message = messageFactory.newMessage(...);
     ...
-    client.send(message);// [8]
+    client.sendAsync(message);// [8]
+    // or
+    client.send(message);// [9]
+    // or
+    client.send(message, 1, TimeUnit.SECONDS);// [10]
 }
     
 ...
-client.shutdown();// [9]
+client.shutdown();// [11]
 ```    
 1. First you need to create a `MessageFactory`
 2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and, optionally, `SocketAddress` 
@@ -91,8 +95,10 @@ client.shutdown();// [9]
 5. Initialize client. Now it is ready to connect.
 6. Establish a connection. By default, if connection will is lost, it reconnects automatically. You may disable this behaviour or change _reconnectInterval_.
 7. Verify that connection is established
-8. Send `IsoMessage`
-9. Disconnect when you're done.
+8. Send `IsoMessage` asynchronously
+9. Send `IsoMessage` synchronously
+10. Send `IsoMessage` synchronously with timeout support
+11. Disconnect when you're done.
 
 ## Creating and Using ISO-8583 Server
 
@@ -156,8 +162,8 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 
 ## ISO 8583 Links 
 
-- Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf.
-- Introduction to ISO8583: http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583.
+- Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf
+- Introduction to ISO8583: http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583
 - NPM package for Packing and unpacking ISO 8583 messages: https://www.npmjs.com/package/iso-8583
 
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583

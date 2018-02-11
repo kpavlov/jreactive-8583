@@ -45,7 +45,8 @@ public class Iso8583ChannelInitializer<
     private final MessageFactory isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
     private final Iso8583Encoder isoMessageEncoder;
-    private ChannelHandler loggingHandler;
+    private final ChannelHandler loggingHandler;
+    private final ChannelHandler parseExceptionHandler;
     private int headerLength = DEFAULT_LENGTH_HEADER_LENGTH;
 
     public Iso8583ChannelInitializer(
@@ -62,6 +63,7 @@ public class Iso8583ChannelInitializer<
 
         this.isoMessageEncoder = createIso8583Encoder(headerLength);
         this.loggingHandler = createLoggingHandler(configuration);
+        this.parseExceptionHandler = createParseExceptionHandler();
     }
 
     @Override
@@ -79,7 +81,7 @@ public class Iso8583ChannelInitializer<
         }
 
         if (configuration.replyOnError()) {
-            pipeline.addLast(workerGroup, "replyOnError", createParseExceptionHandler());
+            pipeline.addLast(workerGroup, "replyOnError", parseExceptionHandler);
         }
 
         pipeline.addLast("idleState", new IdleStateHandler(0, 0, configuration.getIdleTimeout()));
