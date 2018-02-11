@@ -18,9 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.text.ParseException;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,7 +37,7 @@ public class ParseExceptionHandlerTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         handler = new ParseExceptionHandler(messageFactory, true);
     }
 
@@ -52,20 +50,20 @@ public class ParseExceptionHandlerTest {
         verify(ctx).writeAndFlush(messageCaptor.capture());
         final IsoMessage message = messageCaptor.getValue();
 
-        assertThat(message.getType(), is(0x1644));
+        assertThat(message.getType()).isEqualTo(0x1644);
 
         //field 24
         final IsoValue<Object> field24 = message.getAt(24);
-        assertThat("field24", field24, notNullValue());
-        assertThat("field24.type", field24.getType(), is(IsoType.NUMERIC));
-        assertThat("field24.length", field24.getLength(), is(3));
-        assertThat("field24.value", field24.getValue(), is(650));
+        assertThat(field24).isInstanceOf(IsoValue.class).as("field24");
+        assertThat(field24.getType()).isEqualTo(IsoType.NUMERIC).as("field24.type");
+        assertThat(field24.getLength()).isEqualTo(3).as("field24.length");
+        assertThat(field24.getValue()).isEqualTo(650).as("field24.value");
 
         final IsoValue<Object> field44 = message.getAt(44);
-        assertThat("field44", field44, notNullValue());
-        assertThat("field44.type", field44.getType(), is(IsoType.LLVAR));
-        assertThat("field44.length", field44.getLength(), is(25));
-        assertThat("field44.value", field44.getValue(), is(errorMessage.substring(0, 22) + "..."));
+        assertThat(field44).isInstanceOf(IsoValue.class).as("field44");
+        assertThat(field44.getType()).isEqualTo(IsoType.LLVAR).as("field44.type");
+        assertThat(field44.getLength()).isEqualTo(25).as("field44.length");
+        assertThat(field44.getValue()).isEqualToComparingFieldByField(errorMessage.substring(0, 22) + "...").as("field44.value");
 
     }
 }

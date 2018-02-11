@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -30,7 +29,7 @@ public class Iso8583DecoderTest {
     private ChannelHandlerContext ctx;
 
     @Before
-    public void beforeClass() throws IOException {
+    public void beforeClass() {
         decoder = new Iso8583Decoder(messageFactory);
     }
 

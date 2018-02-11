@@ -30,7 +30,7 @@ public class CompositeIsoMessageHandlerTest {
     private CompositeIsoMessageHandler<IsoMessage> handler = new CompositeIsoMessageHandler<>();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         //noinspection unchecked
         handler.addListeners(listener1, listener2, listener3);
     }

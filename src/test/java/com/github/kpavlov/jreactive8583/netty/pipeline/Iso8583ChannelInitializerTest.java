@@ -40,7 +40,7 @@ public class Iso8583ChannelInitializerTest {
     private ServerConfiguration.Builder configurationBuilder;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         configurationBuilder = ServerConfiguration.newBuilder();
         configurer = new ConnectorConfigurer() {
         };
@@ -49,7 +49,7 @@ public class Iso8583ChannelInitializerTest {
     }
 
     @Test
-    public void testInitChannelWithLogger() throws Exception {
+    public void testInitChannelWithLogger() {
         //given
         configurationBuilder.withAddLoggingHandler(true);
         Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
@@ -62,7 +62,7 @@ public class Iso8583ChannelInitializerTest {
     }
 
     @Test
-    public void testInitChannelWithoutLogger() throws Exception {
+    public void testInitChannelWithoutLogger() {
         //given
         configurationBuilder.withAddLoggingHandler(false);
 

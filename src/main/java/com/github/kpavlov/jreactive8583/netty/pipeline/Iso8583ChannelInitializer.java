@@ -31,12 +31,16 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
 
-public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBootstrap, G extends ConnectorConfiguration> extends ChannelInitializer<C> {
+@SuppressWarnings("WeakerAccess")
+public class Iso8583ChannelInitializer<
+        T extends Channel,
+        B extends AbstractBootstrap,
+        C extends ConnectorConfiguration> extends ChannelInitializer<T> {
 
     public static final int DEFAULT_LENGTH_HEADER_LENGTH = 2;
 
-    private final G configuration;
-    private final ConnectorConfigurer<G, B> configurer;
+    private final C configuration;
+    private final ConnectorConfigurer<C, B> configurer;
     private final EventLoopGroup workerGroup;
     private final MessageFactory isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
@@ -45,8 +49,8 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
     private int headerLength = DEFAULT_LENGTH_HEADER_LENGTH;
 
     public Iso8583ChannelInitializer(
-            G configuration,
-            ConnectorConfigurer<G, B> configurer,
+            C configuration,
+            ConnectorConfigurer<C, B> configurer,
             EventLoopGroup workerGroup,
             MessageFactory isoMessageFactory,
             ChannelHandler... customChannelHandlers) {
@@ -61,7 +65,7 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
     }
 
     @Override
-    public void initChannel(C ch) throws Exception {
+    public void initChannel(T ch) {
         final ChannelPipeline pipeline = ch.pipeline();
 
         pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(
@@ -75,7 +79,7 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
         }
 
         if (configuration.replyOnError()) {
-            pipeline.addLast(workerGroup, "replyOnError", loggingHandler);
+            pipeline.addLast(workerGroup, "replyOnError", createParseExceptionHandler());
         }
 
         pipeline.addLast("idleState", new IdleStateHandler(0, 0, configuration.getIdleTimeout()));
@@ -89,6 +93,14 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
         }
     }
 
+    protected MessageFactory getIsoMessageFactory() {
+        return isoMessageFactory;
+    }
+
+    protected ChannelHandler createParseExceptionHandler() {
+        return new ParseExceptionHandler(isoMessageFactory, true);
+    }
+
     protected Iso8583Encoder createIso8583Encoder(int lengthHeaderLength) {
         return new Iso8583Encoder(lengthHeaderLength);
     }
@@ -97,7 +109,7 @@ public class Iso8583ChannelInitializer<C extends Channel, B extends AbstractBoot
         return new Iso8583Decoder(messageFactory);
     }
 
-    protected ChannelHandler createLoggingHandler(G configuration) {
+    protected ChannelHandler createLoggingHandler(C configuration) {
         return new IsoMessageLoggingHandler(LogLevel.DEBUG,
                 configuration.logSensitiveData(),
                 configuration.logFieldDescription(),

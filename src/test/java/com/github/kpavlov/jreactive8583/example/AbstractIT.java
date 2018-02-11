@@ -42,7 +42,7 @@ public abstract class AbstractIT {
     }
 
     @After
-    public void after() throws Exception {
+    public void after() {
         client.shutdown();
         server.shutdown();
     }

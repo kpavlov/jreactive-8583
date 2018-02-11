@@ -7,7 +7,6 @@ import com.solab.iso8583.parse.ConfigParser;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.local.LocalChannel;
 import io.netty.handler.logging.LogLevel;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -63,11 +61,11 @@ public class IsoMessageLoggingHandlerTest {
 
         final String result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result, not(CoreMatchers.containsString(pan)));
-        assertThat(result, not(CoreMatchers.containsString(cvv)));
-        assertThat(result, not(CoreMatchers.containsString(track1)));
-        assertThat(result, not(CoreMatchers.containsString(track2)));
-        assertThat(result, not(CoreMatchers.containsString(track3)));
+        assertThat(result).doesNotContain(pan);
+        assertThat(result).doesNotContain(cvv);
+        assertThat(result).doesNotContain(track1);
+        assertThat(result).doesNotContain(track2);
+        assertThat(result).doesNotContain(track3);
     }
 
     @Test
@@ -76,12 +74,12 @@ public class IsoMessageLoggingHandlerTest {
 
         final String result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result, not(CoreMatchers.containsString(pan)));
-        assertThat("track1",result, not(CoreMatchers.containsString(track1)));
-        assertThat("track2",result, not(CoreMatchers.containsString(track2)));
-        assertThat("track3",result, not(CoreMatchers.containsString(track3)));
+        assertThat(result).doesNotContain(pan);
+        assertThat(result).doesNotContain(track1).as("track1");
+        assertThat(result).doesNotContain(track2).as("track2");
+        assertThat(result).doesNotContain(track3).as("track3");
         // there is no standard field for CVV, so it's not masked by default
-        assertThat(result, CoreMatchers.containsString(cvv));
+        assertThat(result).contains(cvv);
     }
 
     @Test
@@ -90,11 +88,11 @@ public class IsoMessageLoggingHandlerTest {
 
         final String result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result, CoreMatchers.containsString(pan));
-        assertThat(result, CoreMatchers.containsString(cvv));
-        assertThat(result, CoreMatchers.containsString(track1));
-        assertThat(result, CoreMatchers.containsString(track2));
-        assertThat(result, CoreMatchers.containsString(track3));
+        assertThat(result).contains(pan);
+        assertThat(result).contains(cvv);
+        assertThat(result).contains(track1);
+        assertThat(result).contains(track2);
+        assertThat(result).contains(track3);
     }
 
     @Test
@@ -103,7 +101,7 @@ public class IsoMessageLoggingHandlerTest {
 
         final String result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result, not(CoreMatchers.containsString("Primary account number (PAN)")));
+        assertThat(result).doesNotContain("Primary account number (PAN)");
     }
 
     @Test
@@ -112,6 +110,6 @@ public class IsoMessageLoggingHandlerTest {
 
         final String result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result, CoreMatchers.containsString("Primary account number (PAN)"));
+        assertThat(result).contains("Primary account number (PAN)");
     }
 }
