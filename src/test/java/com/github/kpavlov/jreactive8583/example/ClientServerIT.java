@@ -7,26 +7,41 @@ import io.netty.channel.ChannelHandlerContext;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class ClientServerIT extends AbstractIT {
 
-    private volatile IsoMessage capturedRequest;
+    private final Map<Integer, IsoMessage> receivedMessages = new ConcurrentHashMap<>();
 
     @Before
     public void beforeTest() {
         server.addMessageListener(new IsoMessageListener<IsoMessage>() {
-
             @Override
             public boolean applies(IsoMessage isoMessage) {
-                return isoMessage.getType() ==  0x200;
+                return true;
             }
 
             @Override
             public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-                capturedRequest = isoMessage;
+                final Integer stan = Integer.valueOf(isoMessage.getObjectValue(11));
+                receivedMessages.put(stan, isoMessage);
+                return true;
+            }
+        });
+        server.addMessageListener(new IsoMessageListener<IsoMessage>() {
+
+            @Override
+            public boolean applies(IsoMessage isoMessage) {
+                return isoMessage.getType() == 0x200;
+            }
+
+            @Override
+            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
@@ -34,19 +49,23 @@ public class ClientServerIT extends AbstractIT {
                 return false;
             }
         });
+
+        TestUtil.waitFor("server started", server::isStarted);
+        TestUtil.waitFor("client connected", client::isConnected);
     }
 
     @Test
-    public void testConnected() throws Exception {
-        TestUtil.waitFor("server started", server::isStarted);
-        TestUtil.waitFor("client connected", client::isConnected);
-
+    public void shouldSendAsyncCaptureRequest() {
+        // given
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
-        client.send(finMessage);
+        final Integer stan = finMessage.getObjectValue(11);
+        // when
+        client.sendAsync(finMessage);
+        // then
+        TestUtil.waitFor("capture request received", () -> receivedMessages.containsKey(stan));
 
-        TestUtil.waitFor("capture request received", ()->(capturedRequest != null));
-
+        IsoMessage capturedRequest = receivedMessages.remove(stan);
         assertThat("fin request", capturedRequest, notNullValue());
         assertThat("fin request", capturedRequest.debugString(), equalTo(finMessage.debugString()));
     }
