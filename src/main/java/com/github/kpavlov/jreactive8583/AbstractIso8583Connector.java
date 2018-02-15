@@ -133,7 +133,7 @@ public abstract class AbstractIso8583Connector<
     }
 
     protected EventLoopGroup createWorkerEventLoopGroup() {
-        return new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
+        return new NioEventLoopGroup();
     }
 
     protected EventLoopGroup getWorkerEventLoopGroup() {
