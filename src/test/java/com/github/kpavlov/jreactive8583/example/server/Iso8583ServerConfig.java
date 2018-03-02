@@ -21,7 +21,8 @@ public class Iso8583ServerConfig {
     @Bean
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
         final ServerConfiguration configuration = ServerConfiguration.newBuilder()
-                .withLogSensitiveData(false)
+                .logSensitiveData(false)
+                .workerThreadsCount(4)
                 .build();
 
         return new Iso8583Server<>(port, configuration, serverMessageFactory());
@@ -34,4 +35,6 @@ public class Iso8583ServerConfig {
         messageFactory.setAssignDate(true);
         return messageFactory;
     }
+
+
 }

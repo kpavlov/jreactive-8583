@@ -133,7 +133,8 @@ public abstract class AbstractIso8583Connector<
     }
 
     protected EventLoopGroup createWorkerEventLoopGroup() {
-        return new NioEventLoopGroup();
+        logger.debug("Creating worker EventLoopGroup with thread pool of {} threads", configuration.getWorkerThreadsCount());
+        return new NioEventLoopGroup(configuration.getWorkerThreadsCount());
     }
 
     protected EventLoopGroup getWorkerEventLoopGroup() {

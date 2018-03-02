@@ -53,9 +53,17 @@ public class ClientConfiguration extends ConnectorConfiguration {
     public static class Builder extends ConnectorConfiguration.Builder<Builder> {
         private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
 
-        public Builder withReconnectInterval(int reconnectInterval) {
+        public Builder reconnectInterval(int reconnectInterval) {
             this.reconnectInterval = reconnectInterval;
             return this;
+        }
+
+        /**
+         * @deprecated Use {@link #reconnectInterval(int)} instead
+         */
+        @Deprecated
+        public Builder withReconnectInterval(int reconnectInterval) {
+            return reconnectInterval(reconnectInterval);
         }
 
         public ClientConfiguration build() {

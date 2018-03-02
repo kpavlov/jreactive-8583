@@ -32,8 +32,9 @@ public class Iso8583ClientConfig {
         SocketAddress socketAddress = new InetSocketAddress(host, port);
 
         final ClientConfiguration configuration = ClientConfiguration.newBuilder()
-                .withIdleTimeout(idleTimeout)
-                .withLogSensitiveData(false)
+                .idleTimeout(idleTimeout)
+                .logSensitiveData(false)
+                .workerThreadsCount(4)
                 .build();
 
         return new Iso8583Client<>(socketAddress, configuration, clientMessageFactory());
