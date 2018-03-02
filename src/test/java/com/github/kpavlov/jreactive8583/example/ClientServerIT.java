@@ -10,9 +10,7 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClientServerIT extends AbstractIT {
 
@@ -28,9 +26,12 @@ public class ClientServerIT extends AbstractIT {
 
             @Override
             public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-                final Integer stan = Integer.valueOf(isoMessage.getObjectValue(11));
-                receivedMessages.put(stan, isoMessage);
-                return true;
+                if (isoMessage.hasField(11)) {
+                    final Integer stan = Integer.valueOf(isoMessage.getObjectValue(11));
+                    receivedMessages.put(stan, isoMessage);
+                    return true;
+                }
+                return false;
             }
         });
         server.addMessageListener(new IsoMessageListener<IsoMessage>() {
@@ -66,8 +67,8 @@ public class ClientServerIT extends AbstractIT {
         TestUtil.waitFor("capture request received", () -> receivedMessages.containsKey(stan));
 
         IsoMessage capturedRequest = receivedMessages.remove(stan);
-        assertThat("fin request", capturedRequest, notNullValue());
-        assertThat("fin request", capturedRequest.debugString(), equalTo(finMessage.debugString()));
+        assertThat(capturedRequest).as("fin request").isNotNull();
+        assertThat(capturedRequest.debugString()).as("fin request string").isEqualTo(finMessage.debugString());
     }
 
 
