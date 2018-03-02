@@ -12,14 +12,15 @@ public abstract class ConnectorConfiguration {
      *
      * @see #getIdleTimeout()
      */
-    static final int DEFAULT_IDLE_TIMEOUT_SECONDS = 30;
+    private static final int DEFAULT_IDLE_TIMEOUT_SECONDS = 30;
 
     /**
      * Default {@link #maxFrameLength} (max message length) = 8192
      *
      * @see #getMaxFrameLength()
      */
-    static final int DEFAULT_MAX_FRAME_LENGTH = 8192;
+    private static final int DEFAULT_MAX_FRAME_LENGTH = 8192;
+
     private final boolean addEchoMessageListener;
     private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
     private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
@@ -45,7 +46,7 @@ public abstract class ConnectorConfiguration {
     /**
      * Allows to add default echo message listener to {@link AbstractIso8583Connector}.
      *
-     * @return true if  {@link EchoMessageListener} should be added to {@link CompositeIsoMessageHandler}
+     * @return true if {@link EchoMessageListener} should be added to {@link CompositeIsoMessageHandler}
      */
 
     public boolean shouldAddEchoMessageListener() {
@@ -290,8 +291,6 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
-         * @param logFieldDescription
-         * @return
          * @deprecated Use {@link #describeFieldsInLog()}
          */
         @Deprecated
