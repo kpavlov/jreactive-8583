@@ -55,7 +55,7 @@ Then add dependency to your project:
             <artifactId>netty-iso8583</artifactId>
             <version>0.2.2</version>
         </dependency>
-    <dependencies>
+    </dependencies>
     
 Now you may use ISO8583 client or server in your code.
 
