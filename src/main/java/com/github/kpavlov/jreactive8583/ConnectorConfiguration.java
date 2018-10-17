@@ -3,7 +3,9 @@ package com.github.kpavlov.jreactive8583;
 import com.github.kpavlov.jreactive8583.netty.pipeline.CompositeIsoMessageHandler;
 import com.github.kpavlov.jreactive8583.netty.pipeline.EchoMessageListener;
 import com.github.kpavlov.jreactive8583.netty.pipeline.IsoMessageLoggingHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 public abstract class ConnectorConfiguration {
 
@@ -21,15 +23,23 @@ public abstract class ConnectorConfiguration {
      */
     private static final int DEFAULT_MAX_FRAME_LENGTH = 8192;
 
+    /**
+     * Default {@link #frameLengthFieldLength} (length of TCP Frame length) = 2
+     *
+     * @see #getFrameLengthFieldLength()
+     */
+    private static final int DEFAULT_FRAME_LENGTH_FIELD_LENGTH = 2;
+
     private final boolean addEchoMessageListener;
-    private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
-    private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
+    private int maxFrameLength;
+    private int idleTimeout;
     private final int workerThreadsCount;
     private boolean replyOnError;
     private boolean addLoggingHandler;
     private boolean logSensitiveData;
     private int[] sensitiveDataFields;
     private boolean logFieldDescription;
+    private int frameLengthFieldLength;
 
     protected ConnectorConfiguration(Builder builder) {
         addLoggingHandler = builder.addLoggingHandler;
@@ -41,6 +51,7 @@ public abstract class ConnectorConfiguration {
         sensitiveDataFields = builder.sensitiveDataFields;
         addEchoMessageListener = builder.addEchoMessageListener;
         workerThreadsCount = builder.workerThreadsCount;
+        frameLengthFieldLength = builder.frameLengthFieldLength;
     }
 
     /**
@@ -99,7 +110,7 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns true is {@link IsoMessageLoggingHandler}
-     * <p>Allows to disable adding default logging handler to {@link io.netty.channel.ChannelPipeline}.</p>
+     * <p>Allows to disable adding default logging handler to {@link ChannelPipeline}.</p>
      *
      * @return true if {@link IsoMessageLoggingHandler} should be added.
      */
@@ -189,6 +200,16 @@ public abstract class ConnectorConfiguration {
         return workerThreadsCount;
     }
 
+    /**
+     * Returns length of TCP frame length field.
+     *
+     * @implNote Default value is <code>2</code>
+     * @see LengthFieldBasedFrameDecoder
+     */
+    public int getFrameLengthFieldLength() {
+        return frameLengthFieldLength;
+    }
+
     @SuppressWarnings({"unchecked", "unused"})
     protected abstract static class Builder<B extends Builder> {
         private boolean addLoggingHandler = true;
@@ -200,6 +221,7 @@ public abstract class ConnectorConfiguration {
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
         private int workerThreadsCount = Runtime.getRuntime().availableProcessors() * 16;
         private int[] sensitiveDataFields;
+        private int frameLengthFieldLength = DEFAULT_FRAME_LENGTH_FIELD_LENGTH;
 
         public B addEchoMessageListener() {
             this.addEchoMessageListener = true;
@@ -301,6 +323,11 @@ public abstract class ConnectorConfiguration {
 
         public B sensitiveDataFields(int... sensitiveDataFields) {
             this.sensitiveDataFields = sensitiveDataFields;
+            return (B) this;
+        }
+
+        public B frameLengthFieldLength(int frameLengthFieldLength) {
+            this.frameLengthFieldLength = frameLengthFieldLength;
             return (B) this;
         }
 
