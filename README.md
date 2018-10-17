@@ -63,7 +63,7 @@ Now you may use ISO8583 client or server in your code.
 
 The minimal client workflow includes:
 
-```java
+~~~java
 MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
 Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
 
@@ -87,7 +87,8 @@ if (client.isConnected()) { // [7]
     
 ...
 client.shutdown();// [11]
-```    
+~~~
+    
 1. First you need to create a `MessageFactory`
 2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and, optionally, `SocketAddress` 
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
@@ -104,7 +105,7 @@ client.shutdown();// [11]
 
 Typical server workflow includes:
 
-```java
+~~~java
 MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
 Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
 
@@ -121,7 +122,8 @@ if (server.isStarted()) { // [7]
     
 ...
 server.shutdown();// [8]
-```    
+~~~
+    
 1. First you need to create a `MessageFactory`
 2. Then you create a [`Iso8583Server`][Iso8583Server] providing `MessageFactory` and port to bind to 
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
@@ -149,13 +151,19 @@ Default [`IsoMessageLoggingHandler`][IsoMessageLoggingHandler] may produce outpu
       100: [Receiving institution identification code:LLVAR(3)] = '999'
       102: [Account identification 1:LLVAR(4)] = 'ABCD'
 
-Using client or server configurationYou may :
+Using client or server configuration
+
+You may:
 
 - enable and disable printing of sensitive information, like PAN
 - customize which fields should be masked in logs
 - enable and disable printing field descriptions
+- customize tcp frame length field length
 
-You may provide your own logging handler and disable default one by using `ConnectorConfiguration.addLoggingHandler(boolean)` method and customizing ChannelPipeline.
+See 
+[ConnectorConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java),
+[ServerConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/server/ServerConfiguration.java) and
+[ClientConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/client/ClientConfiguration.java).
 
 ---
 For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ) page.

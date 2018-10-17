@@ -21,12 +21,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
-        <j8583.version>1.12.0</j8583.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>2.15.0</mockito.version>
-        <netty.version>[4.1.20.Final,4.2)</netty.version>
+        <j8583.version>1.12.0</j8583.version>
+        <mockito.version>2.23.0</mockito.version>
+        <netty.version>[4.1.30.Final,4.2)</netty.version>
         <slf4j.version>[1.7.25,1.7.999)</slf4j.version>
-        <spring.version>4.3.14.RELEASE</spring.version>
+        <spring.version>5.1.1.RELEASE</spring.version>
     </properties>
 
     <issueManagement>
@@ -107,13 +107,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>[3.7,4)</version>
+            <version>[3.8.1,4)</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>[3.9.1,4)</version>
+            <version>[3.11.1,4)</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -158,7 +158,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>3.0.0-M2</version>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -223,12 +223,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20</version>
+                    <version>2.22.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.20</version>
+                    <version>2.22.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>

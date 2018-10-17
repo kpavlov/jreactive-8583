@@ -37,8 +37,6 @@ public class Iso8583ChannelInitializer<
         B extends AbstractBootstrap,
         C extends ConnectorConfiguration> extends ChannelInitializer<T> {
 
-    public static final int DEFAULT_LENGTH_HEADER_LENGTH = 2;
-
     private final C configuration;
     private final ConnectorConfigurer<C, B> configurer;
     private final EventLoopGroup workerGroup;
@@ -47,7 +45,6 @@ public class Iso8583ChannelInitializer<
     private final Iso8583Encoder isoMessageEncoder;
     private final ChannelHandler loggingHandler;
     private final ChannelHandler parseExceptionHandler;
-    private int headerLength = DEFAULT_LENGTH_HEADER_LENGTH;
 
     public Iso8583ChannelInitializer(
             C configuration,
@@ -61,7 +58,7 @@ public class Iso8583ChannelInitializer<
         this.isoMessageFactory = isoMessageFactory;
         this.customChannelHandlers = customChannelHandlers;
 
-        this.isoMessageEncoder = createIso8583Encoder(headerLength);
+        this.isoMessageEncoder = createIso8583Encoder(configuration);
         this.loggingHandler = createLoggingHandler(configuration);
         this.parseExceptionHandler = createParseExceptionHandler();
     }
@@ -70,8 +67,9 @@ public class Iso8583ChannelInitializer<
     public void initChannel(T ch) {
         final ChannelPipeline pipeline = ch.pipeline();
 
+        final int lengthFieldLength = configuration.getFrameLengthFieldLength();
         pipeline.addLast("lengthFieldFameDecoder", new LengthFieldBasedFrameDecoder(
-                configuration.getMaxFrameLength(), 0, headerLength, 0, headerLength));
+                configuration.getMaxFrameLength(), 0, lengthFieldLength, 0, lengthFieldLength));
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory));
 
         pipeline.addLast("iso8583Encoder", isoMessageEncoder);
@@ -103,8 +101,8 @@ public class Iso8583ChannelInitializer<
         return new ParseExceptionHandler(isoMessageFactory, true);
     }
 
-    protected Iso8583Encoder createIso8583Encoder(int lengthHeaderLength) {
-        return new Iso8583Encoder(lengthHeaderLength);
+    protected Iso8583Encoder createIso8583Encoder(C configuration) {
+        return new Iso8583Encoder(configuration.getFrameLengthFieldLength());
     }
 
     protected Iso8583Decoder createIso8583Decoder(final MessageFactory messageFactory) {

@@ -30,7 +30,6 @@ public class EchoFromClientIT extends AbstractIT {
 
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
-        super.configureServer(server);
         server.setConfigurer(new ConnectorConfigurer<ServerConfiguration, ServerBootstrap>() {
             @Override
             public void configureBootstrap(ServerBootstrap bootstrap, ServerConfiguration configuration) {
