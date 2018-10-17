@@ -155,6 +155,7 @@ Using client or server configuration
 
 You may:
 
+- enable message logging. As of 0.2.2 logging is disabled by default (#50).
 - enable and disable printing of sensitive information, like PAN
 - customize which fields should be masked in logs
 - enable and disable printing field descriptions

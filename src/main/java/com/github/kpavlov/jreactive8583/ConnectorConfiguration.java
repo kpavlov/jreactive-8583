@@ -212,7 +212,7 @@ public abstract class ConnectorConfiguration {
 
     @SuppressWarnings({"unchecked", "unused"})
     protected abstract static class Builder<B extends Builder> {
-        private boolean addLoggingHandler = true;
+        private boolean addLoggingHandler = false;
         private boolean addEchoMessageListener = false;
         private boolean logFieldDescription = true;
         private boolean logSensitiveData = true;
@@ -278,6 +278,11 @@ public abstract class ConnectorConfiguration {
 
         public B addLoggingHandler() {
             this.addLoggingHandler = true;
+            return (B) this;
+        }
+
+        public B addLoggingHandler(boolean value) {
+            this.addLoggingHandler = value;
             return (B) this;
         }
 

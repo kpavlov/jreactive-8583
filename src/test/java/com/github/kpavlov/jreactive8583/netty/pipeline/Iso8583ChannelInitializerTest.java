@@ -64,8 +64,20 @@ public class Iso8583ChannelInitializerTest {
     @Test
     public void testInitChannelWithoutLogger() {
         //given
-        configurationBuilder.withAddLoggingHandler(false);
+        configurationBuilder.addLoggingHandler(false);
 
+        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+
+        //when
+        channelInitializer.initChannel(channel);
+
+        //then
+        verify(pipeline, never()).addLast(any(EventLoopGroup.class), anyString(), any(IsoMessageLoggingHandler.class));
+    }
+
+    @Test
+    public void testInitChannelWithDefaultLoggingSetting() {
+        //given
         Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         //when
