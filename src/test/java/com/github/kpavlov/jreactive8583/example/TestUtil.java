@@ -1,9 +1,8 @@
 package com.github.kpavlov.jreactive8583.example;
 
-
-import org.junit.Assert;
-
 import java.util.function.BooleanSupplier;
+
+import static org.assertj.core.api.Fail.fail;
 
 public class TestUtil {
 
@@ -21,7 +20,7 @@ public class TestUtil {
             }
         }
         if (counter == 0) {
-            Assert.fail("Timeout: " + message);
+            fail("Timeout: " + message);
         }
     }
 }

@@ -4,14 +4,14 @@ import com.github.kpavlov.jreactive8583.client.Iso8583Client;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import net.jcip.annotations.NotThreadSafe;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 @NotThreadSafe
 public abstract class AbstractIT {
@@ -22,7 +22,7 @@ public abstract class AbstractIT {
     @Autowired
     protected Iso8583Server<IsoMessage> server;
 
-    @Before
+    @BeforeEach
     public void before() throws Exception {
         configureServer(server);
         server.init();
@@ -41,7 +41,7 @@ public abstract class AbstractIT {
         // to be overridden in tests
     }
 
-    @After
+    @AfterEach
     public void after() {
         client.shutdown();
         server.shutdown();

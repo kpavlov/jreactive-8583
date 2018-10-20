@@ -5,18 +5,18 @@ import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
 
     private AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M> subject;
@@ -34,7 +34,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     @Mock
     private M message;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         compositeIsoMessageHandler = new CompositeIsoMessageHandler<>();
         subject = new AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M>(
