@@ -4,7 +4,7 @@
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
 
     <name>ISO8583 Connector for Netty</name>
     <description>
@@ -314,7 +314,7 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                 </plugins>
