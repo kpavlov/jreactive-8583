@@ -6,14 +6,14 @@ import com.solab.iso8583.IsoValue;
 import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.util.UUID;
@@ -21,7 +21,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ParseExceptionHandlerTest {
 
     private static MessageFactory messageFactory;
@@ -31,12 +31,12 @@ public class ParseExceptionHandlerTest {
     @Captor
     private ArgumentCaptor<IsoMessage> messageCaptor;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() throws Exception {
         messageFactory = ConfigParser.createDefault();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         handler = new ParseExceptionHandler(messageFactory, true);
     }

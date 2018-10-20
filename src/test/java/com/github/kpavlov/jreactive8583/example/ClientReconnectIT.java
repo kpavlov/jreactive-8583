@@ -1,7 +1,6 @@
 package com.github.kpavlov.jreactive8583.example;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class ClientReconnectIT extends AbstractIT {
 

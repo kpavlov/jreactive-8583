@@ -4,8 +4,8 @@ import com.github.kpavlov.jreactive8583.IsoMessageListener;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +16,7 @@ public class ClientServerIT extends AbstractIT {
 
     private final Map<Integer, IsoMessage> receivedMessages = new ConcurrentHashMap<>();
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         server.addMessageListener(new IsoMessageListener<IsoMessage>() {
             @Override

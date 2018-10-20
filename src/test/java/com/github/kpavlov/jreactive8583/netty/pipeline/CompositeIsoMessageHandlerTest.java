@@ -3,17 +3,17 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
 import com.solab.iso8583.IsoMessage;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CompositeIsoMessageHandlerTest {
 
     @Mock
@@ -29,7 +29,7 @@ public class CompositeIsoMessageHandlerTest {
 
     private CompositeIsoMessageHandler<IsoMessage> handler = new CompositeIsoMessageHandler<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         //noinspection unchecked
         handler.addListeners(listener1, listener2, listener3);

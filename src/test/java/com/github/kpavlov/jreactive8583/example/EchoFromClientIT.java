@@ -11,8 +11,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import net.jcip.annotations.NotThreadSafe;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @NotThreadSafe
 public class EchoFromClientIT extends AbstractIT {
@@ -51,7 +51,7 @@ public class EchoFromClientIT extends AbstractIT {
         });
     }
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
 
         latch = new CountDownLatch(1);

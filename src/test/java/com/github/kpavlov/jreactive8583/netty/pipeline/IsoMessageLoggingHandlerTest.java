@@ -7,18 +7,18 @@ import com.solab.iso8583.parse.ConfigParser;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.local.LocalChannel;
 import io.netty.handler.logging.LogLevel;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class IsoMessageLoggingHandlerTest {
 
     private IsoMessageLoggingHandler handler;
@@ -32,9 +32,9 @@ public class IsoMessageLoggingHandlerTest {
     private IsoMessage message;
 
     @Mock
-   private ChannelHandlerContext ctx;
+    private ChannelHandlerContext ctx;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         when(ctx.channel()).thenReturn(new LocalChannel());
