@@ -31,14 +31,9 @@ public class EchoFromClientIT extends AbstractIT {
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
         server.setConfigurer(new ConnectorConfigurer<ServerConfiguration, ServerBootstrap>() {
-            @Override
-            public void configureBootstrap(ServerBootstrap bootstrap, ServerConfiguration configuration) {
-                //
-            }
 
             @Override
             public void configurePipeline(ChannelPipeline pipeline, ServerConfiguration configuration) {
-                System.out.println("ClientServerIT.configurePipeline");
                 pipeline.addBefore("idleEventHandler", "connectListenerHandler", new ChannelInboundHandlerAdapter() {
                     @Override
                     public void channelActive(ChannelHandlerContext ctx) throws Exception {
