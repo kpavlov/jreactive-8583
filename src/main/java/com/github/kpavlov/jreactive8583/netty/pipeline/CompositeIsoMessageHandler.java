@@ -61,7 +61,7 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
                             String.format("%04X", isoMessage.getType()), messageListener);
                     applyNextListener = messageListener.onMessage(ctx, isoMessage);
                     if (!applyNextListener) {
-                        logger.debug("Stopping further procession of message {} after handler {}", isoMessage, messageListener);
+                        logger.trace("Stopping further procession of message {} after handler {}", isoMessage, messageListener);
                     }
                 }
             } catch (Exception e) {
