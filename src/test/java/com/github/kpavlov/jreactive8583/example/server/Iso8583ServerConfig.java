@@ -21,8 +21,9 @@ public class Iso8583ServerConfig {
     @Bean
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
         final ServerConfiguration configuration = ServerConfiguration.newBuilder()
-                .logSensitiveData(false)
-                .workerThreadsCount(4)
+//                .addLoggingHandler()
+//                .logSensitiveData(false)
+                .workerThreadsCount(1)
                 .build();
 
         return new Iso8583Server<>(port, configuration, serverMessageFactory());
