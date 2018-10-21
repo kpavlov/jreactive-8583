@@ -219,7 +219,7 @@ public abstract class ConnectorConfiguration {
         private boolean replyOnError = false;
         private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
-        private int workerThreadsCount = Runtime.getRuntime().availableProcessors() * 16;
+        private int workerThreadsCount = 0; // use netty default
         private int[] sensitiveDataFields;
         private int frameLengthFieldLength = DEFAULT_FRAME_LENGTH_FIELD_LENGTH;
 
