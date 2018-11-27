@@ -46,8 +46,9 @@ public class ReconnectOnCloseListener implements ChannelFutureListener {
     public void scheduleReconnect() {
         if (!disconnectRequested.get()) {
             logger.trace("Failed to connect. Will try again in {} millis", reconnectInterval);
+            //noinspection Convert2MethodRef
             executorService.schedule(
-                    client::connectAsync,
+                    () -> client.connectAsync(),
                     reconnectInterval, TimeUnit.MILLISECONDS);
         }
     }
