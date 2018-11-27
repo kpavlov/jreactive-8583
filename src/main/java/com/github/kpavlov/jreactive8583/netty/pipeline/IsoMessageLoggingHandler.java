@@ -27,8 +27,8 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
             36,// track 3
             45// track 1
     };
-    private static char[] MASKED_VALUE = "***".toCharArray();
-    private static String[] FIELD_NAMES = new String[128];
+    private static final char[] MASKED_VALUE = "***".toCharArray();
+    private static final String[] FIELD_NAMES = new String[128];
 
     static {
         try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/github/kpavlov/jreactive8583/iso8583fields.properties")) {

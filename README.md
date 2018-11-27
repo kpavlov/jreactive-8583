@@ -178,10 +178,10 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
 [j8583-example]: https://krishnarag.wordpress.com/2014/06/18/iso-8583-j8583-java-library/
-[j8583]: https://github.com/chochos/j8583 "Java implementation of the ISO8583 protocol."
+[j8583]: https://bitbucket.org/chochos/j8583 "Java implementation of the ISO8583 protocol."
 [j8583-message-factory]: https://github.com/chochos/j8583/blob/master/src/main/java/com/solab/iso8583/IsoMessage.java
 [jpos]: http://jpos.org 
-[netty]: //netty.io 
+[netty]: https://netty.io 
 
 [Iso8583Client]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/client/Iso8583Client.java
 [Iso8583Server]: https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/server/Iso8583Server.java

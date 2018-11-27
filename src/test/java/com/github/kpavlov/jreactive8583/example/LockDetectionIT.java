@@ -33,16 +33,16 @@ public class LockDetectionIT {
     private static final int NUM_CLIENTS = 20;
     private static final int NUM_MESSAGES = 100;
     private static final Logger logger = getLogger(LockDetectionIT.class);
-    private static CountDownLatch latch = new CountDownLatch(NUM_CLIENTS * NUM_MESSAGES);
+    private static final CountDownLatch latch = new CountDownLatch(NUM_CLIENTS * NUM_MESSAGES);
     private static ThreadMXBean threadMXBean;
     private static Thread monitoringThread;
-    private static AtomicInteger monitorDeadlockedCount = new AtomicInteger();
-    private static AtomicInteger deadlockedCount = new AtomicInteger();
+    private static final AtomicInteger monitorDeadlockedCount = new AtomicInteger();
+    private static final AtomicInteger deadlockedCount = new AtomicInteger();
     @Autowired
     private Iso8583Server<IsoMessage> server;
     @Autowired
     private ApplicationContext applicationContext;
-    private Iso8583Client[] clients = new Iso8583Client[NUM_CLIENTS];
+    private final Iso8583Client[] clients = new Iso8583Client[NUM_CLIENTS];
 
     @BeforeAll
     public static void beforeAll() {
