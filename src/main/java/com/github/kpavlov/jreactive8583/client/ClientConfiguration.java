@@ -9,7 +9,7 @@ public class ClientConfiguration extends ConnectorConfiguration {
      */
     private static final int DEFAULT_RECONNECT_INTERVAL = 100;
 
-    private int reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
+    private int reconnectInterval;
 
     /**
      * @deprecated Use {@link Builder}

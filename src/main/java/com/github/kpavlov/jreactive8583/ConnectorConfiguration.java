@@ -39,7 +39,7 @@ public abstract class ConnectorConfiguration {
     private boolean logSensitiveData;
     private int[] sensitiveDataFields;
     private boolean logFieldDescription;
-    private int frameLengthFieldLength;
+    private final int frameLengthFieldLength;
 
     protected ConnectorConfiguration(Builder builder) {
         addLoggingHandler = builder.addLoggingHandler;
