@@ -30,6 +30,20 @@ public abstract class ConnectorConfiguration {
      */
     private static final int DEFAULT_FRAME_LENGTH_FIELD_LENGTH = 2;
 
+    /**
+     * Default {@link #frameLengthFieldAdjust} (compensation value to add to the value of the length field) = 0
+     *
+     * @see #getFrameLengthFieldAdjust()
+     */
+    private static final int DEFAULT_FRAME_LENGTH_FIELD_ADJUST = 0;
+
+    /**
+     * Default {@link #frameLengthFieldOffset} (the offset of the length field) = 0
+     *
+     * @see #getFrameLengthFieldOffset()
+     */
+    private static final int DEFAULT_FRAME_LENGTH_FIELD_OFFSET = 0;
+
     private final boolean addEchoMessageListener;
     private int maxFrameLength;
     private int idleTimeout;
@@ -40,8 +54,10 @@ public abstract class ConnectorConfiguration {
     private int[] sensitiveDataFields;
     private boolean logFieldDescription;
     private final int frameLengthFieldLength;
+    private final int frameLengthFieldOffset;
+    private final int frameLengthFieldAdjust;
 
-    protected ConnectorConfiguration(Builder builder) {
+    protected ConnectorConfiguration(final Builder builder) {
         addLoggingHandler = builder.addLoggingHandler;
         idleTimeout = builder.idleTimeout;
         logFieldDescription = builder.logFieldDescription;
@@ -52,6 +68,8 @@ public abstract class ConnectorConfiguration {
         addEchoMessageListener = builder.addEchoMessageListener;
         workerThreadsCount = builder.workerThreadsCount;
         frameLengthFieldLength = builder.frameLengthFieldLength;
+        frameLengthFieldAdjust = builder.frameLengthFieldAdjust;
+        frameLengthFieldOffset = builder.frameLengthFieldOffset;
     }
 
     /**
@@ -211,6 +229,26 @@ public abstract class ConnectorConfiguration {
     }
 
     @SuppressWarnings({"unchecked", "unused"})
+    /**
+     * Returns the offset of the length field.
+     *
+     * @implNote Default value is <code>0</code>
+     * @see LengthFieldBasedFrameDecoder
+     */
+    public int getFrameLengthFieldOffset() {
+        return frameLengthFieldOffset;
+    }
+
+    /**
+     * Returns the compensation value to add to the value of the length field.
+     *
+     * @implNote Default value is <code>0</code>
+     * @see LengthFieldBasedFrameDecoder
+     */
+    public int getFrameLengthFieldAdjust() {
+        return frameLengthFieldAdjust;
+    }
+
     protected abstract static class Builder<B extends Builder> {
         private boolean addLoggingHandler = false;
         private boolean addEchoMessageListener = false;
@@ -222,6 +260,8 @@ public abstract class ConnectorConfiguration {
         private int workerThreadsCount = 0; // use netty default
         private int[] sensitiveDataFields;
         private int frameLengthFieldLength = DEFAULT_FRAME_LENGTH_FIELD_LENGTH;
+        private int frameLengthFieldOffset = DEFAULT_FRAME_LENGTH_FIELD_OFFSET;
+        private int frameLengthFieldAdjust = DEFAULT_FRAME_LENGTH_FIELD_ADJUST;
 
         public B addEchoMessageListener() {
             this.addEchoMessageListener = true;
@@ -336,6 +376,15 @@ public abstract class ConnectorConfiguration {
             return (B) this;
         }
 
+        public B frameLengthFieldOffset(final int frameLengthFieldOffset) {
+            this.frameLengthFieldOffset = frameLengthFieldOffset;
+            return (B) this;
+        }
+
+        public B frameLengthFieldAdjust(final int frameLengthFieldAdjust) {
+            this.frameLengthFieldAdjust = frameLengthFieldAdjust;
+            return (B) this;
+        }
         /**
          * @deprecated Use {@link #sensitiveDataFields(int...)} instead
          */
