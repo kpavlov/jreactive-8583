@@ -3,6 +3,7 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.MessageFactory;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -13,6 +14,7 @@ import java.text.ParseException;
  *
  * @see <a href="http://stackoverflow.com/questions/28275677/how-to-answer-an-invalid-iso8583-message">StackOverflow: How to answer an invalid ISO8583 message</a>
  */
+@ChannelHandler.Sharable
 public class ParseExceptionHandler extends ChannelInboundHandlerAdapter {
 
     private final MessageFactory isoMessageFactory;
