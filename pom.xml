@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
         <j8583.version>1.14.1</j8583.version>
-        <mockito.version>2.23.4</mockito.version>
+        <mockito.version>3.1.0</mockito.version>
         <netty.version>[4.1.42.Final,4.2)</netty.version>
         <slf4j.version>[1.7.28,1.7.999)</slf4j.version>
         <spring.version>5.2.0.RELEASE</spring.version>
