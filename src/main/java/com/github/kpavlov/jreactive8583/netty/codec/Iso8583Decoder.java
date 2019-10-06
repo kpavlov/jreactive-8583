@@ -3,6 +3,7 @@ package com.github.kpavlov.jreactive8583.netty.codec;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
@@ -18,9 +19,12 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
     }
 
     /**
-     * @implNote Message body starts immediately, no length header,
+     * Decodes ISO8583 message from {@link ByteBuf}.
+     * <p>
+     * Message body starts immediately, no length header,
      * see <code>"lengthFieldFameDecoder"</code> in
-     * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel}
+     * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel(Channel)}
+     * </p>
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List out) throws Exception {
