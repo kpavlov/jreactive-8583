@@ -2,6 +2,7 @@ package com.github.kpavlov.jreactive8583.client;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 
+@SuppressWarnings("WeakerAccess")
 public class ClientConfiguration extends ConnectorConfiguration {
 
     /**
@@ -60,6 +61,9 @@ public class ClientConfiguration extends ConnectorConfiguration {
 
         /**
          * @deprecated Use {@link #reconnectInterval(int)} instead
+         *
+         * @param reconnectInterval Reconnect interval in millis
+         * @return Tha same {@link Builder}
          */
         @Deprecated
         public Builder withReconnectInterval(int reconnectInterval) {

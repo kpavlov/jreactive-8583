@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +39,6 @@ public class Iso8583DecoderTest {
 
         decoder.decode(ctx, byteBuf, out);
 
-        verifyZeroInteractions(ctx, out, messageFactory);
+        verifyNoInteractions(ctx, out, messageFactory);
     }
 }

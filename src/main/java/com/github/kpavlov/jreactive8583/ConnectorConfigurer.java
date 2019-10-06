@@ -11,9 +11,10 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * This method is called during {@link AbstractIso8583Connector#init()} phase.
      * </p>
      *
+     * <p>This implementation does nothing</p>
+     *
      * @param bootstrap     AbstractBootstrap to configure
      * @param configuration A {@link ConnectorConfiguration} to use
-     * @implSpec This implementation does nothing
      */
     default void configureBootstrap(B bootstrap, C configuration) {
         // this method was intentionally left blank
@@ -25,10 +26,10 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * This method is called during
      * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel(io.netty.channel.Channel)} phase.
      * </p>
+     * <p>This implementation does nothing</p>
      *
      * @param pipeline      A {@link ChannelPipeline} being configured
      * @param configuration A {@link ConnectorConfiguration} to use
-     * @implSpec This implementation does nothing
      */
     default void configurePipeline(ChannelPipeline pipeline, C configuration) {
         // this method was intentionally left blank

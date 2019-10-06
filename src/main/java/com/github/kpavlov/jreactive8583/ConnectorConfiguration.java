@@ -7,6 +7,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ConnectorConfiguration {
 
     /**
@@ -211,8 +212,10 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns number of threads in worker {@link EventLoopGroup}.
+     * <p>
+     * Default value is <code>Runtime.getRuntime().availableProcessors() * 16</code>.
      *
-     * @implNote Default value is <code>Runtime.getRuntime().availableProcessors() * 16</code>
+     * @return Number of Netty worker threads
      */
     public int getWorkerThreadsCount() {
         return workerThreadsCount;
@@ -220,8 +223,10 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns length of TCP frame length field.
+     * <p>
+     * Default value is <code>2</code>.
      *
-     * @implNote Default value is <code>2</code>
+     * @return Length of TCP frame length field.
      * @see LengthFieldBasedFrameDecoder
      */
     public int getFrameLengthFieldLength() {
@@ -232,8 +237,10 @@ public abstract class ConnectorConfiguration {
     /**
      * Returns the offset of the length field.
      *
-     * @implNote Default value is <code>0</code>
+     * Default value is <code>0</code>.
      * @see LengthFieldBasedFrameDecoder
+     *
+     * @return The offset of the length field.
      */
     public int getFrameLengthFieldOffset() {
         return frameLengthFieldOffset;
@@ -241,14 +248,17 @@ public abstract class ConnectorConfiguration {
 
     /**
      * Returns the compensation value to add to the value of the length field.
+     * <p>
+     * Default value is <code>0</code>.
      *
-     * @implNote Default value is <code>0</code>
+     * @return The compensation value to add to the value of the length field
      * @see LengthFieldBasedFrameDecoder
      */
     public int getFrameLengthFieldAdjust() {
         return frameLengthFieldAdjust;
     }
 
+    @SuppressWarnings({"unchecked", "WeakerAccess"})
     protected abstract static class Builder<B extends Builder> {
         private boolean addLoggingHandler = false;
         private boolean addEchoMessageListener = false;
@@ -269,6 +279,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param shouldAddEchoMessageListener <code>true</code> to add echo message handler.
+         * @return The same {@link Builder}
          * @deprecated Use {@link #addEchoMessageListener()} instead
          */
         @Deprecated
@@ -283,6 +295,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param length Maximum frame length.
+         * @return The same {@link Builder}
          * @deprecated Use {@link #maxFrameLength(int)} instead
          */
         @Deprecated
@@ -297,6 +311,9 @@ public abstract class ConnectorConfiguration {
 
         /**
          * Use {@link #idleTimeout(int)} instead
+         *
+         * @param timeout in seconds
+         * @return The same {@link Builder}
          */
         @Deprecated
         public B withIdleTimeout(int timeout) {
@@ -309,6 +326,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param doReply <code>true</code> if server should reply in case of error.
+         * @return The same {@link Builder}
          * @deprecated Use {@link #replyOnError(boolean)} instead
          */
         @Deprecated
@@ -327,6 +346,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param addLoggingHandler <code>true</code> if {@link IsoMessageLoggingHandler} should be added to Netty pipeline.
+         * @return The same {@link Builder}
          * @deprecated Use {@link #addLoggingHandler()} instead
          */
         public B withAddLoggingHandler(boolean addLoggingHandler) {
@@ -337,7 +358,10 @@ public abstract class ConnectorConfiguration {
         /**
          * Should log sensitive data (unmasked) or not.
          * <p>
-         * Don't use on production!
+         * <strong>Don't use on production!</strong>
+         *
+         * @param logSensitiveData <code>true</code> to log sensitive data via logger
+         * @return The same {@link Builder}
          */
         public B logSensitiveData(boolean logSensitiveData) {
             this.logSensitiveData = logSensitiveData;
@@ -345,6 +369,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param logSensitiveData <code>true</code> to log sensitive data via logger
+         * @return The same {@link Builder}
          * @deprecated Use {@link #logSensitiveData(boolean)} instead
          */
         public B withLogSensitiveData(boolean logSensitiveData) {
@@ -358,6 +384,8 @@ public abstract class ConnectorConfiguration {
         }
 
         /**
+         * @param logFieldDescription <code>true</code> to print ISO field descriptions in the log
+         * @return The same {@link Builder}
          * @deprecated Use {@link #describeFieldsInLog()}
          */
         @Deprecated
@@ -385,8 +413,11 @@ public abstract class ConnectorConfiguration {
             this.frameLengthFieldAdjust = frameLengthFieldAdjust;
             return (B) this;
         }
+
         /**
          * @deprecated Use {@link #sensitiveDataFields(int...)} instead
+         * @param sensitiveDataFields Array of sensitive fields
+         * @return The same {@link Builder}
          */
         @Deprecated
         public B withSensitiveDataFields(int... sensitiveDataFields) {
