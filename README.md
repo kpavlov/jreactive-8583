@@ -41,13 +41,11 @@ The high byte of value is transmitted first, and the low byte of value is transm
 
 | N bytes            | M bytes            |
 | ------------------ | ------------------ |
-| Message Length = M | ISO–8583 Message |
+| Message Length = M | ISO–8583 Message   |
 
 # Getting Started
 
-First, you need to [download latest release](https://github.com/kpavlov/jreactive-8583/releases) or clone this repository and build artifact with maven manually. 
-
-Then add dependency to your project:
+Add dependency to your project:
 
     <dependencies>
         <dependency>
