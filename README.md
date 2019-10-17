@@ -162,9 +162,9 @@ You may:
 - customize tcp frame length field length
 
 See 
-[ConnectorConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java),
-[ServerConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/server/ServerConfiguration.java) and
-[ClientConfiguration](./blob/master/src/main/java/com/github/kpavlov/jreactive8583/client/ClientConfiguration.java).
+[ConnectorConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java),
+[ServerConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/server/ServerConfiguration.java) and
+[ClientConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/client/ClientConfiguration.java).
 
 ---
 For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ) page.
