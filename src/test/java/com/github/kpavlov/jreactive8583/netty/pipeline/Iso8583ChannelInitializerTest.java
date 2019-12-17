@@ -51,7 +51,7 @@ public class Iso8583ChannelInitializerTest {
     @Test
     public void testInitChannelWithLogger() {
         //given
-        configurationBuilder.addLoggingHandler();
+        configurationBuilder.addLoggingHandler(true);
         Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         // when
