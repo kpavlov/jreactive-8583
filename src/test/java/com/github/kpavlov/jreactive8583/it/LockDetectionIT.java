@@ -160,7 +160,6 @@ public class LockDetectionIT extends AbstractIT {
 
             @Override
             public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-//                logger.info("{} Handling message {}", ctx.channel().id(), isoMessage);
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
