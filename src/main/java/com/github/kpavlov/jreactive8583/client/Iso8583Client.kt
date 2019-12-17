@@ -37,7 +37,6 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
     @Throws(InterruptedException::class)
     fun connect(): ChannelFuture {
         val channel = connectAsync().sync().channel() ?: error("Channel must be set")
-        setChannel(channel)
         return channel.closeFuture()
     }
 
@@ -62,7 +61,7 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
      * @throws InterruptedException if connection process was interrupted
      */
     @Throws(InterruptedException::class)
-    fun connect(serverAddress: SocketAddress?): ChannelFuture {
+    fun connect(serverAddress: SocketAddress): ChannelFuture {
         socketAddress = serverAddress
         return connect().sync()
     }
@@ -83,10 +82,12 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
                 reconnectOnCloseListener.scheduleReconnect()
                 return@addListener
             }
-            val channel = connectFuture.channel()
-            logger.debug("Client is connected to {}", channel.remoteAddress())
-            setChannel(channel)
-            channel.closeFuture().addListener(reconnectOnCloseListener)
+            channel = with(connectFuture.channel()!!) {
+                logger.debug("Client is connected to {}", this.remoteAddress())
+                this.closeFuture().addListener(reconnectOnCloseListener)
+                this
+            }
+
         }
         return connectFuture
     }
