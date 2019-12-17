@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractIso8583Connector<
         C extends ConnectorConfiguration,
-        B extends AbstractBootstrap,
+        B extends AbstractBootstrap<B, ?>,
         M extends IsoMessage> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());

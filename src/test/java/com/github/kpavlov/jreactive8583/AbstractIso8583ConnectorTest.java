@@ -3,7 +3,7 @@ package com.github.kpavlov.jreactive8583;
 import com.github.kpavlov.jreactive8583.netty.pipeline.CompositeIsoMessageHandler;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.MessageFactory;
-import io.netty.bootstrap.AbstractBootstrap;
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
 
-    private AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M> subject;
+    private AbstractIso8583Connector<ConnectorConfiguration, ServerBootstrap, M> subject;
 
     @Mock
     private ConnectorConfiguration config;
@@ -37,11 +37,11 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     @BeforeEach
     public void setUp() {
         compositeIsoMessageHandler = new CompositeIsoMessageHandler<>();
-        subject = new AbstractIso8583Connector<ConnectorConfiguration, AbstractBootstrap, M>(
+        subject = new AbstractIso8583Connector<ConnectorConfiguration, ServerBootstrap, M>(
                 config, messageFactory, compositeIsoMessageHandler
         ) {
             @Override
-            protected AbstractBootstrap createBootstrap() {
+            protected ServerBootstrap createBootstrap() {
                 throw new UnsupportedOperationException("Method is not implemented: .createBootstrap");
             }
         };
@@ -72,7 +72,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
         compositeIsoMessageHandler.channelRead(ctx, message);
 
         // then
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
     }
 
 }

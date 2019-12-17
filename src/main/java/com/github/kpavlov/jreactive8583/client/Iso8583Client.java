@@ -60,6 +60,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @return {@link ChannelFuture} which will be notified when connection is established.
      * @throws InterruptedException if connection process was interrupted
      */
+    @SuppressWarnings("unused")
     public ChannelFuture connect(String host, int port) throws InterruptedException {
         return connect(new InetSocketAddress(host, port));
     }
@@ -140,6 +141,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
         }
     }
 
+    @SuppressWarnings("unused")
     public void disconnect() throws InterruptedException {
         final ChannelFuture disconnectFuture = disconnectAsync();
         if (disconnectFuture != null) {
@@ -164,10 +166,18 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
         return channel.writeAndFlush(isoMessage);
     }
 
+    /**
+     * Sends message synchronously
+     */
+    @SuppressWarnings("unused")
     public void send(IsoMessage isoMessage) throws InterruptedException {
         sendAsync(isoMessage).sync().await();
     }
 
+    /**
+     * Sends message synchronously with timeout
+     */
+    @SuppressWarnings("unused")
     public void send(IsoMessage isoMessage, long timeout, TimeUnit timeUnit) throws InterruptedException {
         sendAsync(isoMessage).sync().await(timeout, timeUnit);
     }
