@@ -33,6 +33,7 @@ public abstract class AbstractIT {
         client.connect();
     }
 
+    @SuppressWarnings("EmptyMethod")
     protected void configureClient(Iso8583Client<IsoMessage> client) {
         // to be overridden in tests
     }

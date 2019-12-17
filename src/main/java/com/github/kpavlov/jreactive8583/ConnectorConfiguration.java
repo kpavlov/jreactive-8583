@@ -195,7 +195,6 @@ public abstract class ConnectorConfiguration {
      *
      * @return array of ISO8583 sensitive field numbers to be masked, or <code>null</code> to use default fields.
      * @see IsoMessageLoggingHandler
-     * @see IsoMessageLoggingHandler#DEFAULT_MASKED_FIELDS
      */
     public int[] getSensitiveDataFields() {
         return sensitiveDataFields;
@@ -258,8 +257,8 @@ public abstract class ConnectorConfiguration {
         return frameLengthFieldAdjust;
     }
 
-    @SuppressWarnings({"unchecked", "WeakerAccess"})
-    protected abstract static class Builder<B extends Builder> {
+    @SuppressWarnings({"unchecked", "WeakerAccess", "UnusedReturnValue"})
+    protected abstract static class Builder<B extends Builder<B>> {
         private boolean addLoggingHandler = false;
         private boolean addEchoMessageListener = false;
         private boolean logFieldDescription = true;
@@ -274,14 +273,18 @@ public abstract class ConnectorConfiguration {
         private int frameLengthFieldAdjust = DEFAULT_FRAME_LENGTH_FIELD_ADJUST;
 
         public B addEchoMessageListener() {
-            this.addEchoMessageListener = true;
+            return addEchoMessageListener(true);
+        }
+
+        public B addEchoMessageListener(boolean shouldAddEchoMessageListener) {
+            this.addEchoMessageListener = shouldAddEchoMessageListener;
             return (B) this;
         }
 
         /**
          * @param shouldAddEchoMessageListener <code>true</code> to add echo message handler.
          * @return The same {@link Builder}
-         * @deprecated Use {@link #addEchoMessageListener()} instead
+         * @deprecated Use {@link #addEchoMessageListener(boolean)} instead
          */
         @Deprecated
         public B withEchoMessageListener(boolean shouldAddEchoMessageListener) {
