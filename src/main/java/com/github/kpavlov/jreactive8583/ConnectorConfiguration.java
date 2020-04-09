@@ -52,6 +52,7 @@ public abstract class ConnectorConfiguration {
     private boolean replyOnError;
     private boolean addLoggingHandler;
     private boolean logSensitiveData;
+    private final boolean encodeFrameLengthAsString;
     private int[] sensitiveDataFields;
     private boolean logFieldDescription;
     private final int frameLengthFieldLength;
@@ -71,6 +72,7 @@ public abstract class ConnectorConfiguration {
         frameLengthFieldLength = builder.frameLengthFieldLength;
         frameLengthFieldAdjust = builder.frameLengthFieldAdjust;
         frameLengthFieldOffset = builder.frameLengthFieldOffset;
+        encodeFrameLengthAsString = builder.encodeFrameLengthAsString;
     }
 
     /**
@@ -176,6 +178,21 @@ public abstract class ConnectorConfiguration {
         this.logSensitiveData = logSensitiveData;
     }
 
+    /**
+     * Returns <code>true</code> if the length header is to be encoded as a String, as opposed to the default binary
+     * <p>
+     * Default value is <code>false</code> (frame length header is binary encoded).
+     * </p>
+     * <p>
+     * Used with @link frameLengthFieldLength, @link frameLengthFieldOffset and @link frameLengthFieldAdjust
+     * </p>
+     *
+     * @return <code>true</code> if frame length header is binary encoded
+     */
+    public boolean encodeFrameLengthAsString() {
+        return encodeFrameLengthAsString;
+    }
+
     public boolean logFieldDescription() {
         return logFieldDescription;
     }
@@ -264,6 +281,7 @@ public abstract class ConnectorConfiguration {
         private boolean logFieldDescription = true;
         private boolean logSensitiveData = true;
         private boolean replyOnError = false;
+        private boolean encodeFrameLengthAsString = false;
         private int idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS;
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
         private int workerThreadsCount = 0; // use netty default
@@ -368,6 +386,19 @@ public abstract class ConnectorConfiguration {
          */
         public B logSensitiveData(boolean logSensitiveData) {
             this.logSensitiveData = logSensitiveData;
+            return (B) this;
+        }
+
+        /**
+         * Should encode frame length header as string, as opposed to default binary encoding.
+         * <p>
+         * Used with @link frameLengthFieldLength, @link frameLengthFieldOffset and @link frameLengthFieldAdjust
+         *
+         * @param encodeFrameLengthAsString <code>true</code> to encode frame length header as String
+         * @return The same {@link Builder}
+         */
+        public B encodeFrameLengthAsString(Boolean encodeFrameLengthAsString) {
+            this.encodeFrameLengthAsString = encodeFrameLengthAsString;
             return (B) this;
         }
 

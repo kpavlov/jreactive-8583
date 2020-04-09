@@ -18,6 +18,7 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
+import com.github.kpavlov.jreactive8583.netty.codec.StringLengthFieldBasedFrameDecoder;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Decoder;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Encoder;
 import com.solab.iso8583.MessageFactory;
@@ -67,11 +68,7 @@ public class Iso8583ChannelInitializer<
     public void initChannel(T ch) {
         final ChannelPipeline pipeline = ch.pipeline();
 
-        final int lengthFieldLength = configuration.getFrameLengthFieldLength();
-        pipeline.addLast("lengthFieldFameDecoder",
-            new LengthFieldBasedFrameDecoder(
-                configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
-                configuration.getFrameLengthFieldAdjust(), lengthFieldLength));
+        pipeline.addLast("lengthFieldFameDecoder", createLengthFieldBasedFrameDecoder(configuration));
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory));
 
         pipeline.addLast("iso8583Encoder", isoMessageEncoder);
@@ -104,7 +101,8 @@ public class Iso8583ChannelInitializer<
     }
 
     protected Iso8583Encoder createIso8583Encoder(C configuration) {
-        return new Iso8583Encoder(configuration.getFrameLengthFieldLength());
+        return new Iso8583Encoder(configuration.getFrameLengthFieldLength(),
+                configuration.encodeFrameLengthAsString());
     }
 
     protected Iso8583Decoder createIso8583Decoder(final MessageFactory messageFactory) {
@@ -118,5 +116,16 @@ public class Iso8583ChannelInitializer<
                 configuration.getSensitiveDataFields());
     }
 
-
+    protected ChannelHandler createLengthFieldBasedFrameDecoder(C configuration) {
+        final int lengthFieldLength = configuration.getFrameLengthFieldLength();
+        if (configuration.encodeFrameLengthAsString()) {
+            return new StringLengthFieldBasedFrameDecoder(
+              configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
+              configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
+        } else {
+            return new LengthFieldBasedFrameDecoder(
+              configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
+              configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
+        }
+    }
 }
