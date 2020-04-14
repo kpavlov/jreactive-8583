@@ -24,6 +24,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @ExtendWith(SpringExtension.class)
@@ -88,7 +89,7 @@ public class LockDetectionIT {
         configureServer(server);
         server.start();
 
-        TestUtil.waitFor("server started", server::isStarted);
+        await().alias("server started").until(server::isStarted);
 
         for (int i = 0; i < NUM_CLIENTS; i++) {
             final Iso8583Client client = applicationContext.getBean(Iso8583Client.class);
@@ -111,7 +112,7 @@ public class LockDetectionIT {
                 try {
 
                     client.connect();
-                    TestUtil.waitFor("client connected", client::isConnected);
+                    await().alias("client connected").until(client::isConnected);
 
                     for (int i = 0; i < NUM_MESSAGES; i++) {
                         final IsoMessage isoMessage = createRequest(client);

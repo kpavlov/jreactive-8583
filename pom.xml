@@ -19,10 +19,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
         <j8583.version>1.15.0</j8583.version>
-        <mockito.version>3.2.4</mockito.version>
-        <netty.version>[4.1.43.Final,4.2)</netty.version>
+        <mockito.version>3.3.3</mockito.version>
+        <netty.version>4.1.48.Final</netty.version>
         <slf4j.version>[1.7.29,1.8)</slf4j.version>
-        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <jsr305.version>3.0.2</jsr305.version>
     </properties>
 
     <issueManagement>
@@ -107,13 +108,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>[3.9,4)</version>
+            <version>3.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>[3.14.0,4)</version>
+            <version>3.15.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -138,6 +139,12 @@
             <version>1.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>3.1.6</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -154,7 +161,7 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <type>pom</type>
-                <version>5.5.2</version>
+                <version>5.6.0</version>
                 <scope>import</scope>
             </dependency>
         </dependencies>
@@ -229,12 +236,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.0.0-M4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.0.0-M4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

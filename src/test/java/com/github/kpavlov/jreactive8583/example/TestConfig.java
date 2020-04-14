@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
         Iso8583ClientConfig.class,
         Iso8583ServerConfig.class
 })
-@PropertySource("application-test.properties")
+@PropertySource("/application-test.properties")
 public class TestConfig {
 
     static {

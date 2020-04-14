@@ -20,9 +20,9 @@ public class Iso8583DecoderTest {
     private Iso8583Decoder decoder;
 
     @Mock
-    private MessageFactory messageFactory;
+    private MessageFactory<?> messageFactory;
     @Mock
-    private List out;
+    private List<?> out;
     @Mock
     private ByteBuf byteBuf;
     @Mock
