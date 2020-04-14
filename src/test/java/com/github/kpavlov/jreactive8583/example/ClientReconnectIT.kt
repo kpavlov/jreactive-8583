@@ -1,20 +1,27 @@
 package com.github.kpavlov.jreactive8583.example
 
+import org.awaitility.Awaitility
 import org.junit.jupiter.api.Test
+import java.util.concurrent.TimeUnit
 
-@Suppress("NonAsciiCharacters")
 class ClientReconnectIT : AbstractIT() {
 
     @Test
-    fun `client should reconnect 🤝`() {
-        TestUtil.waitFor("server started") { server.isStarted }
-        TestUtil.waitFor("client connected") { client.isConnected }
+    @Throws(Exception::class)
+    fun clientShouldReconnectWhenConnectionLost() {
+        //given
+        Awaitility.await().alias("server started").until(server::isStarted)
+        Awaitility.await().alias("client connected").until(client::isConnected)
+
+        //when
         server.shutdown()
-        TestUtil.waitFor("client was disconnected") { !client.isConnected }
-        Thread.sleep(7000)
+        Awaitility.await().alias("client was disconnected").until { !client.isConnected }
+
+        //then
+        TimeUnit.SECONDS.sleep(7)
         server.init()
         server.start()
-        TestUtil.waitFor("server started") { server.isStarted }
-        TestUtil.waitFor("client connected") { client.isConnected }
+        Awaitility.await().alias("server started").until(server::isStarted)
+        Awaitility.await().alias("client connected").until(client::isConnected)
     }
 }
