@@ -54,15 +54,15 @@ public class ParseExceptionHandlerTest {
 
         //field 24
         final IsoValue<Object> field24 = message.getAt(24);
-        assertThat(field24).isInstanceOf(IsoValue.class).as("field24");
-        assertThat(field24.getType()).isEqualTo(IsoType.NUMERIC).as("field24.type");
-        assertThat(field24.getLength()).isEqualTo(3).as("field24.length");
-        assertThat(field24.getValue()).isEqualTo(650).as("field24.value");
+        assertThat(field24).as("field24").isInstanceOf(IsoValue.class);
+        assertThat(field24.getType()).as("field24.type").isEqualTo(IsoType.NUMERIC);
+        assertThat(field24.getLength()).as("field24.length").isEqualTo(3);
+        assertThat(field24.getValue()).as("field24.value").isEqualTo(650);
 
         final IsoValue<Object> field44 = message.getAt(44);
-        assertThat(field44).isInstanceOf(IsoValue.class).as("field44");
-        assertThat(field44.getType()).isEqualTo(IsoType.LLVAR).as("field44.type");
-        assertThat(field44.getLength()).isEqualTo(25).as("field44.length");
+        assertThat(field44).as("field44").isInstanceOf(IsoValue.class);
+        assertThat(field44.getType()).as("field44.type").isEqualTo(IsoType.LLVAR);
+        assertThat(field44.getLength()).as("field44.length").isEqualTo(25);
         assertThat(field44.getValue()).isEqualToComparingFieldByField(errorMessage.substring(0, 22) + "...").as("field44.value");
 
     }

@@ -31,7 +31,6 @@ public class CompositeIsoMessageHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        //noinspection unchecked
         handler.addListeners(listener1, listener2, listener3);
     }
 
@@ -90,7 +89,6 @@ public class CompositeIsoMessageHandlerTest {
     public void shouldNotFailOnExceptionInFailsafeMode() throws Exception {
         //given
         handler = new CompositeIsoMessageHandler<>(false);
-        //noinspection unchecked
         handler.addListeners(listener1, listener2, listener3);
 
         when(listener1.applies(message)).thenReturn(true);

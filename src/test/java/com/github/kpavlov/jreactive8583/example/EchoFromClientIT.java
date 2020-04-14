@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @NotThreadSafe
@@ -71,8 +72,8 @@ public class EchoFromClientIT extends AbstractIT {
 
     @Test
     public void shouldHandleEchoFromServer() throws Exception {
-        TestUtil.waitFor("server started", server::isStarted);
-        TestUtil.waitFor("client connected", client::isConnected);
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
 
         latch.await(5, TimeUnit.SECONDS);
 

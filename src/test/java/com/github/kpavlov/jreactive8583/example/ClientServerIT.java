@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class ClientServerIT extends AbstractIT {
 
@@ -51,8 +52,8 @@ public class ClientServerIT extends AbstractIT {
             }
         });
 
-        TestUtil.waitFor("server started", server::isStarted);
-        TestUtil.waitFor("client connected", client::isConnected);
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
     }
 
     @Test
@@ -64,7 +65,7 @@ public class ClientServerIT extends AbstractIT {
         // when
         client.sendAsync(finMessage);
         // then
-        TestUtil.waitFor("capture request received", () -> receivedMessages.containsKey(stan));
+        await().alias("capture request received").until(() -> receivedMessages.containsKey(stan));
 
         IsoMessage capturedRequest = receivedMessages.remove(stan);
         assertThat(capturedRequest).as("fin request").isNotNull();

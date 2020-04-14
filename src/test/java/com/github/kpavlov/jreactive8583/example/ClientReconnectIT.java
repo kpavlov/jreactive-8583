@@ -2,18 +2,27 @@ package com.github.kpavlov.jreactive8583.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
+
 public class ClientReconnectIT extends AbstractIT {
 
     @Test
-    public void testClientReconnect() throws Exception {
-        TestUtil.waitFor("server started", server::isStarted);
-        TestUtil.waitFor("client connected", client::isConnected);
+    public void clientShouldReconnectWhenConnectionLost() throws Exception {
+        //given
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
+
+        //when
         server.shutdown();
-        TestUtil.waitFor("client was disconnected", () -> (!client.isConnected()));
-        Thread.sleep(7000);
+        await().alias("client was disconnected").until(() -> (!client.isConnected()));
+
+        //then
+        TimeUnit.SECONDS.sleep(7);
         server.init();
         server.start();
-        TestUtil.waitFor("server started", server::isStarted);
-        TestUtil.waitFor("client connected", client::isConnected);
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
     }
 }
