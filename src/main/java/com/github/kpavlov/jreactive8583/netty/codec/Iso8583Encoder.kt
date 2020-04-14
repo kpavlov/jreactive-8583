@@ -1,38 +1,27 @@
-package com.github.kpavlov.jreactive8583.netty.codec;
+package com.github.kpavlov.jreactive8583.netty.codec
 
-import com.solab.iso8583.IsoMessage;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.util.CharsetUtil;
+import com.solab.iso8583.IsoMessage
+import io.netty.buffer.ByteBuf
+import io.netty.channel.ChannelHandler.Sharable
+import io.netty.channel.ChannelHandlerContext
+import io.netty.handler.codec.MessageToByteEncoder
+import io.netty.util.CharsetUtil
 
-import java.nio.ByteBuffer;
-
-@ChannelHandler.Sharable
-public class Iso8583Encoder extends MessageToByteEncoder<IsoMessage> {
-
-    private final int lengthHeaderLength;
-    private final boolean encodeLengthHeaderAsString;
-
-    public Iso8583Encoder(int lengthHeaderLength, boolean encodeLengthHeaderAsString) {
-        this.lengthHeaderLength = lengthHeaderLength;
-        this.encodeLengthHeaderAsString = encodeLengthHeaderAsString;
-    }
-
-    @Override
-    protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) {
+@Sharable
+class Iso8583Encoder(private val lengthHeaderLength: Int, private val encodeLengthHeaderAsString: Boolean) : MessageToByteEncoder<IsoMessage>() {
+    override fun encode(ctx: ChannelHandlerContext, isoMessage: IsoMessage, out: ByteBuf) {
         if (lengthHeaderLength == 0) {
-            byte[] bytes = isoMessage.writeData();
-            out.writeBytes(bytes);
+            val bytes = isoMessage.writeData()
+            out.writeBytes(bytes)
         } else if (encodeLengthHeaderAsString) {
-            byte[] data = isoMessage.writeData();
-            String lengthHeader = String.format("%0" + lengthHeaderLength + "d", data.length);
-            out.writeBytes(lengthHeader.getBytes(CharsetUtil.US_ASCII));
-            out.writeBytes(data);
+            val data = isoMessage.writeData()
+            val lengthHeader = String.format("%0" + lengthHeaderLength + "d", data.size)
+            out.writeBytes(lengthHeader.toByteArray(CharsetUtil.US_ASCII))
+            out.writeBytes(data)
         } else {
-            ByteBuffer byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength);
-            out.writeBytes(byteBuffer);
+            val byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength)
+            out.writeBytes(byteBuffer)
         }
     }
+
 }
