@@ -17,15 +17,16 @@ import java.util.concurrent.TimeUnit
 class Iso8583Server<T : IsoMessage>(port: Int, config: ServerConfiguration, messageFactory: MessageFactory<T>)
     : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
 
-    constructor(port: Int, messageFactory: MessageFactory<T>)
-            : this(port, ServerConfiguration.newBuilder().build(), messageFactory)
+    init {
+        socketAddress = InetSocketAddress(port)
+    }
 
     @Throws(InterruptedException::class)
     fun start() {
         bootstrap.bind().addListener(
                 GenericFutureListener { future: ChannelFuture ->
                     channel = future.channel()
-                    logger.info("Server is started and listening at {}", channel?.localAddress())
+                    logger.info("Server is started and listening at {}", channel.localAddress())
                 }
         ).sync().await()
     }
@@ -57,22 +58,19 @@ class Iso8583Server<T : IsoMessage>(port: Int, config: ServerConfiguration, mess
      */
     val isStarted: Boolean
         get() {
-            return if (channel != null) channel?.isOpen!! else false
+            return channel.isOpen
         }
 
-    fun stop() {
-        val channel = channel ?: throw IllegalStateException("Server is not started.")
+    private fun stop() {
         logger.info("Stopping the Server...")
-        try {
-            channel.deregister()
-            channel.close().sync().await(10, TimeUnit.SECONDS)
-            logger.info("Server was Stopped.")
-        } catch (e: InterruptedException) {
-            logger.error("Error while stopping the server", e)
+        with(channel) {
+            try {
+                deregister()
+                close().sync().await(10, TimeUnit.SECONDS)
+                logger.info("Server was Stopped.")
+            } catch (e: InterruptedException) {
+                logger.error("Error while stopping the server", e)
+            }
         }
-    }
-
-    init {
-        socketAddress = InetSocketAddress(port)
     }
 }
