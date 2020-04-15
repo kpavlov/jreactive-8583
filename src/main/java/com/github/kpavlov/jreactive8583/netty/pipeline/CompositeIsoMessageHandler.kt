@@ -1,93 +1,68 @@
-package com.github.kpavlov.jreactive8583.netty.pipeline;
+package com.github.kpavlov.jreactive8583.netty.pipeline
 
-import com.github.kpavlov.jreactive8583.IsoMessageListener;
-import com.solab.iso8583.IsoMessage;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.slf4j.Logger;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static org.slf4j.LoggerFactory.getLogger;
+import com.github.kpavlov.jreactive8583.IsoMessageListener
+import com.solab.iso8583.IsoMessage
+import io.netty.channel.ChannelHandler.Sharable
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.ChannelInboundHandlerAdapter
+import org.slf4j.LoggerFactory
+import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
- * Handles {@link IsoMessage} s with chain of {@link IsoMessageListener}s.
+ * Handles [IsoMessage] s with chain of [IsoMessageListener]s.
  */
-@ChannelHandler.Sharable
-public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInboundHandlerAdapter {
+@Sharable
+class CompositeIsoMessageHandler<T : IsoMessage>
+@JvmOverloads constructor(private val failOnError: Boolean = true) : ChannelInboundHandlerAdapter() {
+    private val logger = LoggerFactory.getLogger(CompositeIsoMessageHandler::class.java)
+    private val messageListeners: MutableList<IsoMessageListener<T>> = CopyOnWriteArrayList()
 
-    private final Logger logger = getLogger(CompositeIsoMessageHandler.class);
-
-    private final List<IsoMessageListener<T>> messageListeners = new CopyOnWriteArrayList<>();
-    private final boolean failOnError;
-
-    public CompositeIsoMessageHandler(boolean failOnError) {
-        this.failOnError = failOnError;
+    @Throws(Exception::class)
+    override fun channelRead(ctx: ChannelHandlerContext, msg: Any?) {
+        (msg as? T)?.let { doHandleMessage(ctx, it) }
+        super.channelRead(ctx, msg)
     }
 
-    public CompositeIsoMessageHandler() {
-        this(true);
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof IsoMessage) {
-            doHandleMessage(ctx, msg);
-        }
-        super.channelRead(ctx, msg);
-    }
-
-    private void doHandleMessage(ChannelHandlerContext ctx, Object msg) {
-        T isoMessage;
-        try {
-            //noinspection unchecked
-            isoMessage = (T) msg;
-        } catch (ClassCastException e) {
-            logger.debug("IsoMessage subclass {} is not supported by {}. Doing nothing.", msg.getClass(), getClass());
-            return;
-        }
-
-        boolean applyNextListener = true;
-        final int size = messageListeners.size();
-        for (int i = 0; applyNextListener && i < size; i++) {
-            IsoMessageListener<T> messageListener = messageListeners.get(i);
+    private fun doHandleMessage(ctx: ChannelHandlerContext, isoMessage: T) {
+        var applyNextListener = true
+        val size = messageListeners.size
+        var i = 0
+        while (applyNextListener && i < size) {
+            val messageListener = messageListeners[i]
             try {
                 if (messageListener.applies(isoMessage)) {
-                    logger.debug(
-                            "Handling IsoMessage[@type=0x{}] with {}",
-                            String.format("%04X", isoMessage.getType()), messageListener);
-                    applyNextListener = messageListener.onMessage(ctx, isoMessage);
+                    logger.debug("Handling IsoMessage[@type=0x{}] with {}", String.format("%04X", isoMessage.type), messageListener)
+                    applyNextListener = messageListener.onMessage(ctx, isoMessage)
                     if (!applyNextListener) {
-                        logger.trace("Stopping further procession of message {} after handler {}", isoMessage, messageListener);
+                        logger.trace("Stopping further procession of message {} after handler {}", isoMessage, messageListener)
                     }
                 }
-            } catch (Exception e) {
-                logger.debug("Can't evaluate {}.apply({})", messageListener, isoMessage.getClass(), e);
+            } catch (e: Exception) {
+                logger.debug("Can't evaluate {}.apply({})", messageListener, isoMessage.javaClass, e)
                 if (failOnError) {
-                    throw e;
+                    throw e
                 }
             }
+            i++
         }
     }
 
-    public void addListener(IsoMessageListener<T> listener) {
-        Objects.requireNonNull(listener, "IsoMessageListener is required");
-        messageListeners.add(listener);
+    fun addListener(listener: IsoMessageListener<T>) {
+        Objects.requireNonNull(listener, "IsoMessageListener is required")
+        messageListeners.add(listener)
     }
 
-    @SuppressWarnings("WeakerAccess")
     @SafeVarargs
-    public final void addListeners(IsoMessageListener<T>... listeners) {
-        Objects.requireNonNull(listeners, "IsoMessageListeners must not be null");
-        for (IsoMessageListener<T> listener : listeners) {
-            addListener(listener);
+    fun addListeners(vararg listeners: IsoMessageListener<T>) {
+        Objects.requireNonNull(listeners, "IsoMessageListeners must not be null")
+        for (listener in listeners) {
+            addListener(listener)
         }
     }
 
-    public void removeListener(IsoMessageListener<T> listener) {
-        messageListeners.remove(listener);
+    fun removeListener(listener: IsoMessageListener<T>) {
+        messageListeners.remove(listener)
     }
+
 }
