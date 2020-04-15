@@ -20,7 +20,7 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
 
     constructor(socketAddress: SocketAddress, config: ClientConfiguration, isoMessageFactory: MessageFactory<T>)
             : super(config, isoMessageFactory) {
-        setSocketAddress(socketAddress)
+        this.socketAddress = socketAddress
     }
 
     constructor(socketAddress: SocketAddress, isoMessageFactory: MessageFactory<T>)
@@ -113,22 +113,18 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
         return b
     }
 
-    fun disconnectAsync(): ChannelFuture? {
+    fun disconnectAsync(): ChannelFuture {
         reconnectOnCloseListener.requestDisconnect()
         val channel = channel
-        return if (channel != null) {
-            val socketAddress = socketAddress
-            logger.info("Closing connection to {}", socketAddress)
-            channel.close()
-        } else {
-            null
-        }
+        val socketAddress = socketAddress
+        logger.info("Closing connection to {}", socketAddress)
+        return channel.close()
     }
 
     @Throws(InterruptedException::class)
     fun disconnect() {
         val disconnectFuture = disconnectAsync()
-        disconnectFuture?.await()
+        disconnectFuture.await()
     }
 
     /**
@@ -138,7 +134,7 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
      * @return ChannelFuture which will be notified when message is sent
      */
     fun sendAsync(isoMessage: IsoMessage?): ChannelFuture {
-        val channel = channel ?: throw IllegalStateException("Channel is not opened")
+        val channel = channel
         check(channel.isWritable) { "Channel is not writable" }
         return channel.writeAndFlush(isoMessage)
     }
