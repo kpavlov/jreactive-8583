@@ -264,7 +264,7 @@ trim_trailing_whitespace = true
 # ij_editorconfig_space_before_comma = false
 # ij_editorconfig_spaces_around_assignment_operators = true
 
-[{*.gradle.kts, *.kts, *.kt}]
+[{*.kts, *.kt}]
 # ij_kotlin_align_in_columns_case_branch = false
 # ij_kotlin_align_multiline_binary_operation = false
 # ij_kotlin_align_multiline_extends_list = false
@@ -340,6 +340,5 @@ trim_trailing_whitespace = true
 # ij_kotlin_wrap_expression_body_functions = 0
 # ij_kotlin_wrap_first_method_in_call_chain = false
 
-[{package.json, .travis.yml}]
-indent_style = space
+[{*.json, *.yml}]
 indent_size = 2
