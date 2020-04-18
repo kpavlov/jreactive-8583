@@ -23,7 +23,6 @@
         <netty.version>4.1.48.Final</netty.version>
         <slf4j.version>[1.7.29,1.8)</slf4j.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <jsr305.version>3.0.2</jsr305.version>
         <kotlin.version>1.3.71</kotlin.version>
     </properties>
 
@@ -265,6 +264,9 @@
                     <jvmTarget>${java.version}</jvmTarget>
                     <apiVersion>1.3</apiVersion>
                     <languageVersion>1.3</languageVersion>
+                    <args>
+                        <arg>-Xjvm-default=enable</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>
