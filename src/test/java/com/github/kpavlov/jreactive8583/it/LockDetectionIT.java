@@ -37,8 +37,6 @@ public class LockDetectionIT extends AbstractIT {
     private static final AtomicInteger monitorDeadlockedCount = new AtomicInteger();
     private static final AtomicInteger deadlockedCount = new AtomicInteger();
     @Autowired
-    private Iso8583Server<IsoMessage> server;
-    @Autowired
     private ApplicationContext applicationContext;
     private final Iso8583Client[] clients = new Iso8583Client[NUM_CLIENTS];
 
@@ -81,13 +79,7 @@ public class LockDetectionIT extends AbstractIT {
     }
 
     @BeforeEach
-    public void before() throws Exception {
-
-        configureServer(server);
-        server.start();
-
-        await().alias("server started").until(server::isStarted);
-
+    public void beforeEach() {
         for (int i = 0; i < NUM_CLIENTS; i++) {
             final Iso8583Client client = applicationContext.getBean(Iso8583Client.class);
             configureClient(client);
@@ -181,7 +173,6 @@ public class LockDetectionIT extends AbstractIT {
                 return false;
             }
         });
-        server.init();
     }
 
     private IsoMessage createRequest(Iso8583Client client) {

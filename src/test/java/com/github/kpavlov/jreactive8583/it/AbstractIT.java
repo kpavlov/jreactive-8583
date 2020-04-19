@@ -26,7 +26,7 @@ public abstract class AbstractIT {
     protected Iso8583Server<IsoMessage> server;
 
     @BeforeEach
-    public void before() throws Exception {
+    public final void startServerAndConnectClient() throws Exception {
         configureServer(server);
         server.init();
         server.start();
