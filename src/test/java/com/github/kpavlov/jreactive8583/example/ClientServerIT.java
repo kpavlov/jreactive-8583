@@ -6,7 +6,7 @@ import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,7 +54,7 @@ public class ClientServerIT extends AbstractIT {
         });
     }
 
-    @RepeatedTest(3)
+    @Test
     public void shouldSendAsyncCaptureRequest() {
         // given
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
