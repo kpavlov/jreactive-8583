@@ -10,18 +10,20 @@ import io.netty.handler.logging.LoggingHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
  * ChannelHandler responsible for logging messages.
  * <p>
- * According to PCI DSS, sensitive cardholder data, like PAN and track data, should not be exposed. When running in secure mode, sensitive cardholder data will be printed masked. </p>
+ * According to PCI DSS, sensitive cardholder data, like PAN and track data,
+ * should not be exposed. When running in secure mode, sensitive cardholder data will be printed masked. </p>
  */
 @ChannelHandler.Sharable
 public class IsoMessageLoggingHandler extends LoggingHandler {
 
     private static final char MASK_CHAR = '*';
-    private static final int[] DEFAULT_MASKED_FIELDS = {
+    public static final int[] DEFAULT_MASKED_FIELDS = {
             34,// PAN extended
             35,// track 2
             36,// track 3
@@ -50,15 +52,11 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
     public IsoMessageLoggingHandler(LogLevel level,
                                     boolean printSensitiveData,
                                     boolean printFieldDescriptions,
-                                    int... maskedFields) {
+                                    int[] maskedFields) {
         super(level);
         this.printSensitiveData = printSensitiveData;
         this.printFieldDescriptions = printFieldDescriptions;
-        this.maskedFields = (maskedFields != null && maskedFields.length > 0) ? maskedFields : DEFAULT_MASKED_FIELDS;
-    }
-
-    public IsoMessageLoggingHandler(LogLevel level) {
-        this(level, true, true);
+        this.maskedFields = Objects.requireNonNull(maskedFields, "maskedFields");
     }
 
     private static char[] maskPAN(String fullPan) {
