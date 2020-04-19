@@ -87,7 +87,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     public ChannelFuture connectAsync() {
         logger.debug("Connecting to {}", getSocketAddress());
         final Bootstrap b = getBootstrap();
-        reconnectOnCloseListener.requestReconnect();
+        if (reconnectOnCloseListener != null) {
+            reconnectOnCloseListener.requestReconnect();
+        }
         final ChannelFuture connectFuture = b.connect();
         connectFuture.addListener(connFuture -> {
             if (!connectFuture.isSuccess()) {
@@ -130,6 +132,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
         return b;
     }
 
+    @Nullable
     public ChannelFuture disconnectAsync() {
         if (reconnectOnCloseListener != null) {
             reconnectOnCloseListener.requestDisconnect();
@@ -188,5 +191,14 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     public boolean isConnected() {
         Channel channel = getChannel();
         return channel != null && channel.isActive();
+    }
+
+    @Override
+    public void shutdown() {
+        final ChannelFuture future = disconnectAsync();
+        if (future != null) {
+            future.awaitUninterruptibly();
+        }
+        super.shutdown();
     }
 }
