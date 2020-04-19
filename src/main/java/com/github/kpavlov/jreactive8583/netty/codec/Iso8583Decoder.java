@@ -22,7 +22,7 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
      * Decodes ISO8583 message from {@link ByteBuf}.
      * <p>
      * Message body starts immediately, no length header,
-     * see <code>"lengthFieldFameDecoder"</code> in
+     * see <code>"lengthFieldFrameDecoder"</code> in
      * {@link com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer#initChannel(Channel)}
      * </p>
      */
