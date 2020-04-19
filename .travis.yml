@@ -1,14 +1,17 @@
 language: java
 jdk:
-  - oraclejdk12
-  - oraclejdk13
   - openjdk10
   - openjdk11
   - openjdk12
+  - openjdk13
+  - openjdk14
 
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
+
+script:
+  - mvn verify -B
 
 after_success:
   - mvn javadoc:javadoc

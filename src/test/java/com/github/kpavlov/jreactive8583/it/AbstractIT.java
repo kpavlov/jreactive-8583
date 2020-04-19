@@ -1,6 +1,7 @@
-package com.github.kpavlov.jreactive8583.example;
+package com.github.kpavlov.jreactive8583.it;
 
 import com.github.kpavlov.jreactive8583.client.Iso8583Client;
+import com.github.kpavlov.jreactive8583.example.TestConfig;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import net.jcip.annotations.NotThreadSafe;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.awaitility.Awaitility.await;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -23,7 +26,7 @@ public abstract class AbstractIT {
     protected Iso8583Server<IsoMessage> server;
 
     @BeforeEach
-    public void before() throws Exception {
+    public final void startServerAndConnectClient() throws Exception {
         configureServer(server);
         server.init();
         server.start();
@@ -31,6 +34,9 @@ public abstract class AbstractIT {
         configureClient(client);
         client.init();
         client.connect();
+
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
     }
 
     @SuppressWarnings("EmptyMethod")

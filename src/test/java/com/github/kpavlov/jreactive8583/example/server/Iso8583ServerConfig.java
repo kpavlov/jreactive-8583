@@ -8,9 +8,12 @@ import com.solab.iso8583.parse.ConfigParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @Configuration
 public class Iso8583ServerConfig {
@@ -19,6 +22,7 @@ public class Iso8583ServerConfig {
     private int port;
 
     @Bean
+    @Scope(SCOPE_PROTOTYPE)
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
         final ServerConfiguration configuration = ServerConfiguration.newBuilder()
 //                .addLoggingHandler()

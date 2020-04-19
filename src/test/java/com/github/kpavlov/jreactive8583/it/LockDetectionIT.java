@@ -1,4 +1,4 @@
-package com.github.kpavlov.jreactive8583.example;
+package com.github.kpavlov.jreactive8583.it;
 
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
@@ -10,13 +10,11 @@ import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
@@ -27,9 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.slf4j.LoggerFactory.getLogger;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
-public class LockDetectionIT {
+@Tag("slow")
+public class LockDetectionIT extends AbstractIT {
 
     private static final int NUM_CLIENTS = 20;
     private static final int NUM_MESSAGES = 100;
@@ -39,8 +36,6 @@ public class LockDetectionIT {
     private static Thread monitoringThread;
     private static final AtomicInteger monitorDeadlockedCount = new AtomicInteger();
     private static final AtomicInteger deadlockedCount = new AtomicInteger();
-    @Autowired
-    private Iso8583Server<IsoMessage> server;
     @Autowired
     private ApplicationContext applicationContext;
     private final Iso8583Client[] clients = new Iso8583Client[NUM_CLIENTS];
@@ -84,13 +79,7 @@ public class LockDetectionIT {
     }
 
     @BeforeEach
-    public void before() throws Exception {
-
-        configureServer(server);
-        server.start();
-
-        await().alias("server started").until(server::isStarted);
-
+    public void beforeEach() {
         for (int i = 0; i < NUM_CLIENTS; i++) {
             final Iso8583Client client = applicationContext.getBean(Iso8583Client.class);
             configureClient(client);
@@ -100,8 +89,14 @@ public class LockDetectionIT {
     }
 
     @AfterEach
-    public void shutdownServer() {
-        server.shutdown();
+    public void shutdownClients() {
+        for (Iso8583Client<?> c : clients) {
+            try {
+                c.shutdown();
+            } catch (Exception e) {
+                //ignore
+            }
+        }
     }
 
     @Test
@@ -132,7 +127,8 @@ public class LockDetectionIT {
         assertThat(deadlockedCount.get()).as("Deadlock Count").isEqualTo(0);
     }
 
-    private void configureClient(Iso8583Client<IsoMessage> client) {
+    @Override
+    protected void configureClient(Iso8583Client<IsoMessage> client) {
         client.addMessageListener(new IsoMessageListener<IsoMessage>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
@@ -152,7 +148,8 @@ public class LockDetectionIT {
         client.init();
     }
 
-    private void configureServer(Iso8583Server<IsoMessage> server) {
+    @Override
+    protected void configureServer(Iso8583Server<IsoMessage> server) {
 
         server.addMessageListener(new IsoMessageListener<IsoMessage>() {
 
@@ -176,7 +173,6 @@ public class LockDetectionIT {
                 return false;
             }
         });
-        server.init();
     }
 
     private IsoMessage createRequest(Iso8583Client client) {

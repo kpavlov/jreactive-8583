@@ -75,7 +75,8 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
     public void stop() {
         final Channel channel = getChannel();
         if (channel == null) {
-            throw new IllegalStateException("Server is not started.");
+            logger.info("The Server is not started...");
+            return;
         }
         logger.info("Stopping the Server...");
         try {
