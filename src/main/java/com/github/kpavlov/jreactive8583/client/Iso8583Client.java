@@ -203,7 +203,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     public void shutdown() {
         final ChannelFuture future = disconnectAsync();
         if (future != null) {
-            future.awaitUninterruptibly();
+            future.syncUninterruptibly();
         }
         super.shutdown();
     }

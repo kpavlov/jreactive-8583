@@ -11,7 +11,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 
 public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
 
@@ -85,9 +84,9 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
         logger.info("Stopping the Server...");
         try {
             channel.deregister();
-            channel.close().sync().await(10, TimeUnit.SECONDS);
+            channel.close().syncUninterruptibly();
             logger.info("Server was Stopped.");
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             logger.error("Error while stopping the server", e);
         }
 
