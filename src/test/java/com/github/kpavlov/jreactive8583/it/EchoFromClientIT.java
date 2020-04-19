@@ -1,4 +1,4 @@
-package com.github.kpavlov.jreactive8583.example;
+package com.github.kpavlov.jreactive8583.it;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
@@ -68,12 +68,14 @@ public class EchoFromClientIT extends AbstractIT {
                 return false;
             }
         });
+
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
+
     }
 
     @Test
     public void shouldHandleEchoFromServer() throws Exception {
-        await().alias("server started").until(server::isStarted);
-        await().alias("client connected").until(client::isConnected);
 
         latch.await(5, TimeUnit.SECONDS);
 

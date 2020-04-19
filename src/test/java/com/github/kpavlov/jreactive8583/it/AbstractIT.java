@@ -1,6 +1,7 @@
-package com.github.kpavlov.jreactive8583.example;
+package com.github.kpavlov.jreactive8583.it;
 
 import com.github.kpavlov.jreactive8583.client.Iso8583Client;
+import com.github.kpavlov.jreactive8583.example.TestConfig;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import net.jcip.annotations.NotThreadSafe;

@@ -1,6 +1,7 @@
 package com.github.kpavlov.jreactive8583.example;
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
+import com.github.kpavlov.jreactive8583.it.AbstractIT;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;

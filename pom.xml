@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
@@ -17,13 +18,13 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <failIfNoTests>true</failIfNoTests>
         <!-- Versions -->
         <j8583.version>1.15.0</j8583.version>
         <mockito.version>3.3.3</mockito.version>
         <netty.version>4.1.48.Final</netty.version>
         <slf4j.version>[1.7.29,1.8)</slf4j.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <jsr305.version>3.0.2</jsr305.version>
     </properties>
 
     <issueManagement>
@@ -172,30 +173,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0-M3</version>
                 <executions>
                     <execution>
-                        <id>enforce-versions</id>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <bannedPlugins>
-                                    <!-- will only display a warning but does not fail the build. -->
-                                    <level>WARN</level>
-                                    <excludes>
-                                        <exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
-                                    </excludes>
-                                    <message>Please consider using the maven-invoker-plugin
-                                        (http://maven.apache.org/plugins/maven-invoker-plugin/)!
-                                    </message>
-                                </bannedPlugins>
-                                <requireJavaVersion>
-                                    <version>${java.version}</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -204,8 +193,27 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <excludedGroups>reconnect</excludedGroups>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>reconnect-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**ClientReconnectIT**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
