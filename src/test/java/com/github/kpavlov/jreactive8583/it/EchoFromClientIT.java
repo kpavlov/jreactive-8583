@@ -2,6 +2,7 @@ package com.github.kpavlov.jreactive8583.it;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
+import com.github.kpavlov.jreactive8583.client.Iso8583Client;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.github.kpavlov.jreactive8583.server.ServerConfiguration;
 import com.solab.iso8583.IsoMessage;
@@ -11,7 +12,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import net.jcip.annotations.NotThreadSafe;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,14 +20,13 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @NotThreadSafe
 public class EchoFromClientIT extends AbstractIT {
 
     private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new ArrayList<>(10));
-    private CountDownLatch latch;
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
@@ -47,11 +46,8 @@ public class EchoFromClientIT extends AbstractIT {
         });
     }
 
-    @BeforeEach
-    public void beforeTest() {
-
-        latch = new CountDownLatch(1);
-
+    @Override
+    protected void configureClient(Iso8583Client<IsoMessage> client) {
         client.addMessageListener(new IsoMessageListener<IsoMessage>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
@@ -68,15 +64,10 @@ public class EchoFromClientIT extends AbstractIT {
                 return false;
             }
         });
-
-        await().alias("server started").until(server::isStarted);
-        await().alias("client connected").until(client::isConnected);
-
     }
 
     @Test
     public void shouldHandleEchoFromServer() throws Exception {
-
         latch.await(5, TimeUnit.SECONDS);
 
         assertTrue("infoMessage expected", capturedRequests.stream().anyMatch(

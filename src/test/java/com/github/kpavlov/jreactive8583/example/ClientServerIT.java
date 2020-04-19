@@ -2,11 +2,11 @@ package com.github.kpavlov.jreactive8583.example;
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
 import com.github.kpavlov.jreactive8583.it.AbstractIT;
+import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,8 +18,8 @@ public class ClientServerIT extends AbstractIT {
 
     private final Map<Integer, IsoMessage> receivedMessages = new ConcurrentHashMap<>();
 
-    @BeforeEach
-    public void beforeTest() {
+    @Override
+    protected void configureServer(Iso8583Server<IsoMessage> server) {
         server.addMessageListener(new IsoMessageListener<IsoMessage>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
@@ -52,12 +52,9 @@ public class ClientServerIT extends AbstractIT {
                 return false;
             }
         });
-
-        await().alias("server started").until(server::isStarted);
-        await().alias("client connected").until(client::isConnected);
     }
 
-    @Test
+    @RepeatedTest(3)
     public void shouldSendAsyncCaptureRequest() {
         // given
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.awaitility.Awaitility.await;
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 @NotThreadSafe
@@ -32,6 +34,9 @@ public abstract class AbstractIT {
         configureClient(client);
         client.init();
         client.connect();
+
+        await().alias("server started").until(server::isStarted);
+        await().alias("client connected").until(client::isConnected);
     }
 
     @SuppressWarnings("EmptyMethod")

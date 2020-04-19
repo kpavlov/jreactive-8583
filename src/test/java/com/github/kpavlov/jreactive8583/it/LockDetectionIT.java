@@ -97,16 +97,14 @@ public class LockDetectionIT extends AbstractIT {
     }
 
     @AfterEach
-    public void shutdownServer() {
-        for (Iso8583Client<?> iso8583Client : clients) {
+    public void shutdownClients() {
+        for (Iso8583Client<?> c : clients) {
             try {
-                client.shutdown();
+                c.shutdown();
             } catch (Exception e) {
                 //ignore
             }
         }
-        server.shutdown();
-
     }
 
     @Test

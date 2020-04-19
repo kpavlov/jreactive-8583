@@ -12,10 +12,6 @@ public class ClientReconnectIT extends AbstractIT {
 
     @Test
     public void clientShouldReconnectWhenConnectionLost() throws Exception {
-        //given
-        await().alias("server started").until(server::isStarted);
-        await().alias("client connected").until(client::isConnected);
-
         //when
         server.shutdown();
         await().alias("client was disconnected").until(() -> (!client.isConnected()));
