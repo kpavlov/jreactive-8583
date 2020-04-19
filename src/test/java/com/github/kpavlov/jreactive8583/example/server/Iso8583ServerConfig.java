@@ -27,7 +27,7 @@ public class Iso8583ServerConfig {
         final ServerConfiguration configuration = ServerConfiguration.newBuilder()
 //                .addLoggingHandler()
 //                .logSensitiveData(false)
-                .workerThreadsCount(1)
+                .workerThreadsCount(4)
                 .build();
 
         return new Iso8583Server<>(port, configuration, serverMessageFactory());
