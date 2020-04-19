@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class StringLengthFieldBasedFrameTest {
+class StringLengthFieldBasedFrameDecoderTest {
 
     private Iso8583Encoder encoder;
     private StringLengthFieldBasedFrameDecoder decoder;
@@ -48,7 +48,8 @@ public class StringLengthFieldBasedFrameTest {
     }
 
     @Test
-    public void testCodec() {
+    public void shouldGetUnadjustedFrameLength() {
+        // given
         String content = "MESSAGE";
         when(message.writeData()).thenReturn(content.getBytes(StandardCharsets.US_ASCII));
 
@@ -56,12 +57,15 @@ public class StringLengthFieldBasedFrameTest {
         encoder.encode(ctx, message, buf);
         assertThat(buf.toString(StandardCharsets.US_ASCII)).isEqualTo("0007MESSAGE");
 
+        //when
         long frameLength = decoder.getUnadjustedFrameLength(
                 buf,
                 config.getFrameLengthFieldOffset(),
                 config.getFrameLengthFieldLength(),
                 buf.order()
         );
+
+        //then
         assertThat(frameLength).isEqualTo(content.length());
     }
 }

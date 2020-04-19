@@ -5,7 +5,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.CharsetUtil;
 
 import java.nio.ByteOrder;
-import java.nio.charset.Charset;
 
 /**
  *  Netty's {@link LengthFieldBasedFrameDecoder} assumes the frame length header is a binary encoded integer.
