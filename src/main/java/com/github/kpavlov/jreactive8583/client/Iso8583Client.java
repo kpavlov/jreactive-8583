@@ -10,12 +10,14 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import javax.annotation.Nullable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
 public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
 
+    @Nullable
     private ReconnectOnCloseListener reconnectOnCloseListener;
 
     public Iso8583Client(SocketAddress socketAddress, ClientConfiguration config, MessageFactory<T> isoMessageFactory) {
@@ -28,9 +30,8 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     }
 
     /**
-     * @deprecated Use {@link #Iso8583Client(SocketAddress, ClientConfiguration, MessageFactory)}
-     *
      * @param isoMessageFactory message factory
+     * @deprecated Use {@link #Iso8583Client(SocketAddress, ClientConfiguration, MessageFactory)}
      */
     @Deprecated
     public Iso8583Client(MessageFactory<T> isoMessageFactory) {
@@ -130,7 +131,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     }
 
     public ChannelFuture disconnectAsync() {
-        reconnectOnCloseListener.requestDisconnect();
+        if (reconnectOnCloseListener != null) {
+            reconnectOnCloseListener.requestDisconnect();
+        }
         final Channel channel = getChannel();
         if (channel != null) {
             final SocketAddress socketAddress = getSocketAddress();
