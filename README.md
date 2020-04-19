@@ -2,6 +2,7 @@
 
 Free ISO8583 Java Connector
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.kpavlov.jreactive8583/netty-iso8583.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.kpavlov.jreactive8583%22%20AND%20a:%22netty-iso8583%22)
 [![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8d9680f5cae470ea7cbb152e1134ef5)](https://www.codacy.com/app/kpavlov/jreactive-8583?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kpavlov/jreactive-8583&amp;utm_campaign=Badge_Grade)
