@@ -39,7 +39,7 @@ public class Iso8583ClientConfig {
 //                .addLoggingHandler()
                 .idleTimeout(idleTimeout)
                 .logSensitiveData(false)
-//                .workerThreadsCount(4)
+                .workerThreadsCount(2)
                 .build();
 
         return new Iso8583Client<>(socketAddress, configuration, clientMessageFactory());

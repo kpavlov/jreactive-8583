@@ -1,0 +1,9 @@
+version: 2.1
+
+orbs:
+  maven: circleci/maven@1.0.0
+
+workflows:
+  maven_test:
+    jobs:
+      - maven/test # checkout, build, test, and upload test results
