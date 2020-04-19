@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.github.kpavlov.jreactive8583.ConnectorConfiguration.DEFAULT_SENSITIVE_DATA_FIELDS;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +40,7 @@ public class IsoMessageLoggingHandlerTest {
 
         when(ctx.channel()).thenReturn(new LocalChannel());
 
-        MessageFactory messageFactory = ConfigParser.createDefault();
+        MessageFactory<?> messageFactory = ConfigParser.createDefault();
         message = messageFactory.newMessage(0x0200);
 
         pan = randomNumeric(19);
@@ -57,7 +58,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testMaskSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, 34, 35, 36, 45, 112);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, new int[]{34, 35, 36, 45, 112});
 
         final String result = handler.format(ctx, "someEvent", message);
 
@@ -70,7 +71,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testMaskDefaultSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
         final String result = handler.format(ctx, "someEvent", message);
 
@@ -84,7 +85,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testPrintSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, true, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
         final String result = handler.format(ctx, "someEvent", message);
 
@@ -97,7 +98,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testHideFieldDescriptions() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false, DEFAULT_SENSITIVE_DATA_FIELDS);
 
         final String result = handler.format(ctx, "someEvent", message);
 
@@ -106,7 +107,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testShowFieldDescriptions() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
         final String result = handler.format(ctx, "someEvent", message);
 
