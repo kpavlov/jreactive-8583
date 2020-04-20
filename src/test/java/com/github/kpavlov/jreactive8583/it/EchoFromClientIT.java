@@ -14,19 +14,16 @@ import io.netty.channel.ChannelPipeline;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
-import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static org.awaitility.Awaitility.await;
 
 @NotThreadSafe
 public class EchoFromClientIT extends AbstractIT {
 
-    private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new ArrayList<>(10));
-    private final CountDownLatch latch = new CountDownLatch(1);
+    private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new LinkedList<>());
 
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
@@ -57,7 +54,6 @@ public class EchoFromClientIT extends AbstractIT {
             @Override
             public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
                 capturedRequests.add(isoMessage);
-                latch.countDown();
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("01", 2));
                 ctx.writeAndFlush(response);
@@ -67,12 +63,10 @@ public class EchoFromClientIT extends AbstractIT {
     }
 
     @Test
-    public void shouldHandleEchoFromServer() throws Exception {
-        latch.await(5, TimeUnit.SECONDS);
-
-        assertTrue("infoMessage expected", capturedRequests.stream().anyMatch(
-                m -> m.getType() == 0x800
-        ));
+    public void shouldHandleEchoFromServer() {
+        await()
+                .alias("infoMessage expected")
+                .until(() -> capturedRequests.stream().anyMatch(m -> m.getType() == 0x800));
     }
 
 

@@ -7,10 +7,10 @@ import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 
 public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
 
@@ -24,7 +24,6 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
     }
 
     public void start() throws InterruptedException {
-
         getBootstrap().bind().addListener(
                 (ChannelFuture future) -> {
                     final Channel channel = future.channel();
@@ -39,8 +38,12 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
 
         final ServerBootstrap bootstrap = new ServerBootstrap();
 
+        final boolean tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
+
         bootstrap.group(getBossEventLoopGroup(), getWorkerEventLoopGroup())
                 .channel(NioServerSocketChannel.class)
+                .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .localAddress(getSocketAddress())
                 .childHandler(new Iso8583ChannelInitializer<>(
                         getConfiguration(),
@@ -81,9 +84,9 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
         logger.info("Stopping the Server...");
         try {
             channel.deregister();
-            channel.close().sync().await(10, TimeUnit.SECONDS);
+            channel.close().syncUninterruptibly();
             logger.info("Server was Stopped.");
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             logger.error("Error while stopping the server", e);
         }
 

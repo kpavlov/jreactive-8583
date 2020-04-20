@@ -8,6 +8,7 @@ import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import javax.annotation.Nullable;
@@ -108,8 +109,13 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     @Override
     protected Bootstrap createBootstrap() {
         final Bootstrap b = new Bootstrap();
+
+        final boolean tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
+
         b.group(getBossEventLoopGroup())
                 .channel(NioSocketChannel.class)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, tcpNoDelay)
                 .remoteAddress(getSocketAddress())
 
                 .handler(new Iso8583ChannelInitializer<>(
@@ -197,7 +203,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     public void shutdown() {
         final ChannelFuture future = disconnectAsync();
         if (future != null) {
-            future.awaitUninterruptibly();
+            future.syncUninterruptibly();
         }
         super.shutdown();
     }

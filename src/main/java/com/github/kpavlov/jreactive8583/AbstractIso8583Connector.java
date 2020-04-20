@@ -84,10 +84,7 @@ public abstract class AbstractIso8583Connector<
     }
 
     protected void configureBootstrap(B bootstrap) {
-        bootstrap.option(ChannelOption.TCP_NODELAY,
-                Boolean.parseBoolean(System.getProperty(
-                        "nfs.rpc.tcp.nodelay", "true")))
-                .option(ChannelOption.AUTO_READ, true);
+        bootstrap.option(ChannelOption.AUTO_READ, true);
 
         if (configurer != null) {
             configurer.configureBootstrap(bootstrap, configuration);
