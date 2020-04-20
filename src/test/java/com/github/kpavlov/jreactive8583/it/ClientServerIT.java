@@ -1,7 +1,6 @@
-package com.github.kpavlov.jreactive8583.example;
+package com.github.kpavlov.jreactive8583.it;
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
-import com.github.kpavlov.jreactive8583.it.AbstractIT;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
