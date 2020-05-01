@@ -53,7 +53,7 @@ Add dependency to your project:
         <dependency>
             <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>${jreactive8583.version}</version>
+            <version>${VERSION}</version>
         </dependency>
     </dependencies>
 
