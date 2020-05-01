@@ -48,7 +48,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @see #setSocketAddress(SocketAddress)
      */
     public ChannelFuture connect() throws InterruptedException {
-        final Channel channel = connectAsync().sync().channel();
+        final var channel = connectAsync().sync().channel();
         assert (channel != null) : "Channel must be set";
         setChannel(channel);
         return channel.closeFuture();
@@ -87,11 +87,11 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      */
     public ChannelFuture connectAsync() {
         logger.debug("Connecting to {}", getSocketAddress());
-        final Bootstrap b = getBootstrap();
+        final var b = getBootstrap();
         if (reconnectOnCloseListener != null) {
             reconnectOnCloseListener.requestReconnect();
         }
-        final ChannelFuture connectFuture = b.connect();
+        final var connectFuture = b.connect();
         connectFuture.addListener(connFuture -> {
             if (!connectFuture.isSuccess()) {
                 reconnectOnCloseListener.scheduleReconnect();
@@ -108,7 +108,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     @Override
     protected Bootstrap createBootstrap() {
-        final Bootstrap b = new Bootstrap();
+        final var b = new Bootstrap();
 
         final boolean tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
 

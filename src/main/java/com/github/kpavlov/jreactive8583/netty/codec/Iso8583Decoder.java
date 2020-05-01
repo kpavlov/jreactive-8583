@@ -31,7 +31,7 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
         if (!byteBuf.isReadable()) {
             return;
         }
-        byte[] bytes = new byte[byteBuf.readableBytes()];
+        final var bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
 
         final IsoMessage isoMessage = messageFactory.parseMessage(bytes, 0);

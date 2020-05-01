@@ -20,7 +20,7 @@ public class ClientServerIT extends AbstractIT {
 
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
-        server.addMessageListener(new IsoMessageListener<IsoMessage>() {
+        server.addMessageListener(new IsoMessageListener<>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
                 return true;
@@ -36,7 +36,7 @@ public class ClientServerIT extends AbstractIT {
                 return false;
             }
         });
-        server.addMessageListener(new IsoMessageListener<IsoMessage>() {
+        server.addMessageListener(new IsoMessageListener<>() {
 
             @Override
             public boolean applies(IsoMessage isoMessage) {

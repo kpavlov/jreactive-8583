@@ -38,7 +38,7 @@ public class LockDetectionIT extends AbstractIT {
     private static final AtomicInteger deadlockedCount = new AtomicInteger();
     @Autowired
     private ApplicationContext applicationContext;
-    private final Iso8583Client[] clients = new Iso8583Client[NUM_CLIENTS];
+    private final Iso8583Client<?>[] clients = new Iso8583Client[NUM_CLIENTS];
 
     @BeforeAll
     public static void beforeAll() {
@@ -81,7 +81,7 @@ public class LockDetectionIT extends AbstractIT {
     @BeforeEach
     public void beforeEach() {
         for (int i = 0; i < NUM_CLIENTS; i++) {
-            final Iso8583Client client = applicationContext.getBean(Iso8583Client.class);
+            @SuppressWarnings("unchecked") final Iso8583Client<IsoMessage> client = applicationContext.getBean(Iso8583Client.class);
             configureClient(client);
             clients[i] = client;
         }
@@ -102,7 +102,7 @@ public class LockDetectionIT extends AbstractIT {
     @Test
     public void shouldProcessRequestsFromMultipleClientsWithoutDeadlocks() throws Exception {
 
-        for (Iso8583Client client : clients) {
+        for (Iso8583Client<? extends IsoMessage> client : clients) {
             new Thread(() -> {
                 try {
 
@@ -129,7 +129,7 @@ public class LockDetectionIT extends AbstractIT {
 
     @Override
     protected void configureClient(Iso8583Client<IsoMessage> client) {
-        client.addMessageListener(new IsoMessageListener<IsoMessage>() {
+        client.addMessageListener(new IsoMessageListener<>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x210;
@@ -151,7 +151,7 @@ public class LockDetectionIT extends AbstractIT {
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
 
-        server.addMessageListener(new IsoMessageListener<IsoMessage>() {
+        server.addMessageListener(new IsoMessageListener<>() {
 
             @Override
             public boolean applies(IsoMessage isoMessage) {
@@ -160,7 +160,6 @@ public class LockDetectionIT extends AbstractIT {
 
             @Override
             public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-//                logger.info("{} Handling message {}", ctx.channel().id(), isoMessage);
                 final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
@@ -175,7 +174,7 @@ public class LockDetectionIT extends AbstractIT {
         });
     }
 
-    private IsoMessage createRequest(Iso8583Client client) {
+    private IsoMessage createRequest(Iso8583Client<? extends IsoMessage> client) {
         final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         return finMessage;

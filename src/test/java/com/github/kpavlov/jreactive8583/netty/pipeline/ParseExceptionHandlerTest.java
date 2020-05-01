@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class ParseExceptionHandlerTest {
 
-    private static MessageFactory messageFactory;
+    private static MessageFactory<?> messageFactory;
     private ParseExceptionHandler handler;
     @Mock
     private ChannelHandlerContext ctx;
@@ -63,7 +63,8 @@ public class ParseExceptionHandlerTest {
         assertThat(field44).as("field44").isInstanceOf(IsoValue.class);
         assertThat(field44.getType()).as("field44.type").isEqualTo(IsoType.LLVAR);
         assertThat(field44.getLength()).as("field44.length").isEqualTo(25);
-        assertThat(field44.getValue()).isEqualToComparingFieldByField(errorMessage.substring(0, 22) + "...").as("field44.value");
+        assertThat(field44.getValue()).as("field44.value")
+                .isEqualToComparingFieldByField(errorMessage.substring(0, 22) + "...");
 
     }
 }

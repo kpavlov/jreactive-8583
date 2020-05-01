@@ -34,7 +34,7 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
 
     static {
         try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/github/kpavlov/jreactive8583/iso8583fields.properties")) {
-            final Properties properties = new Properties();
+            final var properties = new Properties();
             properties.load(stream);
             properties.forEach((key, value) -> {
                 int field = Integer.parseInt((String) key);
