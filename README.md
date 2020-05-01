@@ -19,6 +19,7 @@ Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excell
 ## Supported Features
 
 * Client and Server endpoints.
+* Java 11+
 * Support ISO8583 messages using [j8583][j8583] library.
 * Customizable [ISO MessageFactory][j8583-message-factory].
 * Automatic responding to Echo messages.
@@ -52,7 +53,7 @@ Add dependency to your project:
         <dependency>
             <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 

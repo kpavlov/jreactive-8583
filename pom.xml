@@ -8,12 +8,8 @@
     <version>1.0.1-SNAPSHOT</version>
 
     <name>ISO8583 Connector for Netty</name>
-    <description>ISO8583 protocol client and server Netty connectors.</description>
-
-    <url>https://github.com/kpavlov/jreactive-8583</url>
-
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
@@ -25,8 +21,12 @@
         <mockito.version>3.3.3</mockito.version>
         <netty.version>4.1.48.Final</netty.version>
         <slf4j.version>[1.7.30,1.8)</slf4j.version>
-        <spring.version>5.2.5.RELEASE</spring.version>
+        <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
+
+    <description>ISO8583 protocol client and server Netty connectors.</description>
+
+    <url>https://github.com/kpavlov/jreactive-8583</url>
 
     <issueManagement>
         <system>GITHUB</system>
@@ -250,6 +250,16 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-Xlint:all,-options,-path</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M4</version>
                 </plugin>
@@ -266,7 +276,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
