@@ -7,25 +7,25 @@
     <version>1.1.0-SNAPSHOT</version>
 
     <name>ISO8583 Connector for Netty</name>
-    <description>ISO8583 protocol client and server Netty connectors.</description>
-
-    <url>https://github.com/kpavlov/jreactive-8583</url>
-
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.release>8</maven.compiler.release>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failIfNoTests>true</failIfNoTests>
         <!-- Versions -->
-        <j8583.version>1.15.0</j8583.version>
+        <j8583.version>1.16.0</j8583.version>
         <mockito.version>3.3.3</mockito.version>
-        <netty.version>4.1.43.Final</netty.version>
-        <slf4j.version>[1.7.30,1.8)</slf4j.version>
-        <spring.version>5.2.5.RELEASE</spring.version>
+        <netty.version>4.1.48.Final</netty.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
+
+    <description>ISO8583 protocol client and server Netty connectors.</description>
+
+    <url>https://github.com/kpavlov/jreactive-8583</url>
 
     <issueManagement>
         <system>GITHUB</system>
@@ -183,6 +183,7 @@
                 <executions>
                     <execution>
                         <id>enforce</id>
+                        <phase>validate</phase>
                         <configuration>
                             <rules>
                                 <dependencyConvergence />
@@ -249,6 +250,16 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-Xlint:all,-options,-path</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M4</version>
                 </plugin>
@@ -260,12 +271,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
