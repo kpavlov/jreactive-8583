@@ -23,13 +23,13 @@ public class Iso8583Encoder extends MessageToByteEncoder<IsoMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) {
         if (lengthHeaderLength == 0) {
-            byte[] bytes = isoMessage.writeData();
+            final var bytes = isoMessage.writeData();
             out.writeBytes(bytes);
         } else if (encodeLengthHeaderAsString) {
-            byte[] data = isoMessage.writeData();
-            String lengthHeader = String.format("%0" + lengthHeaderLength + "d", data.length);
+            final var bytes = isoMessage.writeData();
+            String lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.length);
             out.writeBytes(lengthHeader.getBytes(CharsetUtil.US_ASCII));
-            out.writeBytes(data);
+            out.writeBytes(bytes);
         } else {
             ByteBuffer byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength);
             out.writeBytes(byteBuffer);

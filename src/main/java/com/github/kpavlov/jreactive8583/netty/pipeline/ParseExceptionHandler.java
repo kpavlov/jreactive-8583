@@ -17,11 +17,11 @@ import java.text.ParseException;
 @ChannelHandler.Sharable
 public class ParseExceptionHandler extends ChannelInboundHandlerAdapter {
 
-    private final MessageFactory isoMessageFactory;
+    private final MessageFactory<?> isoMessageFactory;
 
     private final boolean includeErrorDetails;
 
-    public ParseExceptionHandler(MessageFactory isoMessageFactory, boolean includeErrorDetails) {
+    public ParseExceptionHandler(MessageFactory<?> isoMessageFactory, boolean includeErrorDetails) {
         this.isoMessageFactory = isoMessageFactory;
         this.includeErrorDetails = includeErrorDetails;
     }

@@ -18,9 +18,9 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
-import com.github.kpavlov.jreactive8583.netty.codec.StringLengthFieldBasedFrameDecoder;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Decoder;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Encoder;
+import com.github.kpavlov.jreactive8583.netty.codec.StringLengthFieldBasedFrameDecoder;
 import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
@@ -41,7 +41,7 @@ public class Iso8583ChannelInitializer<
     private final C configuration;
     private final ConnectorConfigurer<C, B> configurer;
     private final EventLoopGroup workerGroup;
-    private final MessageFactory isoMessageFactory;
+    private final MessageFactory<?> isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
     private final Iso8583Encoder isoMessageEncoder;
     private final ChannelHandler loggingHandler;
@@ -51,7 +51,7 @@ public class Iso8583ChannelInitializer<
             C configuration,
             ConnectorConfigurer<C, B> configurer,
             EventLoopGroup workerGroup,
-            MessageFactory isoMessageFactory,
+            MessageFactory<?> isoMessageFactory,
             ChannelHandler... customChannelHandlers) {
         this.configuration = configuration;
         this.configurer = configurer;
@@ -92,7 +92,7 @@ public class Iso8583ChannelInitializer<
         }
     }
 
-    protected MessageFactory getIsoMessageFactory() {
+    protected MessageFactory<?> getIsoMessageFactory() {
         return isoMessageFactory;
     }
 
@@ -105,7 +105,7 @@ public class Iso8583ChannelInitializer<
                 configuration.encodeFrameLengthAsString());
     }
 
-    protected Iso8583Decoder createIso8583Decoder(final MessageFactory messageFactory) {
+    protected Iso8583Decoder createIso8583Decoder(final MessageFactory<?> messageFactory) {
         return new Iso8583Decoder(messageFactory);
     }
 
@@ -120,12 +120,12 @@ public class Iso8583ChannelInitializer<
         final int lengthFieldLength = configuration.getFrameLengthFieldLength();
         if (configuration.encodeFrameLengthAsString()) {
             return new StringLengthFieldBasedFrameDecoder(
-              configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
-              configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
+                    configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
+                    configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
         } else {
             return new LengthFieldBasedFrameDecoder(
-              configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
-              configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
+                    configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,
+                    configuration.getFrameLengthFieldAdjust(), lengthFieldLength);
         }
     }
 }

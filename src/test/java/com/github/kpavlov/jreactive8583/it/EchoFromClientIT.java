@@ -7,7 +7,6 @@ import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.github.kpavlov.jreactive8583.server.ServerConfiguration;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
-import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
@@ -27,7 +26,7 @@ public class EchoFromClientIT extends AbstractIT {
 
     @Override
     protected void configureServer(Iso8583Server<IsoMessage> server) {
-        server.setConfigurer(new ConnectorConfigurer<ServerConfiguration, ServerBootstrap>() {
+        server.setConfigurer(new ConnectorConfigurer<>() {
 
             @Override
             public void configurePipeline(ChannelPipeline pipeline, ServerConfiguration configuration) {
@@ -45,7 +44,7 @@ public class EchoFromClientIT extends AbstractIT {
 
     @Override
     protected void configureClient(Iso8583Client<IsoMessage> client) {
-        client.addMessageListener(new IsoMessageListener<IsoMessage>() {
+        client.addMessageListener(new IsoMessageListener<>() {
             @Override
             public boolean applies(IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x800;

@@ -9,9 +9,9 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 public class IdleEventHandler extends ChannelInboundHandlerAdapter {
 
-    private final MessageFactory isoMessageFactory;
+    private final MessageFactory<?> isoMessageFactory;
 
-    public IdleEventHandler(MessageFactory isoMessageFactory) {
+    public IdleEventHandler(MessageFactory<?> isoMessageFactory) {
         this.isoMessageFactory = isoMessageFactory;
     }
 

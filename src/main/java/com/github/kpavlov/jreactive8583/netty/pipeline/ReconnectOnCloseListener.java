@@ -16,12 +16,12 @@ public class ReconnectOnCloseListener implements ChannelFutureListener {
 
     private final Logger logger = getLogger(ReconnectOnCloseListener.class);
 
-    private final Iso8583Client client;
+    private final Iso8583Client<?> client;
     private final int reconnectInterval;
     private final AtomicBoolean disconnectRequested = new AtomicBoolean(false);
     private final ScheduledExecutorService executorService;
 
-    public ReconnectOnCloseListener(Iso8583Client client, int reconnectInterval, ScheduledExecutorService executorService) {
+    public ReconnectOnCloseListener(Iso8583Client<?> client, int reconnectInterval, ScheduledExecutorService executorService) {
         this.client = client;
         this.reconnectInterval = reconnectInterval;
         this.executorService = executorService;
