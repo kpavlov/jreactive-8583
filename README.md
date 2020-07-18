@@ -64,7 +64,7 @@ Now you may use ISO8583 client or server in your code.
 The minimal client workflow includes:
 
 ~~~java
-MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
+var messageFactory = new J8583MessageFactory<>();// [1]
 Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
 
 client.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
