@@ -1,12 +1,13 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
-import com.solab.iso8583.MessageFactory;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import javax.annotation.Nonnull;
 import java.text.ParseException;
 
 /**
@@ -17,19 +18,21 @@ import java.text.ParseException;
 @ChannelHandler.Sharable
 public class ParseExceptionHandler extends ChannelInboundHandlerAdapter {
 
-    private final MessageFactory<?> isoMessageFactory;
+    private final MessageFactory<IsoMessage> isoMessageFactory;
 
     private final boolean includeErrorDetails;
 
-    public ParseExceptionHandler(MessageFactory<?> isoMessageFactory, boolean includeErrorDetails) {
+    public ParseExceptionHandler(@Nonnull MessageFactory<IsoMessage> isoMessageFactory,
+                                 boolean includeErrorDetails) {
         this.isoMessageFactory = isoMessageFactory;
         this.includeErrorDetails = includeErrorDetails;
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(@Nonnull ChannelHandlerContext ctx,
+                                @Nonnull Throwable cause) throws Exception {
         if (cause instanceof ParseException) {
-            final IsoMessage message = createErrorResponseMessage((ParseException)cause);
+            final IsoMessage message = createErrorResponseMessage((ParseException) cause);
             ctx.writeAndFlush(message);
         }
         super.exceptionCaught(ctx, cause);

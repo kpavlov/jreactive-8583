@@ -1,7 +1,7 @@
 package com.github.kpavlov.jreactive8583.netty.codec;
 
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,9 +12,9 @@ import java.util.List;
 
 public class Iso8583Decoder extends ByteToMessageDecoder {
 
-    private final MessageFactory messageFactory;
+    private final MessageFactory<IsoMessage> messageFactory;
 
-    public Iso8583Decoder(MessageFactory messageFactory) {
+    public Iso8583Decoder(MessageFactory<IsoMessage> messageFactory) {
         this.messageFactory = messageFactory;
     }
 

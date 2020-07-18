@@ -1,10 +1,10 @@
 package com.github.kpavlov.jreactive8583.client;
 
 import com.github.kpavlov.jreactive8583.AbstractIso8583Connector;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer;
 import com.github.kpavlov.jreactive8583.netty.pipeline.ReconnectOnCloseListener;
 import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -118,7 +118,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
                 .option(ChannelOption.TCP_NODELAY, tcpNoDelay)
                 .remoteAddress(getSocketAddress())
 
-                .handler(new Iso8583ChannelInitializer<>(
+                .handler(new Iso8583ChannelInitializer(
                         getConfiguration(),
                         getConfigurer(),
                         getWorkerEventLoopGroup(),
