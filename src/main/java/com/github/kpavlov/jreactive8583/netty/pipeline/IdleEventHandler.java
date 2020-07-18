@@ -1,6 +1,9 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
+import com.github.kpavlov.jreactive8583.iso.MessageClass;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageFunction;
+import com.github.kpavlov.jreactive8583.iso.MessageOrigin;
 import com.solab.iso8583.IsoMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -28,6 +31,10 @@ public class IdleEventHandler extends ChannelInboundHandlerAdapter {
     }
 
     private IsoMessage createEchoMessage() {
-        return isoMessageFactory.newMessage(0x800);
+        return isoMessageFactory.newMessage(
+                MessageClass.NETWORK_MANAGEMENT,
+                MessageFunction.REQUEST,
+                MessageOrigin.ACQUIRER
+        );
     }
 }

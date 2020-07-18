@@ -6,7 +6,6 @@ import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.IsoValue;
-import com.solab.iso8583.parse.ConfigParser;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,7 @@ public class ParseExceptionHandlerTest {
 
     @BeforeAll
     public static void beforeClass() throws Exception {
-        messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987);
+        messageFactory = new J8583MessageFactory<>(ISO8583Version.V1993);
     }
 
     @BeforeEach

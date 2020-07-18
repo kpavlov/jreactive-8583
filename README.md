@@ -106,7 +106,8 @@ client.shutdown();// [11]
 Typical server workflow includes:
 
 ~~~java
-MessageFactory<IsoMessage> messageFactory = ConfigParser.createDefault();// [1]
+
+var messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987);// [1]
 Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
 
 server.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
@@ -160,6 +161,7 @@ You may:
 - customize which fields should be masked in logs
 - enable and disable printing field descriptions
 - customize tcp frame length field length
+- customize [ISO 8583 version](https://en.wikipedia.org/wiki/ISO_8583#ISO_8583_version)
 
 See
 [ConnectorConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java),
@@ -174,6 +176,7 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 - Beginner's guide: http://www.lytsing.org/downloads/iso8583.pdf
 - Introduction to ISO8583: http://www.codeproject.com/Articles/100084/Introduction-to-ISO-8583
 - NPM package for Packing and unpacking ISO 8583 messages: https://www.npmjs.com/package/iso-8583
+- [ISO 8583 wiki page](https://en.wikipedia.org/wiki/ISO_8583)
 
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
