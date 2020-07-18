@@ -241,8 +241,8 @@
                     <!-- http://central.sonatype.org/pages/apache-maven.html -->
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>true</useReleaseProfile>
-                    <releaseProfiles>release,nexus-staging:release</releaseProfiles>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release nexus-staging:release</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
@@ -278,7 +278,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0-M1</version>
+                    <version>2.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -345,7 +345,6 @@
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                            <showReleased>true</showReleased>
                         </configuration>
                     </plugin>
                 </plugins>
