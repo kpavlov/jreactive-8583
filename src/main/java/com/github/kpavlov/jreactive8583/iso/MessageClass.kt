@@ -1,4 +1,5 @@
 @file:JvmName("MessageClass")
+
 package com.github.kpavlov.jreactive8583.iso
 
 /**

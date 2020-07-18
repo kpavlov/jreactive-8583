@@ -1,4 +1,5 @@
 @file:JvmName("MessageFunction")
+
 package com.github.kpavlov.jreactive8583.iso
 
 enum class MessageFunction(val value: Int) {

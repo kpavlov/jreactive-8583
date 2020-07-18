@@ -1,4 +1,5 @@
 @file:JvmName("MessageOrigin")
+
 package com.github.kpavlov.jreactive8583.iso
 
 enum class MessageOrigin(val value: Int) {
