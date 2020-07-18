@@ -35,9 +35,9 @@ public class Iso8583ClientConfig {
     @Bean
     @Scope(SCOPE_PROTOTYPE)
     public Iso8583Client<IsoMessage> iso8583Client() throws IOException {
-        SocketAddress socketAddress = new InetSocketAddress(host, port);
+        final SocketAddress socketAddress = new InetSocketAddress(host, port);
 
-        final ClientConfiguration configuration = ClientConfiguration.newBuilder()
+        final var configuration = ClientConfiguration.newBuilder()
 //                .addLoggingHandler()
                 .idleTimeout(idleTimeout)
                 .logSensitiveData(false)

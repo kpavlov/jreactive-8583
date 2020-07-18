@@ -25,16 +25,16 @@ public class EchoFromClientIT extends AbstractIT {
     private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new LinkedList<>());
 
     @Override
-    protected void configureServer(Iso8583Server<IsoMessage> server) {
+    protected void configureServer(final Iso8583Server<IsoMessage> server) {
         server.setConfigurer(new ConnectorConfigurer<>() {
 
             @Override
-            public void configurePipeline(ChannelPipeline pipeline, ServerConfiguration configuration) {
+            public void configurePipeline(final ChannelPipeline pipeline, final ServerConfiguration configuration) {
                 pipeline.addBefore("idleEventHandler", "connectListenerHandler", new ChannelInboundHandlerAdapter() {
                     @Override
-                    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+                    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
                         super.channelActive(ctx);
-                        final IsoMessage message = server.getIsoMessageFactory().newMessage(0x800);
+                        final var message = server.getIsoMessageFactory().newMessage(0x800);
                         ctx.writeAndFlush(message);
                     }
                 });
@@ -43,17 +43,17 @@ public class EchoFromClientIT extends AbstractIT {
     }
 
     @Override
-    protected void configureClient(Iso8583Client<IsoMessage> client) {
+    protected void configureClient(final Iso8583Client<IsoMessage> client) {
         client.addMessageListener(new IsoMessageListener<>() {
             @Override
-            public boolean applies(IsoMessage isoMessage) {
+            public boolean applies(final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x800;
             }
 
             @Override
-            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
+            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
                 capturedRequests.add(isoMessage);
-                final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
+                final var response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("01", 2));
                 ctx.writeAndFlush(response);
                 return false;

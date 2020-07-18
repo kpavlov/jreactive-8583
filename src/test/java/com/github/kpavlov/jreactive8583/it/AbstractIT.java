@@ -40,11 +40,11 @@ public abstract class AbstractIT {
     }
 
     @SuppressWarnings("EmptyMethod")
-    protected void configureClient(Iso8583Client<IsoMessage> client) {
+    protected void configureClient(final Iso8583Client<IsoMessage> client) {
         // to be overridden in tests
     }
 
-    protected void configureServer(Iso8583Server<IsoMessage> server) {
+    protected void configureServer(final Iso8583Server<IsoMessage> server) {
         // to be overridden in tests
     }
 

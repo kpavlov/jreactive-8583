@@ -26,7 +26,7 @@ public class Iso8583ServerConfig {
     @Bean
     @Scope(SCOPE_PROTOTYPE)
     public Iso8583Server<IsoMessage> iso8583Server() throws IOException {
-        final ServerConfiguration configuration = ServerConfiguration.newBuilder()
+        final var configuration = ServerConfiguration.newBuilder()
 //                .addLoggingHandler()
 //                .logSensitiveData(false)
                 .workerThreadsCount(4)

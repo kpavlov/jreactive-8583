@@ -6,7 +6,6 @@ import com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer
 import com.github.kpavlov.jreactive8583.netty.pipeline.ReconnectOnCloseListener;
 import com.solab.iso8583.IsoMessage;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -21,12 +20,12 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     @Nullable
     private ReconnectOnCloseListener reconnectOnCloseListener;
 
-    public Iso8583Client(SocketAddress socketAddress, ClientConfiguration config, MessageFactory<T> isoMessageFactory) {
+    public Iso8583Client(final SocketAddress socketAddress, final ClientConfiguration config, final MessageFactory<T> isoMessageFactory) {
         super(config, isoMessageFactory);
         setSocketAddress(socketAddress);
     }
 
-    public Iso8583Client(SocketAddress socketAddress, MessageFactory<T> isoMessageFactory) {
+    public Iso8583Client(final SocketAddress socketAddress, final MessageFactory<T> isoMessageFactory) {
         this(socketAddress, ClientConfiguration.getDefault(), isoMessageFactory);
     }
 
@@ -35,7 +34,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @deprecated Use {@link #Iso8583Client(SocketAddress, ClientConfiguration, MessageFactory)}
      */
     @Deprecated
-    public Iso8583Client(MessageFactory<T> isoMessageFactory) {
+    public Iso8583Client(final MessageFactory<T> isoMessageFactory) {
         super(ClientConfiguration.getDefault(), isoMessageFactory);
     }
 
@@ -63,7 +62,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @throws InterruptedException if connection process was interrupted
      */
     @SuppressWarnings("unused")
-    public ChannelFuture connect(String host, int port) throws InterruptedException {
+    public ChannelFuture connect(final String host, final int port) throws InterruptedException {
         return connect(new InetSocketAddress(host, port));
     }
 
@@ -74,7 +73,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @return {@link ChannelFuture} which will be notified when connection is established.
      * @throws InterruptedException if connection process was interrupted
      */
-    public ChannelFuture connect(SocketAddress serverAddress) throws InterruptedException {
+    public ChannelFuture connect(final SocketAddress serverAddress) throws InterruptedException {
         setSocketAddress(serverAddress);
         return connect().sync();
     }
@@ -97,7 +96,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
                 reconnectOnCloseListener.scheduleReconnect();
                 return;
             }
-            Channel channel = connectFuture.channel();
+            final var channel = connectFuture.channel();
             logger.debug("Client is connected to {}", channel.remoteAddress());
             setChannel(channel);
             channel.closeFuture().addListener(reconnectOnCloseListener);
@@ -110,7 +109,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     protected Bootstrap createBootstrap() {
         final var b = new Bootstrap();
 
-        final boolean tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
+        final var tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
 
         b.group(getBossEventLoopGroup())
                 .channel(NioSocketChannel.class)
@@ -143,9 +142,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
         if (reconnectOnCloseListener != null) {
             reconnectOnCloseListener.requestDisconnect();
         }
-        final Channel channel = getChannel();
+        final var channel = getChannel();
         if (channel != null) {
-            final SocketAddress socketAddress = getSocketAddress();
+            final var socketAddress = getSocketAddress();
             logger.info("Closing connection to {}", socketAddress);
             return channel.close();
         } else {
@@ -155,7 +154,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     @SuppressWarnings("unused")
     public void disconnect() throws InterruptedException {
-        final ChannelFuture disconnectFuture = disconnectAsync();
+        final var disconnectFuture = disconnectAsync();
         if (disconnectFuture != null) {
             disconnectFuture.await();
         }
@@ -167,8 +166,8 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * @param isoMessage A message to send
      * @return ChannelFuture which will be notified when message is sent
      */
-    public ChannelFuture sendAsync(IsoMessage isoMessage) {
-        Channel channel = getChannel();
+    public ChannelFuture sendAsync(final IsoMessage isoMessage) {
+        final var channel = getChannel();
         if (channel == null) {
             throw new IllegalStateException("Channel is not opened");
         }
@@ -182,7 +181,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * Sends message synchronously
      */
     @SuppressWarnings("unused")
-    public void send(IsoMessage isoMessage) throws InterruptedException {
+    public void send(final IsoMessage isoMessage) throws InterruptedException {
         sendAsync(isoMessage).sync().await();
     }
 
@@ -190,18 +189,18 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
      * Sends message synchronously with timeout
      */
     @SuppressWarnings("unused")
-    public void send(IsoMessage isoMessage, long timeout, TimeUnit timeUnit) throws InterruptedException {
+    public void send(final IsoMessage isoMessage, final long timeout, final TimeUnit timeUnit) throws InterruptedException {
         sendAsync(isoMessage).sync().await(timeout, timeUnit);
     }
 
     public boolean isConnected() {
-        Channel channel = getChannel();
+        final var channel = getChannel();
         return channel != null && channel.isActive();
     }
 
     @Override
     public void shutdown() {
-        final ChannelFuture future = disconnectAsync();
+        final var future = disconnectAsync();
         if (future != null) {
             future.syncUninterruptibly();
         }

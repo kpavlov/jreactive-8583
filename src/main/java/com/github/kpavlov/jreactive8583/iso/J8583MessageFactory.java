@@ -15,24 +15,24 @@ public class J8583MessageFactory<T extends IsoMessage>
     @Nonnull
     private final ISO8583Version isoVersion;
 
-    public J8583MessageFactory(@Nonnull MessageFactory<T> messageFactory,
-                               @Nonnull ISO8583Version isoVersion) {
+    public J8583MessageFactory(@Nonnull final MessageFactory<T> messageFactory,
+                               @Nonnull final ISO8583Version isoVersion) {
         this.messageFactory = messageFactory;
         this.isoVersion = isoVersion;
     }
 
     @Override
-    public T newMessage(int type) {
+    public T newMessage(final int type) {
         return messageFactory.newMessage(type);
     }
 
     @Override
-    public T createResponse(T requestMessage) {
+    public T createResponse(final T requestMessage) {
         return messageFactory.createResponse(requestMessage);
     }
 
     @Override
-    public T parseMessage(byte[] buf, int isoHeaderLength) throws UnsupportedEncodingException, ParseException {
+    public T parseMessage(final byte[] buf, final int isoHeaderLength) throws UnsupportedEncodingException, ParseException {
         return messageFactory.parseMessage(buf, isoHeaderLength);
     }
 }

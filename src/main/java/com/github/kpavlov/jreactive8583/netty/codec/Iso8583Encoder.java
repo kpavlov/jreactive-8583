@@ -7,31 +7,29 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.CharsetUtil;
 
-import java.nio.ByteBuffer;
-
 @ChannelHandler.Sharable
 public class Iso8583Encoder extends MessageToByteEncoder<IsoMessage> {
 
     private final int lengthHeaderLength;
     private final boolean encodeLengthHeaderAsString;
 
-    public Iso8583Encoder(int lengthHeaderLength, boolean encodeLengthHeaderAsString) {
+    public Iso8583Encoder(final int lengthHeaderLength, final boolean encodeLengthHeaderAsString) {
         this.lengthHeaderLength = lengthHeaderLength;
         this.encodeLengthHeaderAsString = encodeLengthHeaderAsString;
     }
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, IsoMessage isoMessage, ByteBuf out) {
+    protected void encode(final ChannelHandlerContext ctx, final IsoMessage isoMessage, final ByteBuf out) {
         if (lengthHeaderLength == 0) {
             final var bytes = isoMessage.writeData();
             out.writeBytes(bytes);
         } else if (encodeLengthHeaderAsString) {
             final var bytes = isoMessage.writeData();
-            String lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.length);
+            final var lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.length);
             out.writeBytes(lengthHeader.getBytes(CharsetUtil.US_ASCII));
             out.writeBytes(bytes);
         } else {
-            ByteBuffer byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength);
+            final var byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength);
             out.writeBytes(byteBuffer);
         }
     }

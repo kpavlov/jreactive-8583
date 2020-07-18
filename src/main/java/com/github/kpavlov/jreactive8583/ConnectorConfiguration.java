@@ -240,7 +240,7 @@ public abstract class ConnectorConfiguration {
          * @param shouldAddEchoMessageListener <code>true</code> to add echo message handler.
          * @return The same {@link Builder}
          */
-        public B addEchoMessageListener(boolean shouldAddEchoMessageListener) {
+        public B addEchoMessageListener(final boolean shouldAddEchoMessageListener) {
             this.addEchoMessageListener = shouldAddEchoMessageListener;
             return (B) this;
         }
@@ -249,7 +249,7 @@ public abstract class ConnectorConfiguration {
          * @param length Maximum frame length.
          * @return The same {@link Builder}
          */
-        public B maxFrameLength(int length) {
+        public B maxFrameLength(final int length) {
             this.maxFrameLength = length;
             return (B) this;
         }
@@ -260,7 +260,7 @@ public abstract class ConnectorConfiguration {
          * @param timeoutSeconds in seconds
          * @return The same {@link Builder}
          */
-        public B idleTimeout(int timeoutSeconds) {
+        public B idleTimeout(final int timeoutSeconds) {
             this.idleTimeout = timeoutSeconds;
             return (B) this;
         }
@@ -269,7 +269,7 @@ public abstract class ConnectorConfiguration {
          * @param doReply <code>true</code> if server should reply in case of error.
          * @return The same {@link Builder}
          */
-        public B replyOnError(boolean doReply) {
+        public B replyOnError(final boolean doReply) {
             this.replyOnError = doReply;
             return (B) this;
         }
@@ -284,7 +284,7 @@ public abstract class ConnectorConfiguration {
          *                          should be added to Netty pipeline.
          * @return The same {@link Builder}
          */
-        public B addLoggingHandler(boolean useLoggingHandler) {
+        public B addLoggingHandler(final boolean useLoggingHandler) {
             this.addLoggingHandler = useLoggingHandler;
             return (B) this;
         }
@@ -297,7 +297,7 @@ public abstract class ConnectorConfiguration {
          * @param logSensitiveData <code>true</code> to log sensitive data via logger
          * @return The same {@link Builder}
          */
-        public B logSensitiveData(boolean logSensitiveData) {
+        public B logSensitiveData(final boolean logSensitiveData) {
             this.logSensitiveData = logSensitiveData;
             return (B) this;
         }
@@ -310,7 +310,7 @@ public abstract class ConnectorConfiguration {
          * @param encodeFrameLengthAsString <code>true</code> to encode frame length header as String
          * @return The same {@link Builder}
          */
-        public B encodeFrameLengthAsString(Boolean encodeFrameLengthAsString) {
+        public B encodeFrameLengthAsString(final Boolean encodeFrameLengthAsString) {
             this.encodeFrameLengthAsString = encodeFrameLengthAsString;
             return (B) this;
         }
@@ -329,7 +329,7 @@ public abstract class ConnectorConfiguration {
          * @param logFieldDescription <code>true</code> to print ISO field descriptions in the log
          * @return The same {@link Builder}
          */
-        public B describeFieldsInLog(boolean logFieldDescription) {
+        public B describeFieldsInLog(final boolean logFieldDescription) {
             this.logFieldDescription = logFieldDescription;
             return (B) this;
         }
@@ -342,12 +342,12 @@ public abstract class ConnectorConfiguration {
          * @return The same {@link Builder}
          * @see #DEFAULT_SENSITIVE_DATA_FIELDS
          */
-        public B sensitiveDataFields(int... sensitiveDataFields) {
+        public B sensitiveDataFields(final int... sensitiveDataFields) {
             this.sensitiveDataFields = sensitiveDataFields;
             return (B) this;
         }
 
-        public B frameLengthFieldLength(int frameLengthFieldLength) {
+        public B frameLengthFieldLength(final int frameLengthFieldLength) {
             this.frameLengthFieldLength = frameLengthFieldLength;
             return (B) this;
         }
@@ -362,7 +362,7 @@ public abstract class ConnectorConfiguration {
             return (B) this;
         }
 
-        public B workerThreadsCount(int numberOfThreads) {
+        public B workerThreadsCount(final int numberOfThreads) {
             this.workerThreadsCount = numberOfThreads;
             return (B) this;
         }

@@ -40,7 +40,7 @@ public class IsoMessageLoggingHandlerTest {
 
         when(ctx.channel()).thenReturn(new LocalChannel());
 
-        MessageFactory<?> messageFactory = ConfigParser.createDefault();
+        final MessageFactory<?> messageFactory = ConfigParser.createDefault();
         message = messageFactory.newMessage(0x0200);
 
         pan = randomNumeric(19);
@@ -60,7 +60,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testMaskSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, new int[]{34, 35, 36, 45, 112});
 
-        final String result = handler.format(ctx, "someEvent", message);
+        final var result = handler.format(ctx, "someEvent", message);
 
         assertThat(result).doesNotContain(pan);
         assertThat(result).doesNotContain(cvv);
@@ -73,7 +73,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testMaskDefaultSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
-        final String result = handler.format(ctx, "someEvent", message);
+        final var result = handler.format(ctx, "someEvent", message);
 
         assertThat(result).doesNotContain(pan);
         assertThat(result).doesNotContain(track1).as("track1");
@@ -87,7 +87,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testPrintSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, true, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
-        final String result = handler.format(ctx, "someEvent", message);
+        final var result = handler.format(ctx, "someEvent", message);
 
         assertThat(result).contains(pan);
         assertThat(result).contains(cvv);
@@ -100,7 +100,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testHideFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false, DEFAULT_SENSITIVE_DATA_FIELDS);
 
-        final String result = handler.format(ctx, "someEvent", message);
+        final var result = handler.format(ctx, "someEvent", message);
 
         assertThat(result).doesNotContain("Primary account number (PAN)");
     }
@@ -109,7 +109,7 @@ public class IsoMessageLoggingHandlerTest {
     public void testShowFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
 
-        final String result = handler.format(ctx, "someEvent", message);
+        final var result = handler.format(ctx, "someEvent", message);
 
         assertThat(result).contains("Primary account number (PAN)");
     }

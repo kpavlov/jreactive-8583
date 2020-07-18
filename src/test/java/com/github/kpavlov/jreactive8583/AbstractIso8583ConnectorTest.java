@@ -47,7 +47,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     @Test
     public void addMessageListener() throws Exception {
         //given
-        @SuppressWarnings("unchecked") IsoMessageListener<M> listener = mock(IsoMessageListener.class);
+        @SuppressWarnings("unchecked") final IsoMessageListener<M> listener = mock(IsoMessageListener.class);
         when(listener.applies(message)).thenReturn(true);
 
         //when
@@ -62,7 +62,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     public void removeMessageListener() throws Exception {
         //given
         subject.addMessageListener(listener);
-        @SuppressWarnings("unchecked") IsoMessageListener<M> listener = mock(IsoMessageListener.class);
+        @SuppressWarnings("unchecked") final IsoMessageListener<M> listener = mock(IsoMessageListener.class);
 
         //when
         subject.removeMessageListener(listener);

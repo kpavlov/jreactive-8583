@@ -16,7 +16,7 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * @param bootstrap     AbstractBootstrap to configure
      * @param configuration A {@link ConnectorConfiguration} to use
      */
-    default void configureBootstrap(B bootstrap, C configuration) {
+    default void configureBootstrap(final B bootstrap, final C configuration) {
         // this method was intentionally left blank
     }
 
@@ -31,7 +31,7 @@ public interface ConnectorConfigurer<C extends ConnectorConfiguration, B extends
      * @param pipeline      A {@link ChannelPipeline} being configured
      * @param configuration A {@link ConnectorConfiguration} to use
      */
-    default void configurePipeline(ChannelPipeline pipeline, C configuration) {
+    default void configurePipeline(final ChannelPipeline pipeline, final C configuration) {
         // this method was intentionally left blank
     }
 }

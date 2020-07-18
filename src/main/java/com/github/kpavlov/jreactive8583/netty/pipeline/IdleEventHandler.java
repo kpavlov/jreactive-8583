@@ -11,16 +11,16 @@ public class IdleEventHandler extends ChannelInboundHandlerAdapter {
 
     private final MessageFactory<IsoMessage> isoMessageFactory;
 
-    public IdleEventHandler(MessageFactory<IsoMessage> isoMessageFactory) {
+    public IdleEventHandler(final MessageFactory<IsoMessage> isoMessageFactory) {
         this.isoMessageFactory = isoMessageFactory;
     }
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
+    public void userEventTriggered(final ChannelHandlerContext ctx, final Object evt) {
         if (evt instanceof IdleStateEvent) {
-            IdleStateEvent e = (IdleStateEvent) evt;
+            final var e = (IdleStateEvent) evt;
             if (e.state() == IdleState.READER_IDLE || e.state() == IdleState.ALL_IDLE) {
-                final IsoMessage echoMessage = createEchoMessage();
+                final var echoMessage = createEchoMessage();
                 ctx.write(echoMessage);
                 ctx.flush();
             }

@@ -7,11 +7,7 @@ import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -55,32 +51,32 @@ public class LockDetectionIT extends AbstractIT {
 
     private static void detectThreadLocks() {
         try {
-            final long[] monitorDeadlockedThreads = threadMXBean.findMonitorDeadlockedThreads();
-            final long[] deadlockedThreads = threadMXBean.findDeadlockedThreads();
+            final var monitorDeadlockedThreads = threadMXBean.findMonitorDeadlockedThreads();
+            final var deadlockedThreads = threadMXBean.findDeadlockedThreads();
 
             if (monitorDeadlockedThreads != null) {
                 monitorDeadlockedCount.addAndGet(monitorDeadlockedThreads.length);
-                for (long threadId : monitorDeadlockedThreads) {
+                for (final var threadId : monitorDeadlockedThreads) {
                     logger.warn("MonitorDeadlocked: {}", threadMXBean.getThreadInfo(threadId));
                 }
             }
 
             if (deadlockedThreads != null) {
                 deadlockedCount.addAndGet(deadlockedThreads.length);
-                for (long threadId : deadlockedThreads) {
+                for (final var threadId : deadlockedThreads) {
                     logger.warn("Deadlocked: {}", threadMXBean.getThreadInfo(threadId));
                 }
             }
 
             Thread.sleep(5);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
     @BeforeEach
     public void beforeEach() {
-        for (int i = 0; i < NUM_CLIENTS; i++) {
+        for (var i = 0; i < NUM_CLIENTS; i++) {
             @SuppressWarnings("unchecked") final Iso8583Client<IsoMessage> client = applicationContext.getBean(Iso8583Client.class);
             configureClient(client);
             clients[i] = client;
@@ -90,10 +86,10 @@ public class LockDetectionIT extends AbstractIT {
 
     @AfterEach
     public void shutdownClients() {
-        for (Iso8583Client<?> c : clients) {
+        for (final var c : clients) {
             try {
                 c.shutdown();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
         }
@@ -102,19 +98,19 @@ public class LockDetectionIT extends AbstractIT {
     @Test
     public void shouldProcessRequestsFromMultipleClientsWithoutDeadlocks() throws Exception {
 
-        for (Iso8583Client<? extends IsoMessage> client : clients) {
+        for (final var client : clients) {
             new Thread(() -> {
                 try {
 
                     client.connect();
                     await().alias("client connected").until(client::isConnected);
 
-                    for (int i = 0; i < NUM_MESSAGES; i++) {
-                        final IsoMessage isoMessage = createRequest(client);
+                    for (var i = 0; i < NUM_MESSAGES; i++) {
+                        final var isoMessage = createRequest(client);
                         client.sendAsync(isoMessage);
                     }
 
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     //ok
                 }
             }).start();
@@ -128,17 +124,17 @@ public class LockDetectionIT extends AbstractIT {
     }
 
     @Override
-    protected void configureClient(Iso8583Client<IsoMessage> client) {
+    protected void configureClient(final Iso8583Client<IsoMessage> client) {
         client.addMessageListener(new IsoMessageListener<>() {
             @Override
-            public boolean applies(IsoMessage isoMessage) {
+            public boolean applies(final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x210;
             }
 
             @Override
-            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
+            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
                 latch.countDown();
-                final long count = latch.getCount();
+                final var count = latch.getCount();
                 if (count % 100 == 0 || (count < 10 && count % 10 == 0)) {
                     logger.info("Responses left to process {}", count);
                 }
@@ -149,24 +145,24 @@ public class LockDetectionIT extends AbstractIT {
     }
 
     @Override
-    protected void configureServer(Iso8583Server<IsoMessage> server) {
+    protected void configureServer(final Iso8583Server<IsoMessage> server) {
 
         server.addMessageListener(new IsoMessageListener<>() {
 
             @Override
-            public boolean applies(IsoMessage isoMessage) {
+            public boolean applies(final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x200;
             }
 
             @Override
-            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-                final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
+            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
+                final var response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
                 ctx.writeAndFlush(response);
                 try {
                     Thread.sleep(5);// to make it slow
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     //
                 }
                 return false;
@@ -174,8 +170,8 @@ public class LockDetectionIT extends AbstractIT {
         });
     }
 
-    private IsoMessage createRequest(Iso8583Client<? extends IsoMessage> client) {
-        final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
+    private IsoMessage createRequest(final Iso8583Client<? extends IsoMessage> client) {
+        final var finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         return finMessage;
     }

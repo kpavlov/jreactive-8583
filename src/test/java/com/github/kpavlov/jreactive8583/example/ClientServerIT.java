@@ -19,17 +19,17 @@ public class ClientServerIT extends AbstractIT {
     private final Map<Integer, IsoMessage> receivedMessages = new ConcurrentHashMap<>();
 
     @Override
-    protected void configureServer(Iso8583Server<IsoMessage> server) {
+    protected void configureServer(final Iso8583Server<IsoMessage> server) {
         server.addMessageListener(new IsoMessageListener<>() {
             @Override
-            public boolean applies(IsoMessage isoMessage) {
+            public boolean applies(final IsoMessage isoMessage) {
                 return true;
             }
 
             @Override
-            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
+            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
                 if (isoMessage.hasField(11)) {
-                    final Integer stan = Integer.valueOf(isoMessage.getObjectValue(11));
+                    final var stan = Integer.valueOf(isoMessage.getObjectValue(11));
                     receivedMessages.put(stan, isoMessage);
                     return true;
                 }
@@ -39,13 +39,13 @@ public class ClientServerIT extends AbstractIT {
         server.addMessageListener(new IsoMessageListener<>() {
 
             @Override
-            public boolean applies(IsoMessage isoMessage) {
+            public boolean applies(final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x200;
             }
 
             @Override
-            public boolean onMessage(ChannelHandlerContext ctx, IsoMessage isoMessage) {
-                final IsoMessage response = server.getIsoMessageFactory().createResponse(isoMessage);
+            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
+                final var response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));
                 ctx.writeAndFlush(response);
@@ -57,7 +57,7 @@ public class ClientServerIT extends AbstractIT {
     @Test
     public void shouldSendAsyncCaptureRequest() {
         // given
-        final IsoMessage finMessage = client.getIsoMessageFactory().newMessage(0x0200);
+        final var finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
         final Integer stan = finMessage.getObjectValue(11);
         // when
@@ -65,7 +65,7 @@ public class ClientServerIT extends AbstractIT {
         // then
         await().alias("capture request received").until(() -> receivedMessages.containsKey(stan));
 
-        IsoMessage capturedRequest = receivedMessages.remove(stan);
+        final var capturedRequest = receivedMessages.remove(stan);
         assertThat(capturedRequest).as("fin request").isNotNull();
         assertThat(capturedRequest.debugString()).as("fin request string").isEqualTo(finMessage.debugString());
     }

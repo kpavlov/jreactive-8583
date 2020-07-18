@@ -2,7 +2,6 @@ package com.github.kpavlov.jreactive8583.netty.codec;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.solab.iso8583.IsoMessage;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,15 +49,15 @@ class StringLengthFieldBasedFrameDecoderTest {
     @Test
     public void shouldGetUnadjustedFrameLength() {
         // given
-        String content = "MESSAGE";
+        final var content = "MESSAGE";
         when(message.writeData()).thenReturn(content.getBytes(StandardCharsets.US_ASCII));
 
-        ByteBuf buf = Unpooled.buffer();
+        final var buf = Unpooled.buffer();
         encoder.encode(ctx, message, buf);
         assertThat(buf.toString(StandardCharsets.US_ASCII)).isEqualTo("0007MESSAGE");
 
         //when
-        long frameLength = decoder.getUnadjustedFrameLength(
+        final var frameLength = decoder.getUnadjustedFrameLength(
                 buf,
                 config.getFrameLengthFieldOffset(),
                 config.getFrameLengthFieldLength(),

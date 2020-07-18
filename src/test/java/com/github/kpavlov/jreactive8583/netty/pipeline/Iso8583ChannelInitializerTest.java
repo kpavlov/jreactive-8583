@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +47,7 @@ public class Iso8583ChannelInitializerTest {
     public void testInitChannelWithLogger() {
         //given
         configurationBuilder.addLoggingHandler();
-        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        final Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         // when
         channelInitializer.initChannel(channel);
@@ -62,7 +61,7 @@ public class Iso8583ChannelInitializerTest {
         //given
         configurationBuilder.addLoggingHandler(false);
 
-        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        final Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         //when
         channelInitializer.initChannel(channel);
@@ -74,7 +73,7 @@ public class Iso8583ChannelInitializerTest {
     @Test
     public void testInitChannelWithDefaultLoggingSetting() {
         //given
-        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        final Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         //when
         channelInitializer.initChannel(channel);
@@ -83,7 +82,7 @@ public class Iso8583ChannelInitializerTest {
         verify(pipeline, never()).addLast(any(EventLoopGroup.class), anyString(), any(IsoMessageLoggingHandler.class));
     }
 
-    private Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> createChannelInitializer(ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
+    private Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> createChannelInitializer(final ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
         return new Iso8583ChannelInitializer(
                 configurationBuilder.build(),
                 configurer,
