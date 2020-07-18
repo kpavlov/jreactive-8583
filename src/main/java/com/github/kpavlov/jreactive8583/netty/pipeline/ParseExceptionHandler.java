@@ -42,7 +42,6 @@ public class ParseExceptionHandler extends ChannelInboundHandlerAdapter {
     }
 
     protected IsoMessage createErrorResponseMessage(final ParseException cause) {
-//        0x1644
         final var message = isoMessageFactory.newMessage(
                 MessageClass.ADMINISTRATIVE, MessageFunction.NOTIFICATION, MessageOrigin.OTHER);
         message.setValue(24, 650, IsoType.NUMERIC, 3); //650 (Unable to parse message)

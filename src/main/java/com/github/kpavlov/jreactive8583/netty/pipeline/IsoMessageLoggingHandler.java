@@ -7,6 +7,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Properties;
@@ -29,9 +30,14 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
     };
     private static final char[] MASKED_VALUE = "***".toCharArray();
     private static final String[] FIELD_NAMES = new String[128];
+    private static final String FIELD_PROPERTIES = "iso8583fields.properties";
 
     static {
-        try (final var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/github/kpavlov/jreactive8583/iso8583fields.properties")) {
+        loadProperties();
+    }
+
+    private static void loadProperties() {
+        try (final var stream = getPropertiesStream()) {
             final var properties = new Properties();
             properties.load(stream);
             properties.forEach((key, value) -> {
@@ -41,6 +47,16 @@ public class IsoMessageLoggingHandler extends LoggingHandler {
         } catch (final IOException | NumberFormatException e) {
             throw new IllegalStateException("Unable to load ISO8583 field descriptions", e);
         }
+    }
+
+    private static InputStream getPropertiesStream() {
+        var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/" + FIELD_PROPERTIES);
+        if (stream == null) {
+            stream = IsoMessageLoggingHandler.class.getResourceAsStream(
+                    "/com/github/kpavlov/jreactive8583/" + FIELD_PROPERTIES
+            );
+        }
+        return Objects.requireNonNull(stream, "Can't load " + FIELD_PROPERTIES);
     }
 
     private final boolean printSensitiveData;
