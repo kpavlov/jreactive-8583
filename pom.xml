@@ -242,7 +242,7 @@
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release nexus-staging:release</releaseProfiles>
+                    <releaseProfiles>release,nexus-staging:release</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
@@ -345,6 +345,7 @@
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <showReleased>true</showReleased>
                         </configuration>
                     </plugin>
                 </plugins>
