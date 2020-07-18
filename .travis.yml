@@ -8,10 +8,9 @@ cache:
     - $HOME/.m2
 
 script:
-  - mvn verify -B
+  - mvn verify javadoc:javadoc source:jar -B
 
 after_success:
-  - mvn javadoc:javadoc
   - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers></settings>" > ~/settings.xml
   - mvn deploy --settings ~/settings.xml
   - rm ~/settings.xml
