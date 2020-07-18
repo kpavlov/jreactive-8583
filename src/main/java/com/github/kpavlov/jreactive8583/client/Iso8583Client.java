@@ -183,6 +183,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     /**
      * Sends message synchronously
+     *
+     * @param isoMessage A message to send
+     * @throws InterruptedException When sending was interrupted
      */
     @SuppressWarnings("unused")
     public void send(final IsoMessage isoMessage) throws InterruptedException {
@@ -191,6 +194,11 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     /**
      * Sends message synchronously with timeout
+     *
+     * @param isoMessage A message to send
+     * @param timeout    timeout in timeUnits
+     * @param timeUnit   a time unit for timeout
+     * @throws InterruptedException When sending was interrupted
      */
     @SuppressWarnings("unused")
     public void send(final IsoMessage isoMessage, final long timeout, final TimeUnit timeUnit) throws InterruptedException {

@@ -10,7 +10,7 @@ package com.github.kpavlov.jreactive8583.iso;
  * <p>
  * As of June 2017, however ISO 8583:2003 has yet to achieve wide acceptance.
  *
- * @link https://en.wikipedia.org/wiki/ISO_8583#Message_type_indicator_(MTI)
+ * @see <a href="https://en.wikipedia.org/wiki/ISO_8583#Message_type_indicator_(MTI)">Message type indicator (MTI)</a>
  */
 @SuppressWarnings("unused")
 public enum ISO8583Version {

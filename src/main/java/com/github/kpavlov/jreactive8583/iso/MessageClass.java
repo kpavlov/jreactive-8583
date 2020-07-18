@@ -3,7 +3,7 @@ package com.github.kpavlov.jreactive8583.iso;
 /**
  * Position two of the MTI specifies the overall purpose of the message.
  *
- * @link https://en.wikipedia.org/wiki/ISO_8583#Message_type_indicator_(MTI)
+ * @see <a href="https://en.wikipedia.org/wiki/ISO_8583#Message_type_indicator_(MTI)">Message type indicator (MTI)</a>
  */
 public enum MessageClass {
 
