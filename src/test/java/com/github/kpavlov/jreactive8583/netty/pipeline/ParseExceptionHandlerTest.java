@@ -1,9 +1,11 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
+import com.github.kpavlov.jreactive8583.iso.ISO8583Version;
+import com.github.kpavlov.jreactive8583.iso.J8583MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.IsoValue;
-import com.solab.iso8583.MessageFactory;
 import com.solab.iso8583.parse.ConfigParser;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +26,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class ParseExceptionHandlerTest {
 
-    private static MessageFactory<?> messageFactory;
+    private static MessageFactory<IsoMessage> messageFactory;
     private ParseExceptionHandler handler;
     @Mock
     private ChannelHandlerContext ctx;
@@ -33,7 +35,7 @@ public class ParseExceptionHandlerTest {
 
     @BeforeAll
     public static void beforeClass() throws Exception {
-        messageFactory = ConfigParser.createDefault();
+        messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987);
     }
 
     @BeforeEach

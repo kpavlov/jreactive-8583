@@ -1,8 +1,8 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

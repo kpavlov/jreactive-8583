@@ -1,6 +1,7 @@
 package com.github.kpavlov.jreactive8583.netty.codec;
 
-import com.solab.iso8583.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.solab.iso8583.IsoMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ public class Iso8583DecoderTest {
     private Iso8583Decoder decoder;
 
     @Mock
-    private MessageFactory<?> messageFactory;
+    private MessageFactory<IsoMessage> messageFactory;
     @Mock
     private List<?> out;
     @Mock

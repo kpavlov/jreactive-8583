@@ -18,16 +18,13 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Decoder;
 import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Encoder;
 import com.github.kpavlov.jreactive8583.netty.codec.StringLengthFieldBasedFrameDecoder;
-import com.solab.iso8583.MessageFactory;
+import com.solab.iso8583.IsoMessage;
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -41,7 +38,7 @@ public class Iso8583ChannelInitializer<
     private final C configuration;
     private final ConnectorConfigurer<C, B> configurer;
     private final EventLoopGroup workerGroup;
-    private final MessageFactory<?> isoMessageFactory;
+    private final MessageFactory<IsoMessage> isoMessageFactory;
     private final ChannelHandler[] customChannelHandlers;
     private final Iso8583Encoder isoMessageEncoder;
     private final ChannelHandler loggingHandler;
@@ -51,7 +48,7 @@ public class Iso8583ChannelInitializer<
             C configuration,
             ConnectorConfigurer<C, B> configurer,
             EventLoopGroup workerGroup,
-            MessageFactory<?> isoMessageFactory,
+            MessageFactory<IsoMessage> isoMessageFactory,
             ChannelHandler... customChannelHandlers) {
         this.configuration = configuration;
         this.configurer = configurer;
@@ -105,7 +102,7 @@ public class Iso8583ChannelInitializer<
                 configuration.encodeFrameLengthAsString());
     }
 
-    protected Iso8583Decoder createIso8583Decoder(final MessageFactory<?> messageFactory) {
+    protected Iso8583Decoder createIso8583Decoder(final MessageFactory<IsoMessage> messageFactory) {
         return new Iso8583Decoder(messageFactory);
     }
 

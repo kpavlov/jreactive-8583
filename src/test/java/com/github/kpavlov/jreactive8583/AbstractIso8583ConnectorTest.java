@@ -1,8 +1,8 @@
 package com.github.kpavlov.jreactive8583;
 
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.github.kpavlov.jreactive8583.netty.pipeline.CompositeIsoMessageHandler;
 import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AbstractIso8583ConnectorTest<M extends IsoMessage> {

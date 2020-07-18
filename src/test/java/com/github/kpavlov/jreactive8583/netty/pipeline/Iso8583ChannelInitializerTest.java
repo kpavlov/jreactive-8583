@@ -2,8 +2,9 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.github.kpavlov.jreactive8583.ConnectorConfigurer;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.github.kpavlov.jreactive8583.server.ServerConfiguration;
-import com.solab.iso8583.MessageFactory;
+import com.solab.iso8583.IsoMessage;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -15,13 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class Iso8583ChannelInitializerTest {
@@ -29,7 +25,7 @@ public class Iso8583ChannelInitializerTest {
     @Mock
     private EventLoopGroup workerGroup;
     @Mock
-    private MessageFactory<com.solab.iso8583.IsoMessage> messageFactory;
+    private MessageFactory<IsoMessage> messageFactory;
     @Mock
     private ChannelHandler handlers;
     @Mock
@@ -88,7 +84,7 @@ public class Iso8583ChannelInitializerTest {
     }
 
     private Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> createChannelInitializer(ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
-        return new Iso8583ChannelInitializer<>(
+        return new Iso8583ChannelInitializer(
                 configurationBuilder.build(),
                 configurer,
                 workerGroup,

@@ -1,9 +1,9 @@
 package com.github.kpavlov.jreactive8583.server;
 
 import com.github.kpavlov.jreactive8583.AbstractIso8583Connector;
+import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer;
 import com.solab.iso8583.IsoMessage;
-import com.solab.iso8583.MessageFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -45,7 +45,7 @@ public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connecto
                 .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .localAddress(getSocketAddress())
-                .childHandler(new Iso8583ChannelInitializer<>(
+                .childHandler(new Iso8583ChannelInitializer(
                         getConfiguration(),
                         getConfigurer(),
                         getWorkerEventLoopGroup(),
