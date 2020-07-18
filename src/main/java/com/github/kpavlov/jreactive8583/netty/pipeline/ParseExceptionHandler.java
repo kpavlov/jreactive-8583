@@ -1,6 +1,9 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
+import com.github.kpavlov.jreactive8583.iso.MessageClass;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageFunction;
+import com.github.kpavlov.jreactive8583.iso.MessageOrigin;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandler;
@@ -39,7 +42,9 @@ public class ParseExceptionHandler extends ChannelInboundHandlerAdapter {
     }
 
     protected IsoMessage createErrorResponseMessage(final ParseException cause) {
-        final var message = isoMessageFactory.newMessage(0x1644);
+//        0x1644
+        final var message = isoMessageFactory.newMessage(
+                MessageClass.ADMINISTRATIVE, MessageFunction.NOTIFICATION, MessageOrigin.OTHER);
         message.setValue(24, 650, IsoType.NUMERIC, 3); //650 (Unable to parse message)
         if (includeErrorDetails) {
             var details = cause.getMessage();

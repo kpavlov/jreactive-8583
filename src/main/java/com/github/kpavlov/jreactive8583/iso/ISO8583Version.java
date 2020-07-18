@@ -18,43 +18,23 @@ public enum ISO8583Version {
     /**
      * ISO 8583:1987
      */
-    V1987(0x0),
+    V1987(0x0000),
     /**
      * ISO 8583:1993
      */
-    V1993(0x1),
+    V1993(0x1000),
     /**
      * ISO 8583:2003
      */
-    V2003(0x2),
-    /**
-     * Reserved
-     */
-    RESERVED_3(0x3),
-    /**
-     * Reserved by ISO
-     */
-    RESERVED_4(0x4),
-    /**
-     * Reserved by ISO
-     */
-    RESERVED_5(0x5),
-    /**
-     * Reserved by ISO
-     */
-    RESERVED_6(0x6),
-    /**
-     * Reserved by ISO
-     */
-    RESERVED_7(0x7),
+    V2003(0x2000),
     /**
      * National use
      */
-    NATIONAL(0x8),
+    NATIONAL(0x8000),
     /**
      * Private use
      */
-    PRIVATE(0x9);
+    PRIVATE(0x9000);
 
     private final int value;
 
