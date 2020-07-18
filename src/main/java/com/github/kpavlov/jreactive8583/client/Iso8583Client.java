@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
 
     @Nullable
-    private ReconnectOnCloseListener reconnectOnCloseListener;
+    private volatile ReconnectOnCloseListener reconnectOnCloseListener;
 
     public Iso8583Client(final SocketAddress socketAddress, final ClientConfiguration config, final MessageFactory<T> isoMessageFactory) {
         super(config, isoMessageFactory);
@@ -87,19 +87,22 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
     public ChannelFuture connectAsync() {
         logger.debug("Connecting to {}", getSocketAddress());
         final var b = getBootstrap();
-        if (reconnectOnCloseListener != null) {
-            reconnectOnCloseListener.requestReconnect();
+        final var reconnectListener = getReconnectOnCloseListener();
+        if (reconnectListener != null) {
+            reconnectListener.requestReconnect();
         }
         final var connectFuture = b.connect();
         connectFuture.addListener(connFuture -> {
-            if (!connectFuture.isSuccess()) {
-                reconnectOnCloseListener.scheduleReconnect();
+            if (!connectFuture.isSuccess() && reconnectListener != null) {
+                reconnectListener.scheduleReconnect();
                 return;
             }
             final var channel = connectFuture.channel();
             logger.debug("Client is connected to {}", channel.remoteAddress());
             setChannel(channel);
-            channel.closeFuture().addListener(reconnectOnCloseListener);
+            if (reconnectListener != null) {
+                channel.closeFuture().addListener(reconnectOnCloseListener);
+            }
         });
 
         return connectFuture;
@@ -139,8 +142,9 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
 
     @Nullable
     public ChannelFuture disconnectAsync() {
-        if (reconnectOnCloseListener != null) {
-            reconnectOnCloseListener.requestDisconnect();
+        final var reconnectListener = getReconnectOnCloseListener();
+        if (reconnectListener != null) {
+            reconnectListener.requestDisconnect();
         }
         final var channel = getChannel();
         if (channel != null) {
@@ -205,5 +209,10 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
             future.syncUninterruptibly();
         }
         super.shutdown();
+    }
+
+    @Nullable
+    protected ReconnectOnCloseListener getReconnectOnCloseListener() {
+        return reconnectOnCloseListener;
     }
 }
