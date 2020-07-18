@@ -241,7 +241,7 @@
                     <!-- http://central.sonatype.org/pages/apache-maven.html -->
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
+                    <useReleaseProfile>true</useReleaseProfile>
                     <releaseProfiles>release,nexus-staging:release</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
