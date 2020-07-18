@@ -101,7 +101,7 @@ public class Iso8583Client<T extends IsoMessage> extends AbstractIso8583Connecto
             logger.debug("Client is connected to {}", channel.remoteAddress());
             setChannel(channel);
             if (reconnectListener != null) {
-                channel.closeFuture().addListener(reconnectOnCloseListener);
+                channel.closeFuture().addListener(reconnectListener);
             }
         });
 
