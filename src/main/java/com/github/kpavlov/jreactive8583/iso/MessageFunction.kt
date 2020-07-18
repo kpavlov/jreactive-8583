@@ -1,8 +1,7 @@
 @file:JvmName("MessageFunction")
-
 package com.github.kpavlov.jreactive8583.iso
 
-enum class MessageFunction(private val value: Int) {
+enum class MessageFunction(val value: Int) {
     /**
      * xx0x	Request	Request from acquirer to issuer to carry out an action; issuer may accept or reject
      */
@@ -61,14 +60,10 @@ enum class MessageFunction(private val value: Int) {
      *
      * Some implementations (such as MasterCard) use for positive acknowledgment.[4]
      */
-    Reserved_8(0x0080),
+    RESERVED_8(0x0080),
 
     /**
      * xx9x	Some implementations (such as MasterCard) use for negative acknowledgement.
      */
-    Reserved_9(0x0090);
-
-    fun value(): Int {
-        return value
-    }
+    RESERVED_9(0x0090);
 }

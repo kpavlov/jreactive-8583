@@ -1,8 +1,8 @@
 @file:JvmName("MessageOrigin")
-
 package com.github.kpavlov.jreactive8583.iso
 
-enum class MessageOrigin(private val value: Int) {
+enum class MessageOrigin(val value: Int) {
+
     /**
      * xxx0	Acquirer
      */
@@ -32,8 +32,4 @@ enum class MessageOrigin(private val value: Int) {
      * xxx5	Other repeat
      */
     OTHER_REPEAT(0x0005);
-
-    fun value(): Int {
-        return value
-    }
 }

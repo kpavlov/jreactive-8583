@@ -1,5 +1,4 @@
 @file:JvmName("MessageClass")
-
 package com.github.kpavlov.jreactive8583.iso
 
 /**
@@ -7,7 +6,7 @@ package com.github.kpavlov.jreactive8583.iso
  *
  * @see [](https://en.wikipedia.org/wiki/ISO_8583.Message_type_indicator_)
 ) */
-enum class MessageClass(private val value: Int) {
+enum class MessageClass(val value: Int) {
     /**
      * x1xx	Authorization message
      *
@@ -69,8 +68,4 @@ enum class MessageClass(private val value: Int) {
      * Used for secure key exchange, logon, echo test and other network functions.
      */
     NETWORK_MANAGEMENT(0x0800);
-
-    fun value(): Int {
-        return value
-    }
 }

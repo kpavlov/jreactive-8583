@@ -19,7 +19,7 @@ enum class ISO8583Version
 /**
  * @param value A first digit in Message type indicator
  */
-(private val value: Int) {
+(val value: Int) {
     /**
      * ISO 8583:1987
      */
@@ -44,8 +44,4 @@ enum class ISO8583Version
      * Private use
      */
     PRIVATE(0x9000);
-
-    fun value(): Int {
-        return value
-    }
 }
