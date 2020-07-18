@@ -24,7 +24,7 @@ Solution: **"J-Reactive-8583"** ISO8583 Client and Server built on top of excell
 * Customizable [ISO MessageFactory][j8583-message-factory].
 * Automatic responding to Echo messages.
 * Automatic client reconnection.
-* Secure [message logger](https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/netty/pipeline/IsoMessageLoggingHandler.java): mask PAN and track data or any any other field (customizable). Optionally prints field descriptions.
+* Secure [message logger](https://github.com/kpavlov/jreactive-8583/blob/master/src/main/java/com/github/kpavlov/jreactive8583/netty/pipeline/IsoMessageLoggingHandler.java): mask PAN and track data or any other field (customizable). Optionally prints field descriptions.
  * Configurable netty [Bootstrap](https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/bootstrap/Bootstrap.java) and [ChannelPipeline](https://github.com/netty/netty/blob/master/transport/src/main/java/io/netty/channel/ChannelPipeline.java)
 
 ## ISO8583 TCP/IP Transport
@@ -36,7 +36,7 @@ The protocol uses a single TCP/IP session to transfer data between hosts in both
 The continuous TCP/IP data stream is split into frames.
 Each [ISO8583][iso8583] message is sent in a separate frame.
 
-A Frame consists of a N-byte length header and a message body.
+A Frame consists of an N-byte length header and message body.
 Usually, N==2.
 The header contains the length of the following message.
 The high byte of value is transmitted first, and the low byte of value is transmitted second.
@@ -93,7 +93,7 @@ client.shutdown();// [11]
 2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and, optionally, `SocketAddress`
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
 4. Configure the client. You may omit this step if you're fine with default configuration.
-5. Initialize client. Now it is ready to connect.
+5. Initialize a client. Now it is ready to connect.
 6. Establish a connection. By default, if connection will is lost, it reconnects automatically. You may disable this behaviour or change _reconnectInterval_.
 7. Verify that connection is established
 8. Send `IsoMessage` asynchronously
@@ -128,7 +128,7 @@ server.shutdown();// [8]
 2. Then you create a [`Iso8583Server`][Iso8583Server] providing `MessageFactory` and port to bind to
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
 4. Configure the server. You may omit this step if you're fine with default configuration.
-5. Initialize server. Now it is ready to start.
+5. Initialize a server. Now it is ready to start.
 6. Start server. Now it is ready to accept client connections.
 7. Verify that the server is started
 9. Shutdown server when you're done.

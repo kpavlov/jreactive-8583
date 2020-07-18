@@ -12,12 +12,12 @@ public class EchoMessageListener<T extends IsoMessage> implements IsoMessageList
 
     private final MessageFactory<T> isoMessageFactory;
 
-    public EchoMessageListener(MessageFactory<T> isoMessageFactory) {
+    public EchoMessageListener(final MessageFactory<T> isoMessageFactory) {
         this.isoMessageFactory = isoMessageFactory;
     }
 
     @Override
-    public boolean applies(IsoMessage isoMessage) {
+    public boolean applies(final IsoMessage isoMessage) {
         return isoMessage != null && isoMessage.getType() == 0x800;
     }
 
@@ -28,7 +28,7 @@ public class EchoMessageListener<T extends IsoMessage> implements IsoMessageList
      * @return <code>false</code> - message should not be handled by any other handler.
      */
     @Override
-    public boolean onMessage(ChannelHandlerContext ctx, T isoMessage) {
+    public boolean onMessage(final ChannelHandlerContext ctx, final T isoMessage) {
         final IsoMessage echoResponse = isoMessageFactory.createResponse(isoMessage);
         ctx.writeAndFlush(echoResponse);
         return false;

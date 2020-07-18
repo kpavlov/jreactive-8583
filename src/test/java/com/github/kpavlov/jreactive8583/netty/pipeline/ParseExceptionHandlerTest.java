@@ -45,23 +45,23 @@ public class ParseExceptionHandlerTest {
 
     @Test
     public void testExceptionCaught() throws Exception {
-        String errorMessage = UUID.randomUUID().toString();
+        final var errorMessage = UUID.randomUUID().toString();
 
         handler.exceptionCaught(ctx, new ParseException(errorMessage, 0));
 
         verify(ctx).writeAndFlush(messageCaptor.capture());
-        final IsoMessage message = messageCaptor.getValue();
+        final var message = messageCaptor.getValue();
 
         assertThat(message.getType()).isEqualTo(0x1644);
 
         //field 24
-        final IsoValue<Object> field24 = message.getAt(24);
+        final var field24 = message.getAt(24);
         assertThat(field24).as("field24").isInstanceOf(IsoValue.class);
         assertThat(field24.getType()).as("field24.type").isEqualTo(IsoType.NUMERIC);
         assertThat(field24.getLength()).as("field24.length").isEqualTo(3);
         assertThat(field24.getValue()).as("field24.value").isEqualTo(650);
 
-        final IsoValue<Object> field44 = message.getAt(44);
+        final var field44 = message.getAt(44);
         assertThat(field44).as("field44").isInstanceOf(IsoValue.class);
         assertThat(field44.getType()).as("field44.type").isEqualTo(IsoType.LLVAR);
         assertThat(field44.getLength()).as("field44.length").isEqualTo(25);

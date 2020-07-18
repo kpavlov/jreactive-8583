@@ -33,9 +33,9 @@ public abstract class AbstractIso8583Connector<
     private EventLoopGroup workerEventLoopGroup;
     private B bootstrap;
 
-    protected AbstractIso8583Connector(C configuration,
-                                       MessageFactory<M> isoMessageFactory,
-                                       CompositeIsoMessageHandler<M> messageHandler) {
+    protected AbstractIso8583Connector(final C configuration,
+                                       final MessageFactory<M> isoMessageFactory,
+                                       final CompositeIsoMessageHandler<M> messageHandler) {
         assert (configuration != null) : "Configuration must be provided";
         Objects.requireNonNull(isoMessageFactory, "MessageFactory must be provided");
         this.configuration = configuration;
@@ -47,15 +47,15 @@ public abstract class AbstractIso8583Connector<
     }
 
     // @VisibleForTest
-    protected AbstractIso8583Connector(C configuration, MessageFactory<M> isoMessageFactory) {
+    protected AbstractIso8583Connector(final C configuration, final MessageFactory<M> isoMessageFactory) {
         this(configuration, isoMessageFactory, new CompositeIsoMessageHandler<>());
     }
 
-    public void addMessageListener(IsoMessageListener<M> handler) {
+    public void addMessageListener(final IsoMessageListener<M> handler) {
         messageHandler.addListener(handler);
     }
 
-    public void removeMessageListener(IsoMessageListener<M> handler) {
+    public void removeMessageListener(final IsoMessageListener<M> handler) {
         messageHandler.removeListener(handler);
     }
 
@@ -83,7 +83,7 @@ public abstract class AbstractIso8583Connector<
         }
     }
 
-    protected void configureBootstrap(B bootstrap) {
+    protected void configureBootstrap(final B bootstrap) {
         bootstrap.option(ChannelOption.AUTO_READ, true);
 
         if (configurer != null) {
@@ -95,7 +95,7 @@ public abstract class AbstractIso8583Connector<
         return configurer;
     }
 
-    public void setConfigurer(ConnectorConfigurer<C, B> connectorConfigurer) {
+    public void setConfigurer(final ConnectorConfigurer<C, B> connectorConfigurer) {
         this.configurer = connectorConfigurer;
     }
 
@@ -103,7 +103,7 @@ public abstract class AbstractIso8583Connector<
         return socketAddress;
     }
 
-    public void setSocketAddress(SocketAddress socketAddress) {
+    public void setSocketAddress(final SocketAddress socketAddress) {
         this.socketAddress = socketAddress;
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractIso8583Connector<
     }
 
     protected EventLoopGroup createWorkerEventLoopGroup() {
-        final NioEventLoopGroup group = new NioEventLoopGroup(configuration.getWorkerThreadsCount());
+        final var group = new NioEventLoopGroup(configuration.getWorkerThreadsCount());
         logger.debug("Created worker EventLoopGroup with {} executor threads", group.executorCount());
         return group;
     }
@@ -143,7 +143,7 @@ public abstract class AbstractIso8583Connector<
         return channelRef.get();
     }
 
-    protected void setChannel(Channel channel) {
+    protected void setChannel(final Channel channel) {
         this.channelRef.set(channel);
     }
 

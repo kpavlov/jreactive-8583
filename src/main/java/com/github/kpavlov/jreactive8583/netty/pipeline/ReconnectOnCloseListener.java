@@ -1,7 +1,6 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.client.Iso8583Client;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public class ReconnectOnCloseListener implements ChannelFutureListener {
     private final AtomicBoolean disconnectRequested = new AtomicBoolean(false);
     private final ScheduledExecutorService executorService;
 
-    public ReconnectOnCloseListener(Iso8583Client<?> client, int reconnectInterval, ScheduledExecutorService executorService) {
+    public ReconnectOnCloseListener(final Iso8583Client<?> client, final int reconnectInterval, final ScheduledExecutorService executorService) {
         this.client = client;
         this.reconnectInterval = reconnectInterval;
         this.executorService = executorService;
@@ -36,8 +35,8 @@ public class ReconnectOnCloseListener implements ChannelFutureListener {
     }
 
     @Override
-    public void operationComplete(ChannelFuture future) {
-        final Channel channel = future.channel();
+    public void operationComplete(final ChannelFuture future) {
+        final var channel = future.channel();
         logger.debug("Client connection was closed to {}", channel.remoteAddress());
         channel.disconnect();
         scheduleReconnect();

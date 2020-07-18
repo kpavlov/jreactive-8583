@@ -24,7 +24,7 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
     private final List<IsoMessageListener<T>> messageListeners = new CopyOnWriteArrayList<>();
     private final boolean failOnError;
 
-    public CompositeIsoMessageHandler(boolean failOnError) {
+    public CompositeIsoMessageHandler(final boolean failOnError) {
         this.failOnError = failOnError;
     }
 
@@ -33,27 +33,27 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
         if (msg instanceof IsoMessage) {
             doHandleMessage(ctx, msg);
         }
         super.channelRead(ctx, msg);
     }
 
-    private void doHandleMessage(ChannelHandlerContext ctx, Object msg) {
-        T isoMessage;
+    private void doHandleMessage(final ChannelHandlerContext ctx, final Object msg) {
+        final T isoMessage;
         try {
             //noinspection unchecked
             isoMessage = (T) msg;
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             logger.debug("IsoMessage subclass {} is not supported by {}. Doing nothing.", msg.getClass(), getClass());
             return;
         }
 
-        boolean applyNextListener = true;
-        final int size = messageListeners.size();
-        for (int i = 0; applyNextListener && i < size; i++) {
-            IsoMessageListener<T> messageListener = messageListeners.get(i);
+        var applyNextListener = true;
+        final var size = messageListeners.size();
+        for (var i = 0; applyNextListener && i < size; i++) {
+            final var messageListener = messageListeners.get(i);
             try {
                 if (messageListener.applies(isoMessage)) {
                     logger.debug(
@@ -64,7 +64,7 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
                         logger.trace("Stopping further procession of message {} after handler {}", isoMessage, messageListener);
                     }
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.debug("Can't evaluate {}.apply({})", messageListener, isoMessage.getClass(), e);
                 if (failOnError) {
                     throw e;
@@ -73,21 +73,21 @@ public class CompositeIsoMessageHandler<T extends IsoMessage> extends ChannelInb
         }
     }
 
-    public void addListener(IsoMessageListener<T> listener) {
+    public void addListener(final IsoMessageListener<T> listener) {
         Objects.requireNonNull(listener, "IsoMessageListener is required");
         messageListeners.add(listener);
     }
 
     @SuppressWarnings("WeakerAccess")
     @SafeVarargs
-    public final void addListeners(IsoMessageListener<T>... listeners) {
+    public final void addListeners(final IsoMessageListener<T>... listeners) {
         Objects.requireNonNull(listeners, "IsoMessageListeners must not be null");
-        for (IsoMessageListener<T> listener : listeners) {
+        for (final var listener : listeners) {
             addListener(listener);
         }
     }
 
-    public void removeListener(IsoMessageListener<T> listener) {
+    public void removeListener(final IsoMessageListener<T> listener) {
         messageListeners.remove(listener);
     }
 }

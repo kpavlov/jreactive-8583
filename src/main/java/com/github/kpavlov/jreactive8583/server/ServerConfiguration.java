@@ -12,7 +12,7 @@ public class ServerConfiguration extends ConnectorConfiguration {
         this(newBuilder());
     }
 
-    public ServerConfiguration(Builder builder) {
+    public ServerConfiguration(final Builder builder) {
         super(builder);
     }
 

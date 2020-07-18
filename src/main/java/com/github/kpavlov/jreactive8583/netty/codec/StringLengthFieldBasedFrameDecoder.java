@@ -18,21 +18,21 @@ public class StringLengthFieldBasedFrameDecoder extends LengthFieldBasedFrameDec
      * @see LengthFieldBasedFrameDecoder
      */
     public StringLengthFieldBasedFrameDecoder(
-        int maxFrameLength,
-        int lengthFieldOffset, int lengthFieldLength,
-        int lengthAdjustment, int initialBytesToStrip) {
+            final int maxFrameLength,
+            final int lengthFieldOffset, final int lengthFieldLength,
+            final int lengthAdjustment, final int initialBytesToStrip) {
         super(
-            maxFrameLength,
-            lengthFieldOffset, lengthFieldLength, lengthAdjustment,
-            initialBytesToStrip);
+                maxFrameLength,
+                lengthFieldOffset, lengthFieldLength, lengthAdjustment,
+                initialBytesToStrip);
     }
 
     @Override
-    protected long getUnadjustedFrameLength(ByteBuf buf, int offset, int length, ByteOrder order) {
+    protected long getUnadjustedFrameLength(ByteBuf buf, final int offset, final int length, final ByteOrder order) {
         buf = buf.order(order);
-        byte[] lengthBytes = new byte[length];
+        final var lengthBytes = new byte[length];
         buf.getBytes(offset, lengthBytes);
-        String s = new String(lengthBytes, CharsetUtil.US_ASCII);
+        final var s = new String(lengthBytes, CharsetUtil.US_ASCII);
         return Long.parseLong(s);
     }
 }

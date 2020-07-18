@@ -24,7 +24,10 @@ import com.github.kpavlov.jreactive8583.netty.codec.Iso8583Encoder;
 import com.github.kpavlov.jreactive8583.netty.codec.StringLengthFieldBasedFrameDecoder;
 import com.solab.iso8583.IsoMessage;
 import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -45,11 +48,11 @@ public class Iso8583ChannelInitializer<
     private final ChannelHandler parseExceptionHandler;
 
     public Iso8583ChannelInitializer(
-            C configuration,
-            ConnectorConfigurer<C, B> configurer,
-            EventLoopGroup workerGroup,
-            MessageFactory<IsoMessage> isoMessageFactory,
-            ChannelHandler... customChannelHandlers) {
+            final C configuration,
+            final ConnectorConfigurer<C, B> configurer,
+            final EventLoopGroup workerGroup,
+            final MessageFactory<IsoMessage> isoMessageFactory,
+            final ChannelHandler... customChannelHandlers) {
         this.configuration = configuration;
         this.configurer = configurer;
         this.workerGroup = workerGroup;
@@ -62,8 +65,8 @@ public class Iso8583ChannelInitializer<
     }
 
     @Override
-    public void initChannel(T ch) {
-        final ChannelPipeline pipeline = ch.pipeline();
+    public void initChannel(final T ch) {
+        final var pipeline = ch.pipeline();
 
         pipeline.addLast("lengthFieldFrameDecoder", createLengthFieldBasedFrameDecoder(configuration));
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory));
@@ -97,7 +100,7 @@ public class Iso8583ChannelInitializer<
         return new ParseExceptionHandler(isoMessageFactory, true);
     }
 
-    protected Iso8583Encoder createIso8583Encoder(C configuration) {
+    protected Iso8583Encoder createIso8583Encoder(final C configuration) {
         return new Iso8583Encoder(configuration.getFrameLengthFieldLength(),
                 configuration.encodeFrameLengthAsString());
     }
@@ -106,15 +109,15 @@ public class Iso8583ChannelInitializer<
         return new Iso8583Decoder(messageFactory);
     }
 
-    protected ChannelHandler createLoggingHandler(C configuration) {
+    protected ChannelHandler createLoggingHandler(final C configuration) {
         return new IsoMessageLoggingHandler(LogLevel.DEBUG,
                 configuration.logSensitiveData(),
                 configuration.logFieldDescription(),
                 configuration.getSensitiveDataFields());
     }
 
-    protected ChannelHandler createLengthFieldBasedFrameDecoder(C configuration) {
-        final int lengthFieldLength = configuration.getFrameLengthFieldLength();
+    protected ChannelHandler createLengthFieldBasedFrameDecoder(final C configuration) {
+        final var lengthFieldLength = configuration.getFrameLengthFieldLength();
         if (configuration.encodeFrameLengthAsString()) {
             return new StringLengthFieldBasedFrameDecoder(
                     configuration.getMaxFrameLength(), configuration.getFrameLengthFieldOffset(), lengthFieldLength,

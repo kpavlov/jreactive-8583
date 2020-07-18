@@ -61,7 +61,7 @@ public enum ISO8583Version {
     /**
      * @param value A first digit in Message type indicator
      */
-    ISO8583Version(int value) {
+    ISO8583Version(final int value) {
         this.value = value;
     }
 

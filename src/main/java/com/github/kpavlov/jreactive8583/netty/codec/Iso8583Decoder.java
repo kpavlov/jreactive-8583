@@ -14,7 +14,7 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
 
     private final MessageFactory<IsoMessage> messageFactory;
 
-    public Iso8583Decoder(MessageFactory<IsoMessage> messageFactory) {
+    public Iso8583Decoder(final MessageFactory<IsoMessage> messageFactory) {
         this.messageFactory = messageFactory;
     }
 
@@ -27,14 +27,14 @@ public class Iso8583Decoder extends ByteToMessageDecoder {
      * </p>
      */
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List out) throws Exception {
+    protected void decode(final ChannelHandlerContext ctx, final ByteBuf byteBuf, final List out) throws Exception {
         if (!byteBuf.isReadable()) {
             return;
         }
         final var bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
 
-        final IsoMessage isoMessage = messageFactory.parseMessage(bytes, 0);
+        final var isoMessage = messageFactory.parseMessage(bytes, 0);
         if (isoMessage != null) {
             //noinspection unchecked
             out.add(isoMessage);

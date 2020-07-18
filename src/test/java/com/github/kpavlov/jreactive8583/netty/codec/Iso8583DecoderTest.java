@@ -35,7 +35,7 @@ public class Iso8583DecoderTest {
     }
 
     @Test
-    public void testDecodeEmptyBypeBufDoesNothing() throws Exception {
+    public void testDecodeEmptyByteBufDoesNothing() throws Exception {
         when(byteBuf.isReadable()).thenReturn(false);
 
         decoder.decode(ctx, byteBuf, out);
