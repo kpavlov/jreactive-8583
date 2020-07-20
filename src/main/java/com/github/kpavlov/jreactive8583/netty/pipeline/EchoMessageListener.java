@@ -1,6 +1,7 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline;
 
 import com.github.kpavlov.jreactive8583.IsoMessageListener;
+import com.github.kpavlov.jreactive8583.iso.MessageClass;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
 import com.solab.iso8583.IsoMessage;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,7 +19,7 @@ public class EchoMessageListener<T extends IsoMessage> implements IsoMessageList
 
     @Override
     public boolean applies(final IsoMessage isoMessage) {
-        return isoMessage != null && isoMessage.getType() == 0x800;
+        return isoMessage != null && (isoMessage.getType() & MessageClass.NETWORK_MANAGEMENT.value()) != 0;
     }
 
     /**
