@@ -1,36 +1,32 @@
-package com.github.kpavlov.jreactive8583.netty.codec;
+@file:JvmName("Iso8583Encoder")
 
-import com.solab.iso8583.IsoMessage;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.util.CharsetUtil;
+package com.github.kpavlov.jreactive8583.netty.codec
 
-@ChannelHandler.Sharable
-public class Iso8583Encoder extends MessageToByteEncoder<IsoMessage> {
+import com.solab.iso8583.IsoMessage
+import io.netty.buffer.ByteBuf
+import io.netty.channel.ChannelHandler.Sharable
+import io.netty.channel.ChannelHandlerContext
+import io.netty.handler.codec.MessageToByteEncoder
+import io.netty.util.CharsetUtil
 
-    private final int lengthHeaderLength;
-    private final boolean encodeLengthHeaderAsString;
-
-    public Iso8583Encoder(final int lengthHeaderLength, final boolean encodeLengthHeaderAsString) {
-        this.lengthHeaderLength = lengthHeaderLength;
-        this.encodeLengthHeaderAsString = encodeLengthHeaderAsString;
-    }
-
-    @Override
-    protected void encode(final ChannelHandlerContext ctx, final IsoMessage isoMessage, final ByteBuf out) {
+@Sharable
+class Iso8583Encoder(
+    private val lengthHeaderLength: Int,
+    private val encodeLengthHeaderAsString: Boolean
+) :
+    MessageToByteEncoder<IsoMessage>() {
+    public override fun encode(ctx: ChannelHandlerContext, isoMessage: IsoMessage, out: ByteBuf) {
         if (lengthHeaderLength == 0) {
-            final var bytes = isoMessage.writeData();
-            out.writeBytes(bytes);
+            val bytes = isoMessage.writeData()
+            out.writeBytes(bytes)
         } else if (encodeLengthHeaderAsString) {
-            final var bytes = isoMessage.writeData();
-            final var lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.length);
-            out.writeBytes(lengthHeader.getBytes(CharsetUtil.US_ASCII));
-            out.writeBytes(bytes);
+            val bytes = isoMessage.writeData()
+            val lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.size)
+            out.writeBytes(lengthHeader.toByteArray(CharsetUtil.US_ASCII))
+            out.writeBytes(bytes)
         } else {
-            final var byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength);
-            out.writeBytes(byteBuffer);
+            val byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength)
+            out.writeBytes(byteBuffer)
         }
     }
 }

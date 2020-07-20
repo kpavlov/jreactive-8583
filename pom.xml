@@ -270,7 +270,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <phase>prepare-package</phase>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
             </plugin>
