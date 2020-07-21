@@ -14,5 +14,9 @@ public interface MessageFactory<T> {
 
     T createResponse(T requestMessage);
 
+    T createResponse(T request, boolean copyAllFields);
+
+    T parseMessage(byte[] buf, int isoHeaderLength, boolean binaryIsoHeader) throws ParseException, UnsupportedEncodingException;
+
     T parseMessage(byte[] buf, int isoHeaderLength) throws UnsupportedEncodingException, ParseException;
 }
