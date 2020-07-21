@@ -4,7 +4,7 @@
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
     <artifactId>netty-iso8583</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.4</version>
 
     <name>ISO8583 Connector for Netty</name>
     <properties>
@@ -49,7 +49,7 @@
         <connection>scm:git:git@github.com:kpavlov/jreactive-8583.git</connection>
         <developerConnection>scm:git:git@github.com:kpavlov/jreactive-8583.git</developerConnection>
         <url>https://github.com/kpavlov/jreactive-8583</url>
-        <tag>v1.2.2</tag>
+        <tag>v1.2.4</tag>
     </scm>
 
     <inceptionYear>2015</inceptionYear>
