@@ -19,7 +19,7 @@ public class EchoMessageListener<T extends IsoMessage> implements IsoMessageList
 
     @Override
     public boolean applies(final IsoMessage isoMessage) {
-        return isoMessage != null && (isoMessage.getType() & MessageClass.NETWORK_MANAGEMENT.value()) != 0;
+        return isoMessage != null && (isoMessage.getType() & MessageClass.NETWORK_MANAGEMENT.getValue()) != 0;
     }
 
     /**
