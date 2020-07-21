@@ -1,93 +1,95 @@
-package com.github.kpavlov.jreactive8583.server;
+@file:JvmName("Iso8583Server")
 
-import com.github.kpavlov.jreactive8583.AbstractIso8583Connector;
-import com.github.kpavlov.jreactive8583.iso.MessageFactory;
-import com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer;
-import com.solab.iso8583.IsoMessage;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+package com.github.kpavlov.jreactive8583.server
 
-import java.net.InetSocketAddress;
+import com.github.kpavlov.jreactive8583.AbstractIso8583Connector
+import com.github.kpavlov.jreactive8583.iso.MessageFactory
+import com.github.kpavlov.jreactive8583.netty.pipeline.Iso8583ChannelInitializer
+import com.solab.iso8583.IsoMessage
+import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.Channel
+import io.netty.channel.ChannelFuture
+import io.netty.channel.ChannelOption
+import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.netty.util.concurrent.GenericFutureListener
+import java.net.InetSocketAddress
 
-public class Iso8583Server<T extends IsoMessage> extends AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T> {
+open class Iso8583Server<T : IsoMessage>(
+    port: Int,
+    config: ServerConfiguration,
+    messageFactory: MessageFactory<T>
+) : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
+    constructor(port: Int, messageFactory: MessageFactory<T>) : this(
+        port,
+        ServerConfiguration.newBuilder().build(),
+        messageFactory
+    )
 
-    public Iso8583Server(final int port, final ServerConfiguration config, final MessageFactory<T> messageFactory) {
-        super(config, messageFactory);
-        setSocketAddress(new InetSocketAddress(port));
+    @Throws(InterruptedException::class)
+    fun start() {
+        bootstrap.bind().addListener(
+            GenericFutureListener { future: ChannelFuture ->
+                val channel = future.channel()
+                setChannel(channel)
+                logger.info("Server is started and listening at {}", channel.localAddress())
+            }
+        ).sync().await()
     }
 
-    public Iso8583Server(final int port, final MessageFactory<T> messageFactory) {
-        this(port, ServerConfiguration.newBuilder().build(), messageFactory);
+    override fun createBootstrap(): ServerBootstrap {
+        val bootstrap = ServerBootstrap()
+        val tcpNoDelay =
+            java.lang.Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"))
+        bootstrap.group(bossEventLoopGroup, workerEventLoopGroup)
+            .channel(NioServerSocketChannel::class.java)
+            .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
+            .childOption(ChannelOption.SO_KEEPALIVE, true)
+            .localAddress(socketAddress)
+            .childHandler(
+                Iso8583ChannelInitializer<Channel, ServerBootstrap, ServerConfiguration>(
+                    configuration,
+                    getConfigurer(),
+                    workerEventLoopGroup,
+                    getIsoMessageFactory() as MessageFactory<IsoMessage>,
+                    messageHandler
+                )
+            )
+        configureBootstrap(bootstrap)
+        bootstrap.validate()
+        return bootstrap
     }
 
-    public void start() throws InterruptedException {
-        getBootstrap().bind().addListener(
-                (ChannelFuture future) -> {
-                    final var channel = future.channel();
-                    setChannel(channel);
-                    logger.info("Server is started and listening at {}", channel.localAddress());
-                }
-        ).sync().await();
-    }
-
-    @Override
-    protected ServerBootstrap createBootstrap() {
-
-        final var bootstrap = new ServerBootstrap();
-
-        final var tcpNoDelay = Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"));
-
-        bootstrap.group(getBossEventLoopGroup(), getWorkerEventLoopGroup())
-                .channel(NioServerSocketChannel.class)
-                .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .localAddress(getSocketAddress())
-                .childHandler(new Iso8583ChannelInitializer(
-                        getConfiguration(),
-                        getConfigurer(),
-                        getWorkerEventLoopGroup(),
-                        getIsoMessageFactory(),
-                        getMessageHandler()
-                ));
-
-        configureBootstrap(bootstrap);
-
-        bootstrap.validate();
-
-        return bootstrap;
-    }
-
-    public void shutdown() {
-        stop();
-        super.shutdown();
+    override fun shutdown() {
+        stop()
+        super.shutdown()
     }
 
     /**
      * @return True if server is ready to accept connections.
      */
-    public boolean isStarted() {
-        final var channel = getChannel();
-        return channel != null && channel.isOpen();
+    val isStarted: Boolean
+        get() {
+            val channel = channel
+            return channel != null && channel.isOpen
+        }
+
+    fun stop() {
+        val channel = channel
+        if (channel == null) {
+            logger.info("The Server is not started...")
+            return
+        }
+        logger.info("Stopping the Server...")
+        try {
+            channel.deregister()
+            channel.close().syncUninterruptibly()
+            logger.info("Server was Stopped.")
+        } catch (e: Exception) {
+            logger.error("Error while stopping the server", e)
+        }
     }
 
-
-    @SuppressWarnings("WeakerAccess")
-    public void stop() {
-        final var channel = getChannel();
-        if (channel == null) {
-            logger.info("The Server is not started...");
-            return;
-        }
-        logger.info("Stopping the Server...");
-        try {
-            channel.deregister();
-            channel.close().syncUninterruptibly();
-            logger.info("Server was Stopped.");
-        } catch (final Exception e) {
-            logger.error("Error while stopping the server", e);
-        }
-
+    init {
+        socketAddress = InetSocketAddress(port)
     }
 }
