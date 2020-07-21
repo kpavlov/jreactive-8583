@@ -25,12 +25,15 @@ open class Iso8583Server<T : IsoMessage>(
         messageFactory
     )
 
+    init {
+        socketAddress = InetSocketAddress(port)
+    }
+
     @Throws(InterruptedException::class)
     fun start() {
         bootstrap.bind().addListener(
             GenericFutureListener { future: ChannelFuture ->
-                val channel = future.channel()
-                setChannel(channel)
+                channel = future.channel()
                 logger.info("Server is started and listening at {}", channel.localAddress())
             }
         ).sync().await()
@@ -48,9 +51,9 @@ open class Iso8583Server<T : IsoMessage>(
             .childHandler(
                 Iso8583ChannelInitializer<Channel, ServerBootstrap, ServerConfiguration>(
                     configuration,
-                    getConfigurer(),
+                    configurer,
                     workerEventLoopGroup,
-                    getIsoMessageFactory() as MessageFactory<IsoMessage>,
+                    isoMessageFactory as MessageFactory<IsoMessage>,
                     messageHandler
                 )
             )
@@ -80,16 +83,15 @@ open class Iso8583Server<T : IsoMessage>(
             return
         }
         logger.info("Stopping the Server...")
-        try {
-            channel.deregister()
-            channel.close().syncUninterruptibly()
-            logger.info("Server was Stopped.")
-        } catch (e: Exception) {
-            logger.error("Error while stopping the server", e)
+        with(channel) {
+            try {
+                deregister()
+                close().syncUninterruptibly()
+                logger.info("Server was Stopped.")
+            } catch (e: Exception) {
+                logger.error("Error while stopping the server", e)
+            }
         }
-    }
 
-    init {
-        socketAddress = InetSocketAddress(port)
     }
 }

@@ -318,6 +318,7 @@
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg> <!-- Enable strict mode for JSR-305 annotations -->
+                        <arg>-Xjvm-default=enable</arg>
                     </args>
                     <jvmTarget>${java.version}</jvmTarget>
                     <apiVersion>1.3</apiVersion>
