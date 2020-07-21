@@ -23,7 +23,7 @@ public class Iso8583DecoderTest {
     @Mock
     private MessageFactory<IsoMessage> messageFactory;
     @Mock
-    private List<?> out;
+    private List<Object> out;
     @Mock
     private ByteBuf byteBuf;
     @Mock
