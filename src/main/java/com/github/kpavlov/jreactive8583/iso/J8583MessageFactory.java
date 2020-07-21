@@ -39,15 +39,25 @@ public class J8583MessageFactory<T extends IsoMessage>
     }
 
     @Override
-    public T newMessage(@Nonnull MessageClass messageClass,
-                        @Nonnull MessageFunction messageFunction,
-                        @Nonnull MessageOrigin messageOrigin) {
+    public T newMessage(@Nonnull final MessageClass messageClass,
+                        @Nonnull final MessageFunction messageFunction,
+                        @Nonnull final MessageOrigin messageOrigin) {
         return newMessage(MTI.mtiValue(isoVersion, messageClass, messageFunction, messageOrigin));
     }
 
     @Override
     public T createResponse(final T requestMessage) {
         return messageFactory.createResponse(requestMessage);
+    }
+
+    @Override
+    public T createResponse(final T request, final boolean copyAllFields) {
+        return messageFactory.createResponse(request, copyAllFields);
+    }
+
+    @Override
+    public T parseMessage(byte[] buf, int isoHeaderLength, boolean binaryIsoHeader) throws ParseException, UnsupportedEncodingException {
+        return messageFactory.parseMessage(buf, isoHeaderLength, binaryIsoHeader);
     }
 
     @Override
