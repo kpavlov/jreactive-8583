@@ -65,7 +65,8 @@ protected constructor(
 
     protected fun configureBootstrap(bootstrap: B) {
         bootstrap.option(
-            ChannelOption.TCP_NODELAY, parseBoolean(
+            ChannelOption.TCP_NODELAY,
+            parseBoolean(
                 System.getProperty(
                     "nfs.rpc.tcp.nodelay", "true"
                 )
