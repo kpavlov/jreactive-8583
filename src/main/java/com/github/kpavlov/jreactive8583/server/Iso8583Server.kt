@@ -19,11 +19,6 @@ open class Iso8583Server<T : IsoMessage>(
     config: ServerConfiguration,
     messageFactory: MessageFactory<T>
 ) : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
-    constructor(port: Int, messageFactory: MessageFactory<T>) : this(
-        port,
-        ServerConfiguration.newBuilder().build(),
-        messageFactory
-    )
 
     init {
         socketAddress = InetSocketAddress(port)
@@ -34,7 +29,7 @@ open class Iso8583Server<T : IsoMessage>(
         bootstrap.bind().addListener(
             GenericFutureListener { future: ChannelFuture ->
                 channel = future.channel()
-                logger.info("Server is started and listening at {}", channel.localAddress())
+                logger.info("Server is started and listening at {}", channel?.localAddress())
             }
         ).sync().await()
     }

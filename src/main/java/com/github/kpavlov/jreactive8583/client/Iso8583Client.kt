@@ -15,16 +15,16 @@ import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
+open class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
     private lateinit var reconnectOnCloseListener: ReconnectOnCloseListener
 
-    constructor(socketAddress: SocketAddress, config: ClientConfiguration, isoMessageFactory: MessageFactory<T>)
-            : super(config, isoMessageFactory) {
+    constructor(
+        socketAddress: SocketAddress,
+        config: ClientConfiguration,
+        isoMessageFactory: MessageFactory<T>
+    ) : super(config, isoMessageFactory) {
         this.socketAddress = socketAddress
     }
-
-    constructor(socketAddress: SocketAddress, isoMessageFactory: MessageFactory<T>)
-            : this(socketAddress, ClientConfiguration.getDefault(), isoMessageFactory)
 
     /**
      * Connects synchronously to remote address.
@@ -87,7 +87,6 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
                 this.closeFuture().addListener(reconnectOnCloseListener)
                 this
             }
-
         }
         return connectFuture
     }
@@ -116,18 +115,20 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
         return b
     }
 
-    fun disconnectAsync(): ChannelFuture {
+    fun disconnectAsync(): ChannelFuture? {
         reconnectOnCloseListener.requestDisconnect()
         val channel = channel
-        val socketAddress = socketAddress
         logger.info("Closing connection to {}", socketAddress)
-        return channel.close()
+        if (channel != null) {
+            return channel.close()
+        } else {
+            return null
+        }
     }
 
     @Throws(InterruptedException::class)
     fun disconnect() {
-        val disconnectFuture = disconnectAsync()
-        disconnectFuture.await()
+        disconnectAsync()?.await()
     }
 
     /**
@@ -136,17 +137,17 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
      * @param isoMessage A message to send
      * @return ChannelFuture which will be notified when message is sent
      */
-    fun sendAsync(isoMessage: IsoMessage?): ChannelFuture {
-        val channel = channel
-        check(channel.isWritable) { "Channel is not writable" }
-        return channel.writeAndFlush(isoMessage)
+    fun sendAsync(isoMessage: IsoMessage): ChannelFuture {
+        val ch = channel
+        check(ch != null && ch.isWritable) { "Channel is not writable" }
+        return ch.writeAndFlush(isoMessage)
     }
 
     /**
      * Sends message synchronously
      */
     @Throws(InterruptedException::class)
-    fun send(isoMessage: IsoMessage?) {
+    fun send(isoMessage: IsoMessage) {
         sendAsync(isoMessage).sync().await()
     }
 
@@ -154,7 +155,7 @@ class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfigurati
      * Sends message synchronously with timeout
      */
     @Throws(InterruptedException::class)
-    fun send(isoMessage: IsoMessage?, timeout: Long, timeUnit: TimeUnit?) {
+    fun send(isoMessage: IsoMessage, timeout: Long, timeUnit: TimeUnit) {
         sendAsync(isoMessage).sync().await(timeout, timeUnit)
     }
 
