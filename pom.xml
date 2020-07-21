@@ -121,11 +121,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
@@ -174,7 +169,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-test-junit5</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
@@ -226,36 +221,12 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <parallel>classes</parallel>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>reconnect-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <includes>
-                                <include>**ClientReconnectIT**</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <forkCount>1</forkCount>
-                    <reuseForks>true</reuseForks>
-                    <parallel>none</parallel>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
@@ -263,7 +234,7 @@
                 <version>${dokka.version}</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>dokka</goal>
                         </goals>
@@ -272,7 +243,7 @@
                 <configuration>
                     <outputFormat>html</outputFormat>
                     <outputDir>${project.build.directory}/javadoc</outputDir>
-                    <jdkVersion>${java.version}</jdkVersion>
+                    <jdkVersion>11</jdkVersion>
                     <noJdkLink>true</noJdkLink>
                     <attach>true</attach>
                 </configuration>
@@ -283,7 +254,7 @@
                 <version>3.1.1</version>
                 <executions>
                     <execution>
-                        <id>package-third-party-javadoc</id>
+                        <id>javadoc</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -292,8 +263,7 @@
                             <descriptors>
                                 <descriptor>src/main/assembly/assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>${project.build.finalName}-javadoc</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
+                            <appendAssemblyId>true</appendAssemblyId>
                             <attach>true</attach>
                         </configuration>
                     </execution>
@@ -420,6 +390,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
+                    <configuration>
+                        <pushChanges>false</pushChanges>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
