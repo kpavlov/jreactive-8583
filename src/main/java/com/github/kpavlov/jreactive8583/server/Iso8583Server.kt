@@ -92,6 +92,5 @@ open class Iso8583Server<T : IsoMessage>(
                 logger.error("Error while stopping the server", e)
             }
         }
-
     }
 }
