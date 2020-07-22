@@ -15,11 +15,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.Boolean.parseBoolean
 import java.net.SocketAddress
-import java.util.*
 import java.util.concurrent.atomic.AtomicReference
 
-abstract class AbstractIso8583Connector<C : ConnectorConfiguration,
-        B : AbstractBootstrap<B, *>, M : IsoMessage>
+abstract class AbstractIso8583Connector<C : ConnectorConfiguration, B : AbstractBootstrap<B, *>, M : IsoMessage>
 protected constructor(
     configuration: C,
     isoMessageFactory: MessageFactory<M>,
@@ -98,7 +96,6 @@ protected constructor(
 
     // @VisibleForTest
     init {
-        Objects.requireNonNull(isoMessageFactory, "MessageFactory must be provided")
         this.configuration = configuration
         this.isoMessageFactory = isoMessageFactory
         this.messageHandler = messageHandler
