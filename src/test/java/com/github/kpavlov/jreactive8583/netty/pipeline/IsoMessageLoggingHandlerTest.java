@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.github.kpavlov.jreactive8583.ConnectorConfiguration.DEFAULT_SENSITIVE_DATA_FIELDS;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,7 +70,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testMaskDefaultSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 
@@ -85,7 +84,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testPrintSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, true, true, DEFAULT_SENSITIVE_DATA_FIELDS);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, true, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 
@@ -98,7 +97,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testHideFieldDescriptions() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false, DEFAULT_SENSITIVE_DATA_FIELDS);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 
@@ -107,7 +106,7 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testShowFieldDescriptions() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, DEFAULT_SENSITIVE_DATA_FIELDS);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 

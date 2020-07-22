@@ -1,3 +1,5 @@
+@file:JvmName("AbstractIso8583Connector")
+
 package com.github.kpavlov.jreactive8583
 
 import com.github.kpavlov.jreactive8583.iso.MessageFactory
