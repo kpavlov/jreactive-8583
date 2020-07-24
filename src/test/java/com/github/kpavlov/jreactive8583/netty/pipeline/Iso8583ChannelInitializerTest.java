@@ -47,7 +47,7 @@ public class Iso8583ChannelInitializerTest {
     public void testInitChannelWithLogger() {
         //given
         configurationBuilder.addLoggingHandler(true);
-        Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        Iso8583ChannelInitializer<Channel, AbstractBootstrap<?, ?>, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         // when
         channelInitializer.initChannel(channel);
@@ -61,7 +61,7 @@ public class Iso8583ChannelInitializerTest {
         //given
         configurationBuilder.addLoggingHandler(false);
 
-        final Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        final Iso8583ChannelInitializer<Channel, AbstractBootstrap<?, ?>, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         //when
         channelInitializer.initChannel(channel);
@@ -73,7 +73,7 @@ public class Iso8583ChannelInitializerTest {
     @Test
     public void testInitChannelWithDefaultLoggingSetting() {
         //given
-        final Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
+        final Iso8583ChannelInitializer<Channel, AbstractBootstrap<?, ?>, ConnectorConfiguration> channelInitializer = createChannelInitializer(configurer);
 
         //when
         channelInitializer.initChannel(channel);
@@ -82,7 +82,7 @@ public class Iso8583ChannelInitializerTest {
         verify(pipeline, never()).addLast(any(EventLoopGroup.class), anyString(), any(IsoMessageLoggingHandler.class));
     }
 
-    private Iso8583ChannelInitializer<Channel, AbstractBootstrap, ConnectorConfiguration> createChannelInitializer(final ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
+    private Iso8583ChannelInitializer<Channel, AbstractBootstrap<?, ?>, ConnectorConfiguration> createChannelInitializer(final ConnectorConfigurer<ConnectorConfiguration, AbstractBootstrap> configurer) {
         return new Iso8583ChannelInitializer(
                 configurationBuilder.build(),
                 configurer,
