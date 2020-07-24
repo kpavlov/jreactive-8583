@@ -40,7 +40,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
     val addEchoMessageListener: Boolean
 
     /**
-     * @param maxFrameLength the maximum length of the frame.
+     * The maximum length of the frame.
      */
     val maxFrameLength: Int
 
@@ -63,22 +63,22 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      */
     val workerThreadsCount: Int
 
-    private var replyOnError: Boolean
-    private var addLoggingHandler: Boolean
-    private var logSensitiveData: Boolean
+    val replyOnError: Boolean
+
+    val addLoggingHandler: Boolean
+
+    val logSensitiveData: Boolean
+
     /**
      * Returns field numbers to be treated as sensitive data.
      * Use `null` to use default ones
      *
-     * @return array of ISO8583 sensitive field numbers to be masked, or `null` to use default fields.
+     * Array of ISO8583 sensitive field numbers to be masked, or `null` to use default fields.
      * @see IsoMessageLoggingHandler
      */
-    /**
-     * @param sensitiveDataFields which fields may contain sensitive data
-     */
-    @set:Deprecated("Use {@link Builder}")
-    var sensitiveDataFields: IntArray
-    private var logFieldDescription: Boolean
+    val sensitiveDataFields: IntArray
+
+    val logFieldDescription: Boolean
 
     /**
      * Returns length of TCP frame length field.
@@ -177,18 +177,18 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
 
     init {
         this.addEchoMessageListener = b.addEchoMessageListener
-        this.maxFrameLength = b.maxFrameLength
-        this.idleTimeout = b.idleTimeout
-        this.logFieldDescription = b.logFieldDescription
         this.addLoggingHandler = b.addLoggingHandler
+        this.encodeFrameLengthAsString = b.encodeFrameLengthAsString
         this.frameLengthFieldAdjust = b.frameLengthFieldAdjust
-        this.workerThreadsCount = b.workerThreadsCount
         this.frameLengthFieldLength = b.frameLengthFieldLength
         this.frameLengthFieldOffset = b.frameLengthFieldOffset
+        this.idleTimeout = b.idleTimeout
+        this.logFieldDescription = b.logFieldDescription
         this.logSensitiveData = b.logSensitiveData
+        this.maxFrameLength = b.maxFrameLength
         this.replyOnError = b.replyOnError
         this.sensitiveDataFields = b.sensitiveDataFields
-        this.encodeFrameLengthAsString = b.encodeFrameLengthAsString
+        this.workerThreadsCount = b.workerThreadsCount
     }
 
     @Suppress("UNCHECKED_CAST")
