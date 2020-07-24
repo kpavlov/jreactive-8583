@@ -3,10 +3,10 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-# indent_size = 4
+indent_size = 4
 indent_style = space
 insert_final_newline = true
-max_line_length = 120
+max_line_length = 100
 tab_width = 4
 trim_trailing_whitespace = true
 # ij_continuation_indent_size = 8
@@ -342,5 +342,4 @@ ij_kotlin_wrap_expression_body_functions = 1
 ij_kotlin_wrap_first_method_in_call_chain = false
 
 [{*.json, *.yml}]
-indent_style = space
 indent_size = 2
