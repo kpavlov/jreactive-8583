@@ -16,17 +16,21 @@ class Iso8583Encoder(
 ) :
     MessageToByteEncoder<IsoMessage>() {
     public override fun encode(ctx: ChannelHandlerContext, isoMessage: IsoMessage, out: ByteBuf) {
-        if (lengthHeaderLength == 0) {
-            val bytes = isoMessage.writeData()
-            out.writeBytes(bytes)
-        } else if (encodeLengthHeaderAsString) {
-            val bytes = isoMessage.writeData()
-            val lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.size)
-            out.writeBytes(lengthHeader.toByteArray(CharsetUtil.US_ASCII))
-            out.writeBytes(bytes)
-        } else {
-            val byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength)
-            out.writeBytes(byteBuffer)
+        when {
+            lengthHeaderLength == 0 -> {
+                val bytes = isoMessage.writeData()
+                out.writeBytes(bytes)
+            }
+            encodeLengthHeaderAsString -> {
+                val bytes = isoMessage.writeData()
+                val lengthHeader = String.format("%0" + lengthHeaderLength + "d", bytes.size)
+                out.writeBytes(lengthHeader.toByteArray(CharsetUtil.US_ASCII))
+                out.writeBytes(bytes)
+            }
+            else -> {
+                val byteBuffer = isoMessage.writeToBuffer(lengthHeaderLength)
+                out.writeBytes(byteBuffer)
+            }
         }
     }
 }

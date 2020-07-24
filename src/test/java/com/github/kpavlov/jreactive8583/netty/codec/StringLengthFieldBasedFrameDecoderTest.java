@@ -1,6 +1,5 @@
 package com.github.kpavlov.jreactive8583.netty.codec;
 
-import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 import com.solab.iso8583.IsoMessage;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,26 +22,29 @@ class StringLengthFieldBasedFrameDecoderTest {
 
     @Mock
     private ChannelHandlerContext ctx;
-    @Mock
-    private ConnectorConfiguration config;
+
     @Mock
     private IsoMessage message;
+    private int frameLengthHeaderLength;
+    private int frameLengthFieldOffset;
+    private int maxFrameLength;
+    private int frameLengthFieldAdjust;
 
     @BeforeEach
     public void beforeClass() {
-        when(config.getMaxFrameLength()).thenReturn(8192);
-        when(config.getFrameLengthFieldOffset()).thenReturn(0);
-        when(config.getFrameLengthFieldLength()).thenReturn(4);
-        when(config.getFrameLengthFieldAdjust()).thenReturn(0);
-        when(config.encodeFrameLengthAsString()).thenReturn(true);
+        maxFrameLength = 8192;
+        frameLengthHeaderLength = 4;
+        frameLengthFieldOffset = 0;
+        frameLengthFieldAdjust = 0;
 
-        encoder = new Iso8583Encoder(config.getFrameLengthFieldLength(), config.encodeFrameLengthAsString());
+        encoder = new Iso8583Encoder(frameLengthHeaderLength, true);
+
         decoder = new StringLengthFieldBasedFrameDecoder(
-                config.getMaxFrameLength(),
-                config.getFrameLengthFieldOffset(),
-                config.getFrameLengthFieldLength(),
-                config.getFrameLengthFieldAdjust(),
-                config.getFrameLengthFieldLength()
+                maxFrameLength,
+                frameLengthFieldOffset,
+                frameLengthHeaderLength,
+                frameLengthFieldAdjust,
+                frameLengthHeaderLength
         );
     }
 
@@ -59,8 +61,8 @@ class StringLengthFieldBasedFrameDecoderTest {
         //when
         final var frameLength = decoder.getUnadjustedFrameLength(
                 buf,
-                config.getFrameLengthFieldOffset(),
-                config.getFrameLengthFieldLength(),
+                frameLengthFieldOffset,
+                frameLengthHeaderLength,
                 buf.order()
         );
 
