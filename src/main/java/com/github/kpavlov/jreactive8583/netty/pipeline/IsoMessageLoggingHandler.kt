@@ -1,6 +1,7 @@
 package com.github.kpavlov.jreactive8583.netty.pipeline
 
 import com.solab.iso8583.IsoMessage
+import com.solab.iso8583.IsoValue
 import io.netty.channel.ChannelHandler.Sharable
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.logging.LogLevel
@@ -8,11 +9,9 @@ import io.netty.handler.logging.LoggingHandler
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Integer.parseInt
-import java.util.Arrays.binarySearch
 
 /**
  * ChannelHandler responsible for logging messages.
- *
  *
  * According to PCI DSS, sensitive cardholder data, like PAN and track data,
  * should not be exposed. When running in secure mode,
@@ -25,6 +24,7 @@ class IsoMessageLoggingHandler(
     private val printFieldDescriptions: Boolean,
     private val maskedFields: IntArray = DEFAULT_MASKED_FIELDS
 ) : LoggingHandler(level) {
+
     companion object {
 
         private const val MASK_CHAR = '*'
@@ -71,14 +71,6 @@ class IsoMessageLoggingHandler(
                 return stream!!
             }
 
-        private fun maskPAN(fullPan: String): CharArray {
-            val maskedPan = fullPan.toCharArray()
-            for (i in 6 until maskedPan.size - 4) {
-                maskedPan[i] = MASK_CHAR
-            }
-            return maskedPan
-        }
-
         init {
             loadProperties()
         }
@@ -105,27 +97,36 @@ class IsoMessageLoggingHandler(
         for (i in 2..127) {
             if (m.hasField(i)) {
                 val field = m.getField<Any>(i)
-                sb.append("\n  ").append(i)
-                    .append(": [")
+                sb.append("\n  ").append(i).append(": [")
                 if (printFieldDescriptions) {
                     sb.append(FIELD_NAMES[i - 1]).append(':')
                 }
                 val formattedValue: CharArray
-                formattedValue = if (printSensitiveData) {
-                    field.toString().toCharArray()
-                } else {
-                    if (i == 2) {
-                        maskPAN(field.toString())
-                    } else if (binarySearch(maskedFields, i) >= 0) {
-                        MASKED_VALUE
-                    } else {
-                        field.toString().toCharArray()
-                    }
-                }
+                formattedValue = getFormattedValue(field, i)
                 sb.append(field.type).append('(').append(field.length)
                     .append(")] = '").append(formattedValue).append('\'')
             }
         }
         return sb.toString()
+    }
+
+    private fun getFormattedValue(field: IsoValue<Any>, i: Int): CharArray {
+        return if (printSensitiveData) {
+            field.toString().toCharArray()
+        } else {
+            when {
+                i == 2 -> maskPAN(field.toString())
+                maskedFields.contains(i) -> MASKED_VALUE
+                else -> field.toString().toCharArray()
+            }
+        }
+    }
+
+    private fun maskPAN(fullPan: String): CharArray {
+        val maskedPan = fullPan.toCharArray()
+        for (i in 6 until maskedPan.size - 4) {
+            maskedPan[i] = MASK_CHAR
+        }
+        return maskedPan
     }
 }
