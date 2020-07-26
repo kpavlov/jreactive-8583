@@ -33,8 +33,8 @@ public class ParseExceptionHandlerTest {
     private ArgumentCaptor<IsoMessage> messageCaptor;
 
     @BeforeAll
-    public static void beforeClass() throws Exception {
-        messageFactory = new J8583MessageFactory<>(ISO8583Version.V1993);
+    public static void beforeClass() {
+        messageFactory = new J8583MessageFactory<IsoMessage>(ISO8583Version.V1993);
     }
 
     @BeforeEach

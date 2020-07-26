@@ -31,7 +31,10 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder
 import io.netty.handler.logging.LogLevel
 import io.netty.handler.timeout.IdleStateHandler
 
-class Iso8583ChannelInitializer<T : Channel, B : AbstractBootstrap<*, *>, C : ConnectorConfiguration>(
+class Iso8583ChannelInitializer<T : Channel,
+    B : AbstractBootstrap<*, *>,
+    C : ConnectorConfiguration>
+constructor(
     private val configuration: C,
     private val configurer: ConnectorConfigurer<C, B>?,
     private val workerGroup: EventLoopGroup,
@@ -46,7 +49,10 @@ class Iso8583ChannelInitializer<T : Channel, B : AbstractBootstrap<*, *>, C : Co
 
     public override fun initChannel(ch: T) {
         val pipeline = ch.pipeline()
-        pipeline.addLast("lengthFieldFrameDecoder", createLengthFieldBasedFrameDecoder(configuration))
+        pipeline.addLast(
+            "lengthFieldFrameDecoder",
+            createLengthFieldBasedFrameDecoder(configuration)
+        )
         pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory))
         pipeline.addLast("iso8583Encoder", isoMessageEncoder)
         if (configuration.addLoggingHandler()) {
@@ -95,13 +101,19 @@ class Iso8583ChannelInitializer<T : Channel, B : AbstractBootstrap<*, *>, C : Co
         val lengthFieldLength = configuration.frameLengthFieldLength
         return if (configuration.encodeFrameLengthAsString()) {
             StringLengthFieldBasedFrameDecoder(
-                configuration.maxFrameLength, configuration.frameLengthFieldOffset, lengthFieldLength,
-                configuration.frameLengthFieldAdjust, lengthFieldLength
+                configuration.maxFrameLength,
+                configuration.frameLengthFieldOffset,
+                lengthFieldLength,
+                configuration.frameLengthFieldAdjust,
+                lengthFieldLength
             )
         } else {
             LengthFieldBasedFrameDecoder(
-                configuration.maxFrameLength, configuration.frameLengthFieldOffset, lengthFieldLength,
-                configuration.frameLengthFieldAdjust, lengthFieldLength
+                configuration.maxFrameLength,
+                configuration.frameLengthFieldOffset,
+                lengthFieldLength,
+                configuration.frameLengthFieldAdjust,
+                lengthFieldLength
             )
         }
     }

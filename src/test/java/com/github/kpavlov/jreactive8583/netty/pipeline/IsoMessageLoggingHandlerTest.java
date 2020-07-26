@@ -70,7 +70,8 @@ public class IsoMessageLoggingHandlerTest {
 
     @Test
     public void testMaskDefaultSensitiveData() {
-        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
+        handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true,
+            IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 

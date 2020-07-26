@@ -15,7 +15,9 @@ import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-open class Iso8583Client<T : IsoMessage> : AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
+open class Iso8583Client<T : IsoMessage> :
+    AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
+
     private lateinit var reconnectOnCloseListener: ReconnectOnCloseListener
 
     constructor(
