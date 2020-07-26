@@ -12,10 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList
  * Handles [IsoMessage] s with chain of [IsoMessageListener]s.
  */
 @Sharable
-class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
-    private val failOnError: Boolean = true
-) : ChannelInboundHandlerAdapter() {
-
+class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(private val failOnError: Boolean = true) :
+    ChannelInboundHandlerAdapter() {
     private val logger = LoggerFactory.getLogger(CompositeIsoMessageHandler::class.java)
     private val messageListeners: MutableList<IsoMessageListener<T>> =
         CopyOnWriteArrayList()
@@ -31,11 +29,7 @@ class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
         isoMessage = try {
             msg as T
         } catch (e: ClassCastException) {
-            logger.debug(
-                "IsoMessage subclass {} is not supported by {}. Doing nothing.",
-                msg.javaClass,
-                javaClass
-            )
+            logger.debug("IsoMessage subclass {} is not supported by {}. Doing nothing.", msg.javaClass, javaClass)
             return
         }
         var applyNextListener = true
@@ -60,10 +54,7 @@ class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
                     }
                 }
             } catch (e: Exception) {
-                logger.debug(
-                    "Can't evaluate {}.apply({})",
-                    messageListener, isoMessage.javaClass, e
-                )
+                logger.debug("Can't evaluate {}.apply({})", messageListener, isoMessage.javaClass, e)
                 if (failOnError) {
                     throw e
                 }
