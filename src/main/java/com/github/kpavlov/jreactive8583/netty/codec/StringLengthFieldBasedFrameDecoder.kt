@@ -8,13 +8,16 @@ import io.netty.util.CharsetUtil
 import java.nio.ByteOrder
 
 /**
- * Netty's [LengthFieldBasedFrameDecoder] assumes the frame length header is a binary encoded integer.
- * This overrides it's frame length decoding to implement the case when the frame length header is String encoded.
+ * Netty's [LengthFieldBasedFrameDecoder] assumes the frame length header
+ * is a binary encoded integer.
+ * This overrides it's frame length decoding to implement the case when
+ * the frame length header is String encoded.
  *
  *
  * Uses [CharsetUtil.US_ASCII] for decoding
  */
 open class StringLengthFieldBasedFrameDecoder
+
 /**
  * @param maxFrameLength      the maximum length of the frame.  If the length of the frame is
  * greater than this value, `TooLongFrameException` will be
@@ -38,7 +41,12 @@ constructor(
     lengthAdjustment,
     initialBytesToStrip
 ) {
-    public open override fun getUnadjustedFrameLength(buf: ByteBuf, offset: Int, length: Int, order: ByteOrder): Long {
+    public override fun getUnadjustedFrameLength(
+        buf: ByteBuf,
+        offset: Int,
+        length: Int,
+        order: ByteOrder
+    ): Long {
         var b = buf
         b = b.order(order)
         val lengthBytes = ByteArray(length)

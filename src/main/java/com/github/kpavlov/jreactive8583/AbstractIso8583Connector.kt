@@ -17,7 +17,10 @@ import java.lang.Boolean.parseBoolean
 import java.net.SocketAddress
 import java.util.concurrent.atomic.AtomicReference
 
-abstract class AbstractIso8583Connector<C : ConnectorConfiguration, B : AbstractBootstrap<B, *>, M : IsoMessage>
+abstract class AbstractIso8583Connector<
+    C : ConnectorConfiguration,
+    B : AbstractBootstrap<B, *>,
+    M : IsoMessage>
 protected constructor(
     configuration: C,
     isoMessageFactory: MessageFactory<M>,
@@ -84,7 +87,10 @@ protected constructor(
 
     protected fun createWorkerEventLoopGroup(): EventLoopGroup {
         val group = NioEventLoopGroup(configuration.workerThreadsCount)
-        logger.debug("Created worker EventLoopGroup with {} executor threads", group.executorCount())
+        logger.debug(
+            "Created worker EventLoopGroup with {} executor threads",
+            group.executorCount()
+        )
         return group
     }
 

@@ -10,7 +10,10 @@ object MTI {
         messageClass: MessageClass,
         messageFunction: MessageFunction,
         messageOrigin: MessageOrigin
-    ): Int {
-        return iso8583Version.value + messageClass.value + messageFunction.value + messageOrigin.value
-    }
+    ) = (
+        iso8583Version.value +
+            messageClass.value +
+            messageFunction.value +
+            messageOrigin.value
+        )
 }

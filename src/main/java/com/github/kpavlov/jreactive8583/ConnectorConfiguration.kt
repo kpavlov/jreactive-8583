@@ -164,11 +164,13 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
     }
 
     /**
-     * Returns <code>true</code> if the length header is to be encoded as a String, as opposed to the default binary
+     * Returns <code>true</code> if the length header is to be encoded as a String,
+     * as opposed to the default binary
      *
      * Default value is <code>false</code> (frame length header is binary encoded).
      *
-     * Used with @link frameLengthFieldLength, @link frameLengthFieldOffset and @link frameLengthFieldAdjust
+     * Used with @link frameLengthFieldLength, [#frameLengthFieldOffset]
+     * and [#frameLengthFieldAdjust]
      *
      * @return <code>true</code> if frame length header is string-encoded
      * @return Number of Netty worker threads
