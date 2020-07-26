@@ -34,7 +34,7 @@ public class ParseExceptionHandlerTest {
 
     @BeforeAll
     public static void beforeClass() {
-        messageFactory = new J8583MessageFactory<IsoMessage>(ISO8583Version.V1993);
+        messageFactory = new J8583MessageFactory<>(ISO8583Version.V1993);
     }
 
     @BeforeEach
@@ -46,9 +46,11 @@ public class ParseExceptionHandlerTest {
     public void testExceptionCaught() throws Exception {
         final var errorMessage = UUID.randomUUID().toString();
 
-        handler.exceptionCaught(ctx, new ParseException(errorMessage, 0));
+        final var exception = new ParseException(errorMessage, 0);
+        handler.exceptionCaught(ctx, exception);
 
         verify(ctx).writeAndFlush(messageCaptor.capture());
+        verify(ctx).fireExceptionCaught(exception);
         final var message = messageCaptor.getValue();
 
         assertThat(message.getType()).isEqualTo(0x1644);
