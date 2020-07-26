@@ -4,14 +4,6 @@ import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
 
 public class ServerConfiguration extends ConnectorConfiguration {
 
-    /**
-     * @deprecated Use {@link Builder}
-     */
-    @Deprecated
-    public ServerConfiguration() {
-        this(newBuilder());
-    }
-
     public ServerConfiguration(final Builder builder) {
         super(builder);
     }
