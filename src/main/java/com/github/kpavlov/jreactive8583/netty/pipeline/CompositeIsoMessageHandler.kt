@@ -22,14 +22,8 @@ class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
 
     @Throws(Exception::class)
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
-        (msg as? IsoMessage)?.let { doHandleMessage(ctx, it) }
-        super.channelRead(ctx, msg)
-    }
-
-    private fun doHandleMessage(ctx: ChannelHandlerContext, msg: Any) {
-        val isoMessage: T
-        isoMessage = try {
-            msg as T
+        val isoMessage = try {
+            msg as? T
         } catch (e: ClassCastException) {
             logger.debug(
                 "IsoMessage subclass {} is not supported by {}. Doing nothing.",
@@ -37,6 +31,11 @@ class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
             )
             return
         }
+        isoMessage?.let { doHandleMessage(ctx, it) }
+        super.channelRead(ctx, msg)
+    }
+
+    private fun doHandleMessage(ctx: ChannelHandlerContext, isoMessage: T) {
         var applyNextListener = true
         val size = messageListeners.size
         var i = 0

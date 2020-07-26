@@ -13,6 +13,8 @@ public class ClientConfiguration extends ConnectorConfiguration {
     private int reconnectInterval;
 
     /**
+     * Legacy constructor
+     *
      * @deprecated Use {@link Builder}
      */
     @Deprecated
@@ -43,6 +45,8 @@ public class ClientConfiguration extends ConnectorConfiguration {
     }
 
     /**
+     * Set reconnect interval
+     *
      * @param reconnectInterval interval between reconnects, in milliseconds.
      * @deprecated Use {@link Builder}
      */
