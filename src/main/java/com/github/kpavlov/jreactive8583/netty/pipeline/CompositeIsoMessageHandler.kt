@@ -41,33 +41,44 @@ class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
         var i = 0
         while (applyNextListener && i < size) {
             val messageListener = messageListeners[i]
-            try {
-                if (messageListener.applies(isoMessage)) {
-                    logger.debug(
-                        "Handling IsoMessage[@type=0x{}] with {}",
-                        String.format("%04X", isoMessage.type),
-                        messageListener
-                    )
-                    applyNextListener = messageListener.onMessage(ctx, isoMessage)
-                    if (!applyNextListener) {
-                        logger.trace(
-                            "Stopping further procession of message {} after handler {}",
-                            isoMessage,
-                            messageListener
-                        )
-                    }
-                }
-            } catch (e: Exception) {
-                logger.debug(
-                    "Can't evaluate {}.apply({})",
-                    messageListener, isoMessage.javaClass, e
+            applyNextListener = handleWithMessageListener(
+                messageListener, isoMessage, ctx
+            )
+            if (!applyNextListener) {
+                logger.trace(
+                    "Stopping further procession of message {} after handler {}",
+                    isoMessage,
+                    messageListener
                 )
-                if (failOnError) {
-                    throw e
-                }
             }
             i++
         }
+    }
+
+    private fun handleWithMessageListener(
+        messageListener: IsoMessageListener<T>,
+        isoMessage: T,
+        ctx: ChannelHandlerContext
+    ): Boolean {
+        try {
+            if (messageListener.applies(isoMessage)) {
+                logger.debug(
+                    "Handling IsoMessage[@type=0x{}] with {}",
+                    String.format("%04X", isoMessage.type),
+                    messageListener
+                )
+                return messageListener.onMessage(ctx, isoMessage)
+            }
+        } catch (e: Exception) {
+            logger.debug(
+                "Can't evaluate {}.apply({})",
+                messageListener, isoMessage.javaClass, e
+            )
+            if (failOnError) {
+                throw e
+            }
+        }
+        return true
     }
 
     fun addListener(listener: IsoMessageListener<T>) {
