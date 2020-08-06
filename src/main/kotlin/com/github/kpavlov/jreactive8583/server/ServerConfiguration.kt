@@ -19,8 +19,6 @@ class ServerConfiguration(
     }
 
     class Builder : ConnectorConfiguration.Builder<Builder>() {
-
         fun build() = ServerConfiguration(this)
     }
-
 }

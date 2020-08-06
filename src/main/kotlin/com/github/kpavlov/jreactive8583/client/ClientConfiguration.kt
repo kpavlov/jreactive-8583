@@ -23,15 +23,11 @@ open class ClientConfiguration(
         const val DEFAULT_RECONNECT_INTERVAL = 100
 
         @JvmStatic
-        fun newBuilder(): Builder {
-            return Builder()
-        }
+        fun newBuilder(): Builder = Builder()
 
         @Suppress("unused")
         @JvmStatic
-        fun getDefault(): ClientConfiguration {
-            return newBuilder().build()
-        }
+        fun getDefault(): ClientConfiguration = newBuilder().build()
     }
 
     @Suppress("unused")
@@ -44,6 +40,4 @@ open class ClientConfiguration(
 
         fun build() = ClientConfiguration(this)
     }
-
 }
-
