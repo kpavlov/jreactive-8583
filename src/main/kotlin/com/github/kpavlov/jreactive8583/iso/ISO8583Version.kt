@@ -15,6 +15,7 @@ package com.github.kpavlov.jreactive8583.iso
  *
  * @see [](https://en.wikipedia.org/wiki/ISO_8583.Message_type_indicator_)
 ) */
+@Suppress("unused")
 enum class ISO8583Version
 /**
  * @param value A first digit in Message type indicator

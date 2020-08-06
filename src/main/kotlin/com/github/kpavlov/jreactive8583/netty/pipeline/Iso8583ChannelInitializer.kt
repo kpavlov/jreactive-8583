@@ -31,7 +31,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder
 import io.netty.handler.logging.LogLevel
 import io.netty.handler.timeout.IdleStateHandler
 
-class Iso8583ChannelInitializer<T : Channel,
+open class Iso8583ChannelInitializer<T : Channel,
     B : AbstractBootstrap<*, *>,
     C : ConnectorConfiguration>
 constructor(

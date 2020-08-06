@@ -194,7 +194,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    protected open class Builder<B : Builder<B>> {
+    open class Builder<B : Builder<B>> {
         var addLoggingHandler = false
         var addEchoMessageListener = false
         var logFieldDescription = true

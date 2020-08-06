@@ -14,7 +14,6 @@ import io.netty.channel.nio.NioEventLoopGroup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.Boolean.parseBoolean
-import java.net.SocketAddress
 import java.util.concurrent.atomic.AtomicReference
 
 abstract class AbstractIso8583Connector<
@@ -32,9 +31,8 @@ protected constructor(
     val messageHandler: CompositeIsoMessageHandler<M>
     val isoMessageFactory: MessageFactory<M>
     private val channelRef = AtomicReference<Channel>()
-    protected val configuration: C
+    protected val configuration: C = configuration
     var configurer: ConnectorConfigurer<C, B>? = null
-    lateinit var socketAddress: SocketAddress
     protected lateinit var bossEventLoopGroup: EventLoopGroup
         private set
     protected lateinit var workerEventLoopGroup: EventLoopGroup
@@ -94,7 +92,7 @@ protected constructor(
         return group
     }
 
-    protected var channel: Channel
+    protected var channel: Channel?
         get() = channelRef.get()
         protected set(channel) {
             channelRef.set(channel)
@@ -102,7 +100,6 @@ protected constructor(
 
     // @VisibleForTest
     init {
-        this.configuration = configuration
         this.isoMessageFactory = isoMessageFactory
         this.messageHandler = messageHandler
         if (configuration.shouldAddEchoMessageListener()) {

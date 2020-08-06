@@ -2,6 +2,7 @@
 
 package com.github.kpavlov.jreactive8583.iso
 
+@Suppress("unused")
 enum class MessageFunction(val value: Int) {
     /**
      * xx0x	Request	Request from acquirer to issuer to carry out an action; issuer may accept or reject

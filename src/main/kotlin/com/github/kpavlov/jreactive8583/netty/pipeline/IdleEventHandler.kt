@@ -16,8 +16,7 @@ class IdleEventHandler(
 
     override fun userEventTriggered(ctx: ChannelHandlerContext, evt: Any) {
         if (evt is IdleStateEvent) {
-            val e = evt
-            if (e.state() == IdleState.READER_IDLE || e.state() == IdleState.ALL_IDLE) {
+            if (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE) {
                 val echoMessage = createEchoMessage()
                 ctx.write(echoMessage)
                 ctx.flush()

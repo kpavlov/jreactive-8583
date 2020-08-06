@@ -20,9 +20,7 @@ open class Iso8583Server<T : IsoMessage>(
     messageFactory: MessageFactory<T>
 ) : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
 
-    init {
-        socketAddress = InetSocketAddress(port)
-    }
+    private var socketAddress = InetSocketAddress(port)
 
     @Throws(InterruptedException::class)
     fun start() {

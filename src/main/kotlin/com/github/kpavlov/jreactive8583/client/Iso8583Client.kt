@@ -15,18 +15,14 @@ import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-open class Iso8583Client<T : IsoMessage> :
-    AbstractIso8583Connector<ClientConfiguration, Bootstrap, T> {
+open class Iso8583Client<T : IsoMessage>(
+    private var socketAddress: SocketAddress,
+    config: ClientConfiguration,
+    isoMessageFactory: MessageFactory<T>
+) :
+    AbstractIso8583Connector<ClientConfiguration, Bootstrap, T>(config, isoMessageFactory) {
 
     private lateinit var reconnectOnCloseListener: ReconnectOnCloseListener
-
-    constructor(
-        socketAddress: SocketAddress,
-        config: ClientConfiguration,
-        isoMessageFactory: MessageFactory<T>
-    ) : super(config, isoMessageFactory) {
-        this.socketAddress = socketAddress
-    }
 
     /**
      * Connects synchronously to remote address.
@@ -121,7 +117,7 @@ open class Iso8583Client<T : IsoMessage> :
         reconnectOnCloseListener.requestDisconnect()
         val channel = channel
         logger.info("Closing connection to {}", socketAddress)
-        return channel.close()
+        return channel?.close()
     }
 
     @Throws(InterruptedException::class)
