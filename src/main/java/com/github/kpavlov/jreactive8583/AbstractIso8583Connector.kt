@@ -94,7 +94,7 @@ protected constructor(
         return group
     }
 
-    protected var channel: Channel
+    protected var channel: Channel?
         get() = channelRef.get()
         protected set(channel) {
             channelRef.set(channel)

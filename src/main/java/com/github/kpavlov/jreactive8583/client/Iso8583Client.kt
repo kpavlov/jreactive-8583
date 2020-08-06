@@ -121,7 +121,7 @@ open class Iso8583Client<T : IsoMessage> :
         reconnectOnCloseListener.requestDisconnect()
         val channel = channel
         logger.info("Closing connection to {}", socketAddress)
-        return channel.close()
+        return channel?.close()
     }
 
     @Throws(InterruptedException::class)
