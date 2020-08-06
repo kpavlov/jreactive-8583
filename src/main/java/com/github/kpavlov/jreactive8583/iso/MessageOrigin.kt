@@ -2,6 +2,7 @@
 
 package com.github.kpavlov.jreactive8583.iso
 
+@Suppress("unused")
 enum class MessageOrigin(val value: Int) {
 
     /**

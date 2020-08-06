@@ -1,10 +1,10 @@
-package com.github.kpavlov.jreactive8583.client;
+@file:JvmName("ClientConfiguration")
 
-import com.github.kpavlov.jreactive8583.ConnectorConfiguration;
+package com.github.kpavlov.jreactive8583.client
 
+import com.github.kpavlov.jreactive8583.ConnectorConfiguration
 
-@SuppressWarnings("WeakerAccess")
-public class ClientConfiguration(
+open class ClientConfiguration(
     builder: Builder
 ) : ConnectorConfiguration(builder) {
 
@@ -13,33 +13,36 @@ public class ClientConfiguration(
      *
      * @return interval between reconnects, in milliseconds.
      */
-    val reconnectInterval: Int = builder.reconnectInterval;
+    val reconnectInterval: Int = builder.reconnectInterval
 
     companion object {
 
         /**
          * Default client reconnect interval in milliseconds.
          */
-        const val DEFAULT_RECONNECT_INTERVAL = 100;
+        const val DEFAULT_RECONNECT_INTERVAL = 100
 
         @JvmStatic
-        public fun newBuilder(): Builder {
-            return ClientConfiguration.Builder();
+        fun newBuilder(): Builder {
+            return Builder()
         }
 
+        @Suppress("unused")
         @JvmStatic
-        public fun getDefault(): ClientConfiguration {
-            return newBuilder().build();
+        fun getDefault(): ClientConfiguration {
+            return newBuilder().build()
         }
     }
 
-    public class Builder : ConnectorConfiguration.Builder<Builder>() {
+    @Suppress("unused")
+    data class Builder(
+        var reconnectInterval: Int = DEFAULT_RECONNECT_INTERVAL
+    ) : ConnectorConfiguration.Builder<Builder>() {
 
-        var reconnectInterval = DEFAULT_RECONNECT_INTERVAL;
+        fun reconnectInterval(reconnectInterval: Int) =
+            apply { this.reconnectInterval = reconnectInterval }
 
-        public fun build(): ClientConfiguration {
-            return com.github.kpavlov.jreactive8583.client.ClientConfiguration(this);
-        }
+        fun build() = ClientConfiguration(this)
     }
 
 }

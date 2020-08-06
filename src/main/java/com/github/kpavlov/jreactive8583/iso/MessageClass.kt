@@ -7,6 +7,7 @@ package com.github.kpavlov.jreactive8583.iso
  *
  * @see [](https://en.wikipedia.org/wiki/ISO_8583.Message_type_indicator_)
 ) */
+@Suppress("unused")
 enum class MessageClass(val value: Int) {
     /**
      * x1xx	Authorization message
