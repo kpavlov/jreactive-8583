@@ -1,14 +1,14 @@
 language: java
 jdk:
   - openjdk11
-  - openjdk14
+  - openjdk15
 
 cache:
   directories:
     - $HOME/.m2
 
 script:
-  - mvn verify source:jar -B
+  - mvn verify source:jar dokka:dokka -B
 
 after_success:
   - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers></settings>" > ~/settings.xml
