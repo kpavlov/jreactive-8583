@@ -16,7 +16,7 @@ import java.nio.ByteOrder
  *
  * Uses [CharsetUtil.US_ASCII] for decoding
  */
-open class StringLengthFieldBasedFrameDecoder
+internal open class StringLengthFieldBasedFrameDecoder
 
 /**
  * @param maxFrameLength      the maximum length of the frame.  If the length of the frame is

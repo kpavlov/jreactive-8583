@@ -5,20 +5,20 @@ package com.github.kpavlov.jreactive8583.server
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration
 
 @SuppressWarnings("WeakerAccess")
-class ServerConfiguration(
+public class ServerConfiguration(
     builder: Builder
 ) : ConnectorConfiguration(builder) {
 
-    companion object {
+    public companion object {
         @JvmStatic
-        fun newBuilder(): Builder = Builder()
+        public fun newBuilder(): Builder = Builder()
 
         @Suppress("unused")
         @JvmStatic
-        fun getDefault(): ServerConfiguration = newBuilder().build()
+        public fun getDefault(): ServerConfiguration = newBuilder().build()
     }
 
-    class Builder : ConnectorConfiguration.Builder<Builder>() {
-        fun build() = ServerConfiguration(this)
+    public class Builder : ConnectorConfiguration.Builder<Builder>() {
+        public fun build(): ServerConfiguration = ServerConfiguration(this)
     }
 }

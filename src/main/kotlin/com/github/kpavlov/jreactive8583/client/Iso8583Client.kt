@@ -15,7 +15,7 @@ import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-open class Iso8583Client<T : IsoMessage>(
+public open class Iso8583Client<T : IsoMessage>(
     private var socketAddress: SocketAddress,
     config: ClientConfiguration,
     isoMessageFactory: MessageFactory<T>
@@ -33,7 +33,7 @@ open class Iso8583Client<T : IsoMessage>(
      * @see .setSocketAddress
      */
     @Throws(InterruptedException::class)
-    fun connect(): ChannelFuture {
+    public fun connect(): ChannelFuture {
         val channel = connectAsync().sync().channel() ?: error("Channel must be set")
         return channel.closeFuture()
     }
@@ -47,7 +47,7 @@ open class Iso8583Client<T : IsoMessage>(
      * @throws InterruptedException if connection process was interrupted
      */
     @Throws(InterruptedException::class)
-    fun connect(host: String, port: Int): ChannelFuture {
+    public fun connect(host: String, port: Int): ChannelFuture {
         return connect(InetSocketAddress(host, port))
     }
 
@@ -59,7 +59,7 @@ open class Iso8583Client<T : IsoMessage>(
      * @throws InterruptedException if connection process was interrupted
      */
     @Throws(InterruptedException::class)
-    fun connect(serverAddress: SocketAddress): ChannelFuture {
+    public fun connect(serverAddress: SocketAddress): ChannelFuture {
         socketAddress = serverAddress
         return connect().sync()
     }
@@ -70,7 +70,7 @@ open class Iso8583Client<T : IsoMessage>(
      * @return Returns the [ChannelFuture] which will be notified when this
      * channel is active.
      */
-    fun connectAsync(): ChannelFuture {
+    public fun connectAsync(): ChannelFuture {
         logger.debug("Connecting to {}", socketAddress)
         val b = bootstrap
         reconnectOnCloseListener.requestReconnect()
@@ -113,7 +113,7 @@ open class Iso8583Client<T : IsoMessage>(
         return b
     }
 
-    fun disconnectAsync(): ChannelFuture? {
+    public fun disconnectAsync(): ChannelFuture? {
         reconnectOnCloseListener.requestDisconnect()
         val channel = channel
         logger.info("Closing connection to {}", socketAddress)
@@ -121,7 +121,7 @@ open class Iso8583Client<T : IsoMessage>(
     }
 
     @Throws(InterruptedException::class)
-    fun disconnect() {
+    public fun disconnect() {
         disconnectAsync()?.await()
     }
 
@@ -131,7 +131,7 @@ open class Iso8583Client<T : IsoMessage>(
      * @param isoMessage A message to send
      * @return ChannelFuture which will be notified when message is sent
      */
-    fun sendAsync(isoMessage: IsoMessage): ChannelFuture {
+    public fun sendAsync(isoMessage: IsoMessage): ChannelFuture {
         val ch = channel
         check(ch != null && ch.isWritable) { "Channel is not writable" }
         return ch.writeAndFlush(isoMessage)
@@ -141,7 +141,7 @@ open class Iso8583Client<T : IsoMessage>(
      * Sends message synchronously
      */
     @Throws(InterruptedException::class)
-    fun send(isoMessage: IsoMessage) {
+    public fun send(isoMessage: IsoMessage) {
         sendAsync(isoMessage).sync().await()
     }
 
@@ -149,11 +149,11 @@ open class Iso8583Client<T : IsoMessage>(
      * Sends message synchronously with timeout
      */
     @Throws(InterruptedException::class)
-    fun send(isoMessage: IsoMessage, timeout: Long, timeUnit: TimeUnit) {
+    public fun send(isoMessage: IsoMessage, timeout: Long, timeUnit: TimeUnit) {
         sendAsync(isoMessage).sync().await(timeout, timeUnit)
     }
 
-    val isConnected: Boolean
+    public val isConnected: Boolean
         get() {
             val channel = channel
             return channel != null && channel.isActive

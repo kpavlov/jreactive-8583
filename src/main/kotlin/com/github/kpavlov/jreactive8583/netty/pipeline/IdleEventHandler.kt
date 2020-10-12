@@ -10,7 +10,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.IdleState
 import io.netty.handler.timeout.IdleStateEvent
 
-class IdleEventHandler(
+internal class IdleEventHandler(
     private val isoMessageFactory: MessageFactory<IsoMessage>
 ) : ChannelInboundHandlerAdapter() {
 

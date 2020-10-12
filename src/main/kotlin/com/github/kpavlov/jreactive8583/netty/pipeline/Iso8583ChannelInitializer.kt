@@ -31,10 +31,10 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder
 import io.netty.handler.logging.LogLevel
 import io.netty.handler.timeout.IdleStateHandler
 
-open class Iso8583ChannelInitializer<T : Channel,
+public open class Iso8583ChannelInitializer<T : Channel,
     B : AbstractBootstrap<*, *>,
     C : ConnectorConfiguration>
-constructor(
+internal constructor(
     private val configuration: C,
     private val configurer: ConnectorConfigurer<C, B>?,
     private val workerGroup: EventLoopGroup,
@@ -63,32 +63,30 @@ constructor(
         }
         pipeline.addLast("idleState", IdleStateHandler(0, 0, configuration.idleTimeout))
         pipeline.addLast("idleEventHandler", IdleEventHandler(isoMessageFactory))
-        if (customChannelHandlers != null) {
-            pipeline.addLast(workerGroup, *customChannelHandlers)
-        }
+        pipeline.addLast(workerGroup, *customChannelHandlers)
         configurer?.configurePipeline(pipeline, configuration)
     }
 
-    protected fun getIsoMessageFactory(): MessageFactory<*> {
+    public fun getIsoMessageFactory(): MessageFactory<*> {
         return isoMessageFactory
     }
 
-    protected fun createParseExceptionHandler(): ChannelHandler {
+    private fun createParseExceptionHandler(): ChannelHandler {
         return ParseExceptionHandler(isoMessageFactory, true)
     }
 
-    protected fun createIso8583Encoder(configuration: C): Iso8583Encoder {
+    private fun createIso8583Encoder(configuration: C): Iso8583Encoder {
         return Iso8583Encoder(
             configuration.frameLengthFieldLength,
             configuration.encodeFrameLengthAsString()
         )
     }
 
-    protected fun createIso8583Decoder(messageFactory: MessageFactory<IsoMessage>): Iso8583Decoder {
+    private fun createIso8583Decoder(messageFactory: MessageFactory<IsoMessage>): Iso8583Decoder {
         return Iso8583Decoder(messageFactory)
     }
 
-    protected fun createLoggingHandler(configuration: C): ChannelHandler {
+    private fun createLoggingHandler(configuration: C): ChannelHandler {
         return IsoMessageLoggingHandler(
             LogLevel.DEBUG,
             configuration.logSensitiveData(),

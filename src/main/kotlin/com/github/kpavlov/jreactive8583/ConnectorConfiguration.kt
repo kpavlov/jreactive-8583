@@ -35,14 +35,14 @@ private const val DEFAULT_FRAME_LENGTH_FIELD_ADJUST = 0
  */
 private const val DEFAULT_FRAME_LENGTH_FIELD_OFFSET = 0
 
-abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
+public abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
 
-    val addEchoMessageListener: Boolean
+    public val addEchoMessageListener: Boolean
 
     /**
      * The maximum length of the frame.
      */
-    val maxFrameLength: Int
+    public val maxFrameLength: Int
 
     /**
      * Set channel read/write idle timeout in seconds.
@@ -51,7 +51,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return timeout in seconds
      */
-    val idleTimeout: Int
+    public val idleTimeout: Int
 
     /**
      * Returns number of threads in worker [EventLoopGroup].
@@ -61,13 +61,13 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return Number of Netty worker threads
      */
-    val workerThreadsCount: Int
+    public val workerThreadsCount: Int
 
-    val replyOnError: Boolean
+    public val replyOnError: Boolean
 
-    val addLoggingHandler: Boolean
+    public val addLoggingHandler: Boolean
 
-    val logSensitiveData: Boolean
+    public val logSensitiveData: Boolean
 
     /**
      * Returns field numbers to be treated as sensitive data.
@@ -76,9 +76,9 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      * Array of ISO8583 sensitive field numbers to be masked, or `null` to use default fields.
      * @see IsoMessageLoggingHandler
      */
-    val sensitiveDataFields: IntArray
+    public val sensitiveDataFields: IntArray
 
-    val logFieldDescription: Boolean
+    public val logFieldDescription: Boolean
 
     /**
      * Returns length of TCP frame length field.
@@ -89,7 +89,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      * @return Length of TCP frame length field.
      * @see LengthFieldBasedFrameDecoder
      */
-    val frameLengthFieldLength: Int
+    public val frameLengthFieldLength: Int
 
     /**
      * Returns the offset of the length field.
@@ -99,7 +99,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return The offset of the length field.
      */
-    val frameLengthFieldOffset: Int
+    public val frameLengthFieldOffset: Int
 
     /**
      * Returns the compensation value to add to the value of the length field.
@@ -110,19 +110,19 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      * @return The compensation value to add to the value of the length field
      * @see LengthFieldBasedFrameDecoder
      */
-    val frameLengthFieldAdjust: Int
+    public val frameLengthFieldAdjust: Int
 
     /**
      * If <code>true</code> then the length header is to be encoded as a String, as opposed to the default binary
      */
-    val encodeFrameLengthAsString: Boolean
+    public val encodeFrameLengthAsString: Boolean
 
     /**
      * Allows to add default echo message listener to [AbstractIso8583Connector].
      *
      * @return true if [EchoMessageListener] should be added to [CompositeIsoMessageHandler]
      */
-    fun shouldAddEchoMessageListener(): Boolean {
+    public fun shouldAddEchoMessageListener(): Boolean {
         return addEchoMessageListener
     }
 
@@ -133,7 +133,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return true if [IsoMessageLoggingHandler] should be added.
      */
-    fun addLoggingHandler(): Boolean {
+    public fun addLoggingHandler(): Boolean {
         return addLoggingHandler
     }
 
@@ -142,7 +142,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return true if reply message should be sent in case of error parsing the message.
      */
-    fun replyOnError(): Boolean {
+    public fun replyOnError(): Boolean {
         return replyOnError
     }
 
@@ -155,11 +155,11 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      *
      * @return `true` if sensitive data should be printed to log
      */
-    fun logSensitiveData(): Boolean {
+    public fun logSensitiveData(): Boolean {
         return logSensitiveData
     }
 
-    fun logFieldDescription(): Boolean {
+    public fun logFieldDescription(): Boolean {
         return logFieldDescription
     }
 
@@ -175,7 +175,7 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
      * @return <code>true</code> if frame length header is string-encoded
      * @return Number of Netty worker threads
      */
-    fun encodeFrameLengthAsString() = this.encodeFrameLengthAsString
+    public fun encodeFrameLengthAsString(): Boolean = this.encodeFrameLengthAsString
 
     init {
         this.addEchoMessageListener = b.addEchoMessageListener
@@ -194,47 +194,47 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    open class Builder<B : Builder<B>> {
-        var addLoggingHandler = false
-        var addEchoMessageListener = false
-        var logFieldDescription = true
-        var logSensitiveData = true
-        var replyOnError = false
-        var idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS
-        var maxFrameLength = DEFAULT_MAX_FRAME_LENGTH
-        var workerThreadsCount = 0 // use netty default
-        var sensitiveDataFields: IntArray = IntArray(0)
-        var frameLengthFieldLength = DEFAULT_FRAME_LENGTH_FIELD_LENGTH
-        var frameLengthFieldOffset = DEFAULT_FRAME_LENGTH_FIELD_OFFSET
-        var frameLengthFieldAdjust = DEFAULT_FRAME_LENGTH_FIELD_ADJUST
-        var encodeFrameLengthAsString = false
+    public open class Builder<B : Builder<B>> {
+        internal var addLoggingHandler = false
+        internal var addEchoMessageListener = false
+        internal var logFieldDescription = true
+        internal var logSensitiveData = true
+        internal var replyOnError = false
+        internal var idleTimeout = DEFAULT_IDLE_TIMEOUT_SECONDS
+        internal var maxFrameLength = DEFAULT_MAX_FRAME_LENGTH
+        internal var workerThreadsCount = 0 // use netty default
+        internal var sensitiveDataFields: IntArray = IntArray(0)
+        internal var frameLengthFieldLength = DEFAULT_FRAME_LENGTH_FIELD_LENGTH
+        internal var frameLengthFieldOffset = DEFAULT_FRAME_LENGTH_FIELD_OFFSET
+        internal var frameLengthFieldAdjust = DEFAULT_FRAME_LENGTH_FIELD_ADJUST
+        internal var encodeFrameLengthAsString = false
 
         /**
          * @param shouldAddEchoMessageListener `true` to add echo message handler.
          */
-        fun addEchoMessageListener(shouldAddEchoMessageListener: Boolean = true) = apply {
+        public fun addEchoMessageListener(shouldAddEchoMessageListener: Boolean = true): B = apply {
             addEchoMessageListener = shouldAddEchoMessageListener
         } as B
 
         /**
          * @param length Maximum frame length.
          */
-        fun maxFrameLength(length: Int) = apply {
+        public fun maxFrameLength(length: Int): B = apply {
             maxFrameLength = length
         } as B
 
-        fun idleTimeout(timeout: Int) = apply {
+        public fun idleTimeout(timeout: Int): B = apply {
             idleTimeout = timeout
         } as B
 
-        fun replyOnError(doReply: Boolean = true) = apply {
+        public fun replyOnError(doReply: Boolean = true): B = apply {
             replyOnError = doReply
         } as B
 
         /**
          * @param addLoggingHandler `true` if [IsoMessageLoggingHandler] should be added to Netty pipeline.
          */
-        fun addLoggingHandler(value: Boolean = true) = apply {
+        public fun addLoggingHandler(value: Boolean = true): B = apply {
             addLoggingHandler = value
         } as B
 
@@ -246,41 +246,41 @@ abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
          *
          * @param logSensitiveData `true` to log sensitive data via logger
          */
-        fun logSensitiveData(logSensitiveData: Boolean = true) = apply {
+        public fun logSensitiveData(logSensitiveData: Boolean = true): B = apply {
             this.logSensitiveData = logSensitiveData
         } as B
 
         /**
          * @param logFieldDescription `true` to print ISO field descriptions in the log
          */
-        fun describeFieldsInLog(shouldDescribe: Boolean = true) = apply {
+        public fun describeFieldsInLog(shouldDescribe: Boolean = true): B = apply {
             logFieldDescription = shouldDescribe
         } as B
 
         /**
          * @param sensitiveDataFields Array of sensitive fields
          */
-        fun sensitiveDataFields(vararg sensitiveDataFields: Int) = apply {
+        public fun sensitiveDataFields(vararg sensitiveDataFields: Int): B = apply {
             this.sensitiveDataFields = sensitiveDataFields
         } as B
 
-        fun frameLengthFieldLength(frameLengthFieldLength: Int) = apply {
+        public fun frameLengthFieldLength(frameLengthFieldLength: Int): B = apply {
             this.frameLengthFieldLength = frameLengthFieldLength
         } as B
 
-        fun frameLengthFieldOffset(frameLengthFieldOffset: Int) = apply {
+        public fun frameLengthFieldOffset(frameLengthFieldOffset: Int): B = apply {
             this.frameLengthFieldOffset = frameLengthFieldOffset
         } as B
 
-        fun frameLengthFieldAdjust(frameLengthFieldAdjust: Int) = apply {
+        public fun frameLengthFieldAdjust(frameLengthFieldAdjust: Int): B = apply {
             this.frameLengthFieldAdjust = frameLengthFieldAdjust
         } as B
 
-        fun encodeFrameLengthAsString(encodeFrameLengthAsString: Boolean) = apply {
+        public fun encodeFrameLengthAsString(encodeFrameLengthAsString: Boolean): B = apply {
             this.encodeFrameLengthAsString = encodeFrameLengthAsString
         } as B
 
-        fun workerThreadsCount(numberOfThreads: Int) = apply {
+        public fun workerThreadsCount(numberOfThreads: Int): B = apply {
             workerThreadsCount = numberOfThreads
         } as B
     }

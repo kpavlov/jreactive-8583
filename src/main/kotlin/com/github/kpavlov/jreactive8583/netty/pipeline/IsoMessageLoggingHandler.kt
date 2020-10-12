@@ -18,7 +18,7 @@ import java.lang.Integer.parseInt
  * sensitive cardholder data will be printed masked.
  */
 @Sharable
-class IsoMessageLoggingHandler(
+internal class IsoMessageLoggingHandler(
     level: LogLevel,
     private val printSensitiveData: Boolean,
     private val printFieldDescriptions: Boolean,

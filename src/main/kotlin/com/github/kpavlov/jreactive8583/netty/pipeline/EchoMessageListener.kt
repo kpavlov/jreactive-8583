@@ -6,7 +6,7 @@ import com.github.kpavlov.jreactive8583.iso.MessageFactory
 import com.solab.iso8583.IsoMessage
 import io.netty.channel.ChannelHandlerContext
 
-class EchoMessageListener<T : IsoMessage>(
+internal class EchoMessageListener<T : IsoMessage>(
     private val isoMessageFactory: MessageFactory<T>
 ) : IsoMessageListener<T> {
 

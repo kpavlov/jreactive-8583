@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-class ReconnectOnCloseListener(
+internal class ReconnectOnCloseListener(
     private val client: Iso8583Client<*>,
     private val reconnectInterval: Int,
     private val executorService: ScheduledExecutorService

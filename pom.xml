@@ -327,9 +327,9 @@
                 </executions>
                 <configuration>
                     <args>
-                        <arg>-Xjsr305=strict
-                        </arg> <!-- Enable strict mode for JSR-305 annotations -->
-                        <arg>-Xjvm-default=enable</arg>
+                        <arg>-Xjsr305=strict</arg> <!-- Enable strict mode for JSR-305 annotations -->
+                        <arg>-Xjvm-default=all</arg>
+                        <arg>-Xexplicit-api=strict</arg>
                     </args>
                     <jvmTarget>${java.version}</jvmTarget>
                     <apiVersion>1.4</apiVersion>
