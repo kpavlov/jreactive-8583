@@ -21,7 +21,7 @@ public enum class ISO8583Version
 /**
  * @param value A first digit in Message type indicator
  */
-    (internal val value: Int) {
+(internal val value: Int) {
     /**
      * ISO 8583:1987
      */
