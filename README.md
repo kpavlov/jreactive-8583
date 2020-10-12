@@ -1,6 +1,6 @@
 # JReactive-8583
 
-Free ISO8583 Java Connector
+Free ISO8583 Connector for JDK (Netty)
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.kpavlov.jreactive8583/netty-iso8583.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.kpavlov.jreactive8583%22%20AND%20a:%22netty-iso8583%22)
 [![Travis](https://img.shields.io/travis/kpavlov/jreactive-8583/master.svg?maxAge=2592000)](https://travis-ci.org/kpavlov/jreactive-8583)
