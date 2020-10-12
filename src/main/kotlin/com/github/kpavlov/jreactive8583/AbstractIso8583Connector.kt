@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory
 import java.lang.Boolean.parseBoolean
 import java.util.concurrent.atomic.AtomicReference
 
-abstract class AbstractIso8583Connector<
+public abstract class AbstractIso8583Connector<
     C : ConnectorConfiguration,
     B : AbstractBootstrap<B, *>,
     M : IsoMessage>
-protected constructor(
+internal constructor(
     configuration: C,
     isoMessageFactory: MessageFactory<M>,
     messageHandler: CompositeIsoMessageHandler<M> = CompositeIsoMessageHandler()
@@ -28,21 +28,21 @@ protected constructor(
 
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val messageHandler: CompositeIsoMessageHandler<M>
-    val isoMessageFactory: MessageFactory<M>
+    internal val messageHandler: CompositeIsoMessageHandler<M>
+    public val isoMessageFactory: MessageFactory<M> = isoMessageFactory
     private val channelRef = AtomicReference<Channel>()
     protected val configuration: C = configuration
-    var configurer: ConnectorConfigurer<C, B>? = null
+    public var configurer: ConnectorConfigurer<C, B>? = null
     protected lateinit var bossEventLoopGroup: EventLoopGroup
         private set
     protected lateinit var workerEventLoopGroup: EventLoopGroup
     protected lateinit var bootstrap: B
 
-    fun addMessageListener(handler: IsoMessageListener<M>) {
+    public fun addMessageListener(handler: IsoMessageListener<M>) {
         messageHandler.addListener(handler)
     }
 
-    fun removeMessageListener(handler: IsoMessageListener<M>) {
+    public fun removeMessageListener(handler: IsoMessageListener<M>) {
         messageHandler.removeListener(handler)
     }
 
@@ -52,14 +52,14 @@ protected constructor(
      *
      * @see AbstractBootstrap
      */
-    fun init() {
+    public fun init() {
         logger.info("Initializing")
         bossEventLoopGroup = createBossEventLoopGroup()
         workerEventLoopGroup = createWorkerEventLoopGroup()
         bootstrap = createBootstrap()
     }
 
-    open fun shutdown() {
+    public open fun shutdown() {
         workerEventLoopGroup.shutdownGracefully()
         bossEventLoopGroup.shutdownGracefully()
     }
@@ -100,7 +100,6 @@ protected constructor(
 
     // @VisibleForTest
     init {
-        this.isoMessageFactory = isoMessageFactory
         this.messageHandler = messageHandler
         if (configuration.shouldAddEchoMessageListener()) {
             messageHandler.addListener(EchoMessageListener(isoMessageFactory))

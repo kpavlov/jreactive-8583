@@ -14,7 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.util.concurrent.GenericFutureListener
 import java.net.InetSocketAddress
 
-open class Iso8583Server<T : IsoMessage>(
+public open class Iso8583Server<T : IsoMessage>(
     port: Int,
     config: ServerConfiguration,
     messageFactory: MessageFactory<T>
@@ -23,7 +23,7 @@ open class Iso8583Server<T : IsoMessage>(
     private var socketAddress = InetSocketAddress(port)
 
     @Throws(InterruptedException::class)
-    fun start() {
+    public fun start() {
         bootstrap.bind().addListener(
             GenericFutureListener { future: ChannelFuture ->
                 channel = future.channel()
@@ -63,13 +63,13 @@ open class Iso8583Server<T : IsoMessage>(
     /**
      * @return True if server is ready to accept connections.
      */
-    val isStarted: Boolean
+    public val isStarted: Boolean
         get() {
             val channel = channel
             return channel != null && channel.isOpen
         }
 
-    fun stop() {
+    public fun stop() {
         val channel = channel
         if (channel == null) {
             logger.info("The Server is not started...")

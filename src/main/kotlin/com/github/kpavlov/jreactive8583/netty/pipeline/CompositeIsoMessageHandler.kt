@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * Handles [IsoMessage] s with chain of [IsoMessageListener]s.
  */
 @Sharable
-class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
+internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
     private val failOnError: Boolean = true
 ) : ChannelInboundHandlerAdapter() {
 

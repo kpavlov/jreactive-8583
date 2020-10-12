@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import java.text.ParseException
 
-class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMessage>) :
+internal class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMessage>) :
     ByteToMessageDecoder() {
 
     /**

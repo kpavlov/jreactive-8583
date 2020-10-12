@@ -17,7 +17,7 @@ import java.text.ParseException
  * @see [StackOverflow: How to answer an invalid ISO8583 message](http://stackoverflow.com/questions/28275677/how-to-answer-an-invalid-iso8583-message)
  */
 @Sharable
-open class ParseExceptionHandler(
+internal open class ParseExceptionHandler(
     private val isoMessageFactory: MessageFactory<IsoMessage>,
     private val includeErrorDetails: Boolean
 ) : ChannelInboundHandlerAdapter() {

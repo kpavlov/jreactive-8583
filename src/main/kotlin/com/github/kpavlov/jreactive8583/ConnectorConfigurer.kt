@@ -5,7 +5,7 @@ package com.github.kpavlov.jreactive8583
 import io.netty.bootstrap.AbstractBootstrap
 import io.netty.channel.ChannelPipeline
 
-interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBootstrap<*, *>> {
+public interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBootstrap<*, *>> {
     /**
      * Hook added before completion of the bootstrap configuration.
      *
@@ -20,7 +20,7 @@ interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBootstrap<
      * @param configuration A [ConnectorConfiguration] to use
      */
     @JvmDefault
-    fun configureBootstrap(bootstrap: B, configuration: C) {
+    public fun configureBootstrap(bootstrap: B, configuration: C) {
         // this method was intentionally left blank
     }
 
@@ -38,7 +38,7 @@ interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBootstrap<
      * @param configuration A [ConnectorConfiguration] to use
      */
     @JvmDefault
-    fun configurePipeline(pipeline: ChannelPipeline, configuration: C) {
+    public fun configurePipeline(pipeline: ChannelPipeline, configuration: C) {
         // this method was intentionally left blank
     }
 }

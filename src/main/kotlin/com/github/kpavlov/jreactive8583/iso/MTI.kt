@@ -2,15 +2,15 @@
 
 package com.github.kpavlov.jreactive8583.iso
 
-object MTI {
+public object MTI {
 
     @JvmStatic
-    fun mtiValue(
+    public fun mtiValue(
         iso8583Version: ISO8583Version,
         messageClass: MessageClass,
         messageFunction: MessageFunction,
         messageOrigin: MessageOrigin
-    ) = (
+    ): Int = (
         iso8583Version.value +
             messageClass.value +
             messageFunction.value +

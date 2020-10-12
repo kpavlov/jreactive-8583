@@ -4,7 +4,7 @@ package com.github.kpavlov.jreactive8583.client
 
 import com.github.kpavlov.jreactive8583.ConnectorConfiguration
 
-open class ClientConfiguration(
+public open class ClientConfiguration(
     builder: Builder
 ) : ConnectorConfiguration(builder) {
 
@@ -13,9 +13,9 @@ open class ClientConfiguration(
      *
      * @return interval between reconnects, in milliseconds.
      */
-    val reconnectInterval: Int = builder.reconnectInterval
+    internal val reconnectInterval: Int = builder.reconnectInterval
 
-    companion object {
+    internal companion object {
 
         /**
          * Default client reconnect interval in milliseconds.
@@ -31,13 +31,13 @@ open class ClientConfiguration(
     }
 
     @Suppress("unused")
-    data class Builder(
+    public data class Builder(
         var reconnectInterval: Int = DEFAULT_RECONNECT_INTERVAL
     ) : ConnectorConfiguration.Builder<Builder>() {
 
-        fun reconnectInterval(reconnectInterval: Int) =
+        public fun reconnectInterval(reconnectInterval: Int): Builder =
             apply { this.reconnectInterval = reconnectInterval }
 
-        fun build() = ClientConfiguration(this)
+        public fun build(): ClientConfiguration = ClientConfiguration(this)
     }
 }

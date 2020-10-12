@@ -343,3 +343,6 @@ ij_kotlin_wrap_first_method_in_call_chain = false
 
 [{*.json, *.yml}]
 indent_size = 2
+
+[pom.xml]
+max_line_length = 120

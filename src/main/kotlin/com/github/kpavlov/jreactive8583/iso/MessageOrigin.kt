@@ -3,7 +3,7 @@
 package com.github.kpavlov.jreactive8583.iso
 
 @Suppress("unused")
-enum class MessageOrigin(val value: Int) {
+public enum class MessageOrigin(internal val value: Int) {
 
     /**
      * xxx0	Acquirer

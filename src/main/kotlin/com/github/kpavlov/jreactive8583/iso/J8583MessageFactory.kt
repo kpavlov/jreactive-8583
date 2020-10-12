@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException
 import java.text.ParseException
 import javax.annotation.Nonnull
 
-open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
+internal open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
     private val messageFactory: com.solab.iso8583.MessageFactory<T> = defaultMessageFactory(),
     private val isoVersion: ISO8583Version = ISO8583Version.V1987
 ) : MessageFactory<T> {
