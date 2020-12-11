@@ -19,15 +19,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
-        <assertj.version>3.17.2</assertj.version>
+        <assertj.version>3.18.1</assertj.version>
         <dokka.version>0.10.1</dokka.version>
         <j8583.version>1.17.0</j8583.version>
-        <junit.version>5.6.2</junit.version>
-        <kotlin.version>1.4.10</kotlin.version>
-        <mockito.version>3.4.6</mockito.version>
-        <netty.version>4.1.51.Final</netty.version>
+        <junit.version>5.7.0</junit.version>
+        <kotlin.version>1.4.21</kotlin.version>
+        <mockito.version>3.6.28</mockito.version>
+        <netty.version>4.1.55.Final</netty.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.version>5.2.8.RELEASE</spring.version>
+        <spring.version>5.3.2</spring.version>
+        <awaitility.version>4.0.3</awaitility.version>
     </properties>
 
     <description>ISO8583 protocol client and server Netty connectors.</description>
@@ -163,7 +164,7 @@
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
-            <version>3.1.6</version>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
