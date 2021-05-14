@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.kpavlov.jreactive8583</groupId>
@@ -20,15 +21,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
         <assertj.version>3.18.1</assertj.version>
-        <dokka.version>0.10.1</dokka.version>
+        <dokka.version>1.4.32</dokka.version>
         <j8583.version>1.17.0</j8583.version>
-        <junit.version>5.7.0</junit.version>
-        <kotlin.version>1.4.21</kotlin.version>
-        <mockito.version>3.6.28</mockito.version>
-        <netty.version>4.1.55.Final</netty.version>
+        <junit.version>5.7.1</junit.version>
+        <kotlin.version>1.5.0</kotlin.version>
+        <mockito.version>3.10.0</mockito.version>
+        <netty.version>4.1.63.Final</netty.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.version>5.3.2</spring.version>
-        <awaitility.version>4.0.3</awaitility.version>
+        <spring.version>5.3.7</spring.version>
+        <awaitility.version>4.1.0</awaitility.version>
     </properties>
 
     <description>ISO8583 protocol client and server Netty connectors.</description>
@@ -105,21 +106,11 @@
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
         </dependency>
 
         <!--  Test Dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -129,7 +120,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.10</version>
+            <version>3.12.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -216,7 +207,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <rules>
-                                <dependencyConvergence />
+                                <dependencyConvergence/>
                             </rules>
                         </configuration>
                         <goals>
