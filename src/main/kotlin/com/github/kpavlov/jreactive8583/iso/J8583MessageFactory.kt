@@ -5,7 +5,6 @@ import com.solab.iso8583.IsoMessage
 import com.solab.iso8583.parse.ConfigParser
 import java.io.UnsupportedEncodingException
 import java.text.ParseException
-import javax.annotation.Nonnull
 
 public open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
     private val messageFactory: com.solab.iso8583.MessageFactory<T> = defaultMessageFactory(),
@@ -19,9 +18,9 @@ public open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
     }
 
     override fun newMessage(
-        @Nonnull messageClass: MessageClass,
-        @Nonnull messageFunction: MessageFunction,
-        @Nonnull messageOrigin: MessageOrigin
+        messageClass: MessageClass,
+        messageFunction: MessageFunction,
+        messageOrigin: MessageOrigin
     ): T {
         return newMessage(mtiValue(isoVersion, messageClass, messageFunction, messageOrigin))
     }
