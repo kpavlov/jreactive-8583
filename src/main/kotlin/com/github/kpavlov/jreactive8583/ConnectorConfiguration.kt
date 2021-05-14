@@ -1,3 +1,5 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package com.github.kpavlov.jreactive8583
 
 /**

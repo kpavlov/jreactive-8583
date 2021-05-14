@@ -101,8 +101,7 @@ internal class IsoMessageLoggingHandler(
                 if (printFieldDescriptions) {
                     sb.append(FIELD_NAMES[i - 1]).append(':')
                 }
-                val formattedValue: CharArray
-                formattedValue = getFormattedValue(field, i)
+                val formattedValue: CharArray = getFormattedValue(field, i)
                 sb.append(field.type).append('(').append(field.length)
                     .append(")] = '").append(formattedValue).append('\'')
             }
