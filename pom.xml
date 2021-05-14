@@ -234,40 +234,17 @@
                 <version>${dokka.version}</version>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
+                        <phase>pre-site</phase>
                         <goals>
-                            <goal>dokka</goal>
+                            <goal>javadocJar</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <outputFormat>html</outputFormat>
-                    <outputDir>${project.build.directory}/javadoc</outputDir>
                     <jdkVersion>11</jdkVersion>
                     <noJdkLink>true</noJdkLink>
                     <attach>true</attach>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>javadoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/assembly.xml</descriptor>
-                            </descriptors>
-                            <appendAssemblyId>true</appendAssemblyId>
-                            <attach>true</attach>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
