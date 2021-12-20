@@ -1,9 +1,13 @@
 version: 2.1
 
 orbs:
-  maven: circleci/maven@1.0.0
+  gradle: circleci/gradle@2.2.0
+  advanced-checkout: vsco/advanced-checkout@1.0.0
 
 workflows:
-  maven_test:
+  checkout-build-test:
     jobs:
-      - maven/test # checkout, build, test, and upload test results
+      - advanced-checkout/shallow-checkout:
+          fetch_lfs: true
+      - gradle/test:
+          test_command: build
