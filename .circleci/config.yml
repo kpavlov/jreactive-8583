@@ -6,4 +6,5 @@ orbs:
 workflows:
   checkout-build-test:
     jobs:
-      - gradle/build
+      - gradle/test:
+          test_command: build
