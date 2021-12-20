@@ -31,7 +31,7 @@ jobs:
         lfs: true
     - name: Checkout LFS objects
       run: git lfs checkout
-    - name: Set up JDK {{ matrix.java }}
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
