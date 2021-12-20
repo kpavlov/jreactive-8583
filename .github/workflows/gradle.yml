@@ -22,7 +22,7 @@ jobs:
       matrix:
         java: [ '11', '17' ]
 
-    name: Build under JDK ${{ matrix.Java }}s
+    name: Build under JDK ${{ matrix.Java }}
 
     steps:
     - name: Checkout github repo (+ download lfs dependencies)
