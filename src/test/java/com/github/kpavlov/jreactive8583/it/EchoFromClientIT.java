@@ -20,7 +20,7 @@ import java.util.List;
 import static org.awaitility.Awaitility.await;
 
 @NotThreadSafe
-public class EchoFromClientIT extends AbstractIT {
+class EchoFromClientIT extends AbstractIT {
 
     private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new LinkedList<>());
 
@@ -62,10 +62,10 @@ public class EchoFromClientIT extends AbstractIT {
     }
 
     @Test
-    public void shouldHandleEchoFromServer() {
+    void shouldHandleEchoFromServer() {
         await()
-                .alias("infoMessage expected")
-                .until(() -> capturedRequests.stream().anyMatch(m -> m.getType() == 0x800));
+            .alias("infoMessage expected")
+            .until(() -> capturedRequests.stream().anyMatch(m -> m.getType() == 0x800));
     }
 
 
