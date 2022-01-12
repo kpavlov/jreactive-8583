@@ -1,5 +1,7 @@
 .idea/
+.gradle/
 target/
+build/
 *.ipr
 *.iml
 *.iws
@@ -10,3 +12,4 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
+gradle.properties
