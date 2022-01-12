@@ -58,7 +58,6 @@ tasks.assemble {
     dependsOn(javadocJar)
 }
 
-
 publishing {
     publications.create<MavenPublication>("maven") {
         pom {
