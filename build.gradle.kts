@@ -1,6 +1,7 @@
 plugins {
     java
     kotlin("jvm") version "1.6.10"
+    id("org.jetbrains.dokka") version "1.6.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
     id("org.jetbrains.kotlinx.kover") version "0.4.4"
 //    `maven-publish`
@@ -17,13 +18,13 @@ dependencies {
     implementation("io.netty:netty-handler:4.1.72.Final")
     implementation("org.slf4j:slf4j-api:1.7.32")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(kotlin("stdlib-jdk8"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.1.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
-    testImplementation("org.assertj:assertj-core:3.21.0")
-    testImplementation("org.springframework:spring-context:5.3.13")
-    testImplementation("org.springframework:spring-test:5.3.13")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.springframework:spring-context:5.3.14")
+    testImplementation("org.springframework:spring-test:5.3.14")
     testImplementation("org.slf4j:slf4j-simple:1.7.32")
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.awaitility:awaitility:4.1.1")
@@ -44,6 +45,18 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
             "-Xexplicit-api=strict"
         )
     }
+}
+
+val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+
+val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.outputDirectory)
+}
+
+tasks.assemble {
+    dependsOn(javadocJar)
 }
 
 /*
