@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.dokka") version "1.6.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
-//    `maven-publish`
+    `maven-publish`
 }
 
 repositories {
@@ -58,23 +58,48 @@ tasks.assemble {
     dependsOn(javadocJar)
 }
 
-/*
 publishing {
     publications.create<MavenPublication>("maven") {
+        pom {
+            name.set("ISO8583 Connector for Netty")
+            description.set("ISO8583 protocol client and server Netty connectors.")
+            url.set("https://github.com/kpavlov/jreactive-8583")
+            licenses {
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    id.set("kpavlov")
+                    name.set("Konstantin Pavlov")
+                    email.set("mail@KonstantinPavlov.net")
+                    url.set("https://KonstantinPavlov.net?utm_source=jreactive8583")
+                    roles.set(listOf("owner", "developer"))
+                }
+            }
+            scm {
+                connection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
+                developerConnection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
+                url.set("https://github.com/kpavlov/jreactive-8583")
+                tag.set("HEAD")
+            }
+            inceptionYear.set("2015")
+        }
         from(components["java"])
     }
-    repositories {
-        maven {
-            name = "OSSRH"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
-            }
-        }
-    }
+//    repositories {
+//        maven {
+//            name = "OSSRH"
+//            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+//            credentials {
+//                username = System.getenv("MAVEN_USERNAME")
+//                password = System.getenv("MAVEN_PASSWORD")
+//            }
+//        }
+//    }
 }
-*/
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
