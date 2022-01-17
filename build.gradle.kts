@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     `java-library`
     kotlin("jvm") version "1.6.10"
@@ -22,7 +24,6 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.32")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     implementation(kotlin("stdlib-jdk8"))
-    testApi("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
@@ -37,9 +38,11 @@ dependencies {
 }
 
 group = "com.github.kpavlov.jreactive8583"
-version = "1.3.5-SNAPSHOT"
+version = if (findProperty("version") != "unspecified") findProperty("version")
+else "0.0.1-SNAPSHOT"
 description = "ISO8583 Connector for Netty"
 java.sourceCompatibility = JavaVersion.VERSION_11
+java.targetCompatibility = JavaVersion.VERSION_11
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
@@ -54,9 +57,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 tasks.test {
     useJUnitPlatform()
-//    testLogging {
-//        events "passed", "skipped", "failed"
-//    }
+    testLogging {
+        events = setOf(
+            TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
+        )
+    }
 }
 
 val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
@@ -70,6 +75,17 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 java {
     withSourcesJar()
     withJavadocJar()
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            mapOf(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version
+            )
+        )
+    }
 }
 
 tasks.assemble {
@@ -110,14 +126,12 @@ publishing {
         from(components["java"])
     }
 
-/*
     repositories {
         maven {
             name = "myRepo"
             url = uri(layout.buildDirectory.dir("repo"))
         }
     }
-*/
 }
 
 nexusPublishing {
