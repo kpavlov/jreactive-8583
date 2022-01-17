@@ -1,9 +1,13 @@
 plugins {
-    java
+    `java-library`
     kotlin("jvm") version "1.6.10"
-    id("org.jetbrains.dokka") version "1.6.0"
+    id("org.jetbrains.dokka") version "1.6.10"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    signing
     `maven-publish`
+
+    // https://github.com/gradle-nexus/publish-plugin
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 repositories {
@@ -18,7 +22,9 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.32")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     implementation(kotlin("stdlib-jdk8"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testApi("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
     testImplementation("org.assertj:assertj-core:3.22.0")
@@ -46,6 +52,13 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     }
 }
 
+tasks.test {
+    useJUnitPlatform()
+//    testLogging {
+//        events "passed", "skipped", "failed"
+//    }
+}
+
 val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
 
 val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
@@ -54,11 +67,18 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
     from(dokkaHtml.outputDirectory)
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 tasks.assemble {
     dependsOn(javadocJar)
 }
 
 publishing {
+    // https://docs.gradle.org/current/userguide/publishing_setup.html
+
     publications.create<MavenPublication>("maven") {
         pom {
             name.set("ISO8583 Connector for Netty")
@@ -89,16 +109,27 @@ publishing {
         }
         from(components["java"])
     }
-//    repositories {
-//        maven {
-//            name = "OSSRH"
-//            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-//            credentials {
-//                username = System.getenv("MAVEN_USERNAME")
-//                password = System.getenv("MAVEN_PASSWORD")
-//            }
-//        }
-//    }
+
+/*
+    repositories {
+        maven {
+            name = "myRepo"
+            url = uri(layout.buildDirectory.dir("repo"))
+        }
+    }
+*/
+}
+
+nexusPublishing {
+    repositories {
+        // https://blog.solidsoft.pl/2015/09/08/deploy-to-maven-central-using-api-key-aka-auth-token/
+        sonatype()
+    }
+}
+
+signing {
+    // https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials
+    sign(publishing.publications["maven"])
 }
 
 tasks.withType<JavaCompile> {
