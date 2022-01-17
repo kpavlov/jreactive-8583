@@ -43,5 +43,10 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: wrapper
-        arguments: build --no-daemon
+        arguments: check build --stacktrace
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v2
+      if: always()
+      with:
+        report_paths: '**/build/test-results/test/TEST-*.xml'
 
