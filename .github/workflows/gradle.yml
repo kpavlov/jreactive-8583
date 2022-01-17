@@ -12,6 +12,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+    if: github.actor == github.event.repository.owner.login
+    branches: [ master ]
 
 jobs:
   build:
