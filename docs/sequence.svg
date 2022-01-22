@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="658px"
+     preserveAspectRatio="none" style="width:1360px;height:658px;background:#FFFFFF;" version="1.1"
+     viewBox="0 0 1360 658" width="1360px" zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="fpro4s6ffz11n" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g>
+        <rect fill="#FFFFFF" filter="url(#fpro4s6ffz11n)" height="360.6816"
+              style="stroke:#000000;stroke-width:2.0;" width="1010" x="333" y="103.2871"/>
+        <rect fill="#FFFFFF" filter="url(#fpro4s6ffz11n)" height="120.1973"
+              style="stroke:#000000;stroke-width:2.0;" width="555" x="343" y="127.5977"/>
+        <rect fill="#FFFFFF" height="73.5762" style="stroke:none;stroke-width:1.0;" width="555"
+              x="343" y="174.2188"/>
+        <rect fill="#FFFFFF" filter="url(#fpro4s6ffz11n)" height="165.8633"
+              style="stroke:#000000;stroke-width:2.0;" width="849" x="484" y="261.7949"/>
+        <rect fill="#FFFFFF" height="31.3105" style="stroke:none;stroke-width:1.0;" width="849"
+              x="484" y="396.3477"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="104" x2="104"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="278" x2="278"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="418" x2="418"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="597" x2="597"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="799" x2="799"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="963" x2="963"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1106" x2="1106"
+              y1="56.9766" y2="539.5898"/>
+        <line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1253" x2="1253"
+              y1="56.9766" y2="539.5898"/>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="46.9766"
+              style="stroke:#A80036;stroke-width:1.5;" width="194" x="5" y="5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic"
+              lengthAdjust="spacing" textLength="176" x="14" y="25.5352">«ByteToMessageDecoder»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="180" x="12" y="42.0234">LengthFieldFrameDecoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="46.9766"
+              style="stroke:#A80036;stroke-width:1.5;" width="194" x="5" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic"
+              lengthAdjust="spacing" textLength="176" x="14" y="559.125">«ByteToMessageDecoder»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="180" x="12" y="575.6133">LengthFieldFrameDecoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="126" x="213" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="112" x="220" y="42.0234">Iso8583Encoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="126" x="213" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="112" x="220" y="559.125">Iso8583Encoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="127" x="353" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="113" x="360" y="42.0234">Iso8583Decoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="127" x="353" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="113" x="360" y="559.125">Iso8583Decoder
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="203" x="494" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="189" x="501" y="42.0234">IsoMessageLoggingHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="203" x="494" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="189" x="501" y="559.125">IsoMessageLoggingHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="173" x="711" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="159" x="718" y="42.0234">ParseExceptionHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="173" x="711" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="159" x="718" y="559.125">ParseExceptionHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="127" x="898" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="113" x="905" y="42.0234">IdleStateHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="127" x="898" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="113" x="905" y="559.125">IdleStateHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="130" x="1039" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="116" x="1046" y="42.0234">IdleEventHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="130" x="1039" y="538.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="116" x="1046" y="559.125">IdleEventHandler
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="132" x="1187" y="17.4883"/>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="132" x="1183" y="21.4883"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="118" x="1190" y="42.0234">Custom Handlers
+        </text>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="132" x="1187" y="538.5898"/>
+        <rect fill="#FEFECE" filter="url(#fpro4s6ffz11n)" height="30.4883"
+              style="stroke:#A80036;stroke-width:1.5;" width="132" x="1183" y="542.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="118" x="1190" y="563.125">Custom Handlers
+        </text>
+        <polygon fill="#FF0000" points="406.5,84.2871,416.5,88.2871,406.5,92.2871,410.5,88.2871"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="104" x2="412.5" y1="88.2871"
+              y2="88.2871"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="111" y="83.5449">1
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="36" x="124" y="83.5449">Bytes
+        </text>
+        <path
+            d="M333,103.2871 L472,103.2871 L472,110.2871 L462,120.2871 L333,120.2871 L333,103.2871 "
+            fill="#EEEEEE" style="stroke:#000000;stroke-width:1.0;"/>
+        <rect fill="none" height="360.6816" style="stroke:#000000;stroke-width:2.0;" width="1010"
+              x="333" y="103.2871"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="94" x="348" y="116.8555">Worker Group
+        </text>
+        <path
+            d="M343,127.5977 L405,127.5977 L405,134.5977 L395,144.5977 L343,144.5977 L343,127.5977 "
+            fill="#EEEEEE" style="stroke:#000000;stroke-width:1.0;"/>
+        <rect fill="none" height="120.1973" style="stroke:#000000;stroke-width:2.0;" width="555"
+              x="343" y="127.5977"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="17" x="358" y="141.166">alt
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold"
+              lengthAdjust="spacing" textLength="113" x="420" y="140.2324">[parsing successful]
+        </text>
+        <polygon fill="#FF0000" points="585.5,162.2188,595.5,166.2188,585.5,170.2188,589.5,166.2188"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="418.5" x2="591.5" y1="166.2188"
+              y2="166.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="425.5" y="161.4766">2
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="78" x="438.5" y="161.4766">IsoMessage
+        </text>
+        <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="343" x2="898"
+              y1="175.2188" y2="175.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold"
+              lengthAdjust="spacing" textLength="215" x="348" y="185.8535">[parse error &amp;&amp;
+            replyOnError == true]
+        </text>
+        <polygon fill="#FF0000" points="787.5,206.4844,797.5,210.4844,787.5,214.4844,791.5,210.4844"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="418.5" x2="793.5" y1="210.4844"
+              y2="210.4844"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="425.5" y="205.7422">3
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="103" x="438.5" y="205.7422">ParseException
+        </text>
+        <polygon fill="#0000FF" points="608.5,235.7949,598.5,239.7949,608.5,243.7949,604.5,239.7949"
+                 style="stroke:#0000FF;stroke-width:1.0;"/>
+        <line style="stroke:#0000FF;stroke-width:1.0;" x1="602.5" x2="798.5" y1="239.7949"
+              y2="239.7949"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="614.5" y="235.0527">4
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="158" x="627.5" y="235.0527">IsoMessage [@24=650]
+        </text>
+        <path
+            d="M484,261.7949 L546,261.7949 L546,268.7949 L536,278.7949 L484,278.7949 L484,261.7949 "
+            fill="#EEEEEE" style="stroke:#000000;stroke-width:1.0;"/>
+        <rect fill="none" height="165.8633" style="stroke:#000000;stroke-width:2.0;" width="849"
+              x="484" y="261.7949"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="17" x="499" y="275.3633">alt
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold"
+              lengthAdjust="spacing" textLength="194" x="561" y="274.4297">[addEchoMessageListener
+            == true]
+        </text>
+        <polygon fill="#FF0000" points="951.5,296.416,961.5,300.416,951.5,304.416,955.5,300.416"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="597.5" x2="957.5" y1="300.416"
+              y2="300.416"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="604.5" y="295.6738">5
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing"
+              textLength="0" x="621.5" y="295.6738"/>
+        <polygon fill="#FF0000" points="1094,325.7266,1104,329.7266,1094,333.7266,1098,329.7266"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="963.5" x2="1100" y1="329.7266"
+              y2="329.7266"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="970.5" y="324.9844">6
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="96" x="983.5" y="324.9844">IdleStateEvent
+        </text>
+        <polygon fill="#0000FF" points="608.5,355.0371,598.5,359.0371,608.5,363.0371,604.5,359.0371"
+                 style="stroke:#0000FF;stroke-width:1.0;"/>
+        <line style="stroke:#0000FF;stroke-width:1.0;" x1="602.5" x2="1105" y1="359.0371"
+              y2="359.0371"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="614.5" y="354.2949">7
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="175" x="627.5" y="354.2949">IsoMessage [@type=Echo]
+        </text>
+        <polygon fill="#FF0000" points="1241,384.3477,1251,388.3477,1241,392.3477,1245,388.3477"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="963.5" x2="1247" y1="388.3477"
+              y2="388.3477"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="970.5" y="383.6055">8
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="78" x="983.5" y="383.6055">IsoMessage
+        </text>
+        <line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="484" x2="1333"
+              y1="397.3477" y2="397.3477"/>
+        <polygon fill="#FF0000" points="1241,415.6582,1251,419.6582,1241,423.6582,1245,419.6582"
+                 style="stroke:#FF0000;stroke-width:1.0;"/>
+        <line style="stroke:#FF0000;stroke-width:1.0;" x1="597.5" x2="1247" y1="419.6582"
+              y2="419.6582"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="9" x="604.5" y="414.916">9
+        </text>
+        <text fill="#FF0000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="78" x="617.5" y="414.916">IsoMessage
+        </text>
+        <polygon fill="#0000FF" points="608.5,451.9688,598.5,455.9688,608.5,459.9688,604.5,455.9688"
+                 style="stroke:#0000FF;stroke-width:1.0;"/>
+        <line style="stroke:#0000FF;stroke-width:1.0;" x1="602.5" x2="1252" y1="455.9688"
+              y2="455.9688"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="18" x="614.5" y="451.2266">10
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="78" x="636.5" y="451.2266">IsoMessage
+        </text>
+        <polygon fill="#0000FF" points="289,488.2793,279,492.2793,289,496.2793,285,492.2793"
+                 style="stroke:#0000FF;stroke-width:1.0;"/>
+        <line style="stroke:#0000FF;stroke-width:1.0;" x1="283" x2="596.5" y1="492.2793"
+              y2="492.2793"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="18" x="295" y="487.5371">11
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="78" x="317" y="487.5371">IsoMessage
+        </text>
+        <polygon fill="#0000FF" points="11,517.5898,1,521.5898,11,525.5898,7,521.5898"
+                 style="stroke:#0000FF;stroke-width:1.0;"/>
+        <line style="stroke:#0000FF;stroke-width:1.0;" x1="5" x2="277" y1="521.5898" y2="521.5898"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="18" x="17" y="516.8477">12
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="13" font-weight="bold"
+              lengthAdjust="spacing" textLength="36" x="39" y="516.8477">Bytes
+        </text>
+        <rect fill="#DDDDDD" height="42.9766" rx="5" ry="5" style="stroke:#000000;stroke-width:1.0;"
+              width="323" x="1021" y="599.5664"/>
+        <text fill="#FF0000" font-family="sans-serif" font-size="14" font-weight="bold"
+              lengthAdjust="spacing" textLength="84" x="1027" y="618.1016">IsoMessage
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="200" x="1115" y="618.1016">- Inbound message (request)
+        </text>
+        <text fill="#0000FF" font-family="sans-serif" font-size="14" font-weight="bold"
+              lengthAdjust="spacing" textLength="84" x="1027" y="634.5898">IsoMessage
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+              textLength="223" x="1115" y="634.5898">- Outbound message (response)
+        </text><!--MD5=[47b29a9b1931abb894cdfd20ed8577ae]
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant LengthFieldFrameDecoder <<ByteToMessageDecoder>>
+participant Iso8583Encoder
+participant Iso8583Decoder
+participant IsoMessageLoggingHandler
+participant ParseExceptionHandler
+participant IdleStateHandler
+participant IdleEventHandler
+collections CustomHandlers as "Custom Handlers"
+
+LengthFieldFrameDecoder -[#red]> Iso8583Decoder : <font color=red>**Bytes**
+
+group Worker Group
+
+    alt parsing successful
+        Iso8583Decoder -[#red]> IsoMessageLoggingHandler : <font color=red>**IsoMessage**
+    else parse error && replyOnError == true
+        Iso8583Decoder -[#red]> ParseExceptionHandler : <font color=red>**ParseException**
+        IsoMessageLoggingHandler <[#blue]- ParseExceptionHandler : <font color=blue>**IsoMessage [@24=650]**
+    end
+
+    alt addEchoMessageListener == true
+        IsoMessageLoggingHandler -[#red]> IdleStateHandler
+        IdleStateHandler  -[#red]> IdleEventHandler : <font color=red>**IdleStateEvent**
+        IsoMessageLoggingHandler <[#blue]-IdleEventHandler  : <font color=blue>**IsoMessage [@type=Echo]**
+        IdleStateHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+    else
+        IsoMessageLoggingHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+
+    end
+
+    IsoMessageLoggingHandler <[#blue]- CustomHandlers : <font color=blue>**IsoMessage**
+end
+
+  Iso8583Encoder <[#blue]-  IsoMessageLoggingHandler : <font color=blue>**IsoMessage**
+  <[#blue]-  Iso8583Encoder : <font color=blue>**Bytes**
+
+legend right
+    <font color=red>**IsoMessage**</font> - Inbound message (request)
+    <font color=blue>**IsoMessage**</font> - Outbound message (response)
+endlegend
+
+@enduml
+
+@startuml
+
+autonumber
+
+participant LengthFieldFrameDecoder <<ByteToMessageDecoder>>
+participant Iso8583Encoder
+participant Iso8583Decoder
+participant IsoMessageLoggingHandler
+participant ParseExceptionHandler
+participant IdleStateHandler
+participant IdleEventHandler
+collections CustomHandlers as "Custom Handlers"
+
+LengthFieldFrameDecoder -[#red]> Iso8583Decoder : <font color=red>**Bytes**
+
+group Worker Group
+
+    alt parsing successful
+        Iso8583Decoder -[#red]> IsoMessageLoggingHandler : <font color=red>**IsoMessage**
+    else parse error && replyOnError == true
+        Iso8583Decoder -[#red]> ParseExceptionHandler : <font color=red>**ParseException**
+        IsoMessageLoggingHandler <[#blue]- ParseExceptionHandler : <font color=blue>**IsoMessage [@24=650]**
+    end
+
+    alt addEchoMessageListener == true
+        IsoMessageLoggingHandler -[#red]> IdleStateHandler
+        IdleStateHandler  -[#red]> IdleEventHandler : <font color=red>**IdleStateEvent**
+        IsoMessageLoggingHandler <[#blue]-IdleEventHandler  : <font color=blue>**IsoMessage [@type=Echo]**
+        IdleStateHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+    else
+        IsoMessageLoggingHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+
+    end
+
+    IsoMessageLoggingHandler <[#blue]- CustomHandlers : <font color=blue>**IsoMessage**
+end
+
+  Iso8583Encoder <[#blue]-  IsoMessageLoggingHandler : <font color=blue>**IsoMessage**
+  <[#blue]-  Iso8583Encoder : <font color=blue>**Bytes**
+
+legend right
+    <font color=red>**IsoMessage**</font> - Inbound message (request)
+    <font color=blue>**IsoMessage**</font> - Outbound message (response)
+endlegend
+
+@enduml
+
+PlantUML version 1.2022.0(Tue Jan 11 18:16:42 EET 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>
