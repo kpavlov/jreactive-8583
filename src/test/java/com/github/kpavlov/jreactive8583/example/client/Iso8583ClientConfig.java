@@ -38,7 +38,7 @@ public class Iso8583ClientConfig {
         final SocketAddress socketAddress = new InetSocketAddress(host, port);
 
         final var configuration = ClientConfiguration.newBuilder()
-//                .addLoggingHandler()
+            .addLoggingHandler(true)
                 .idleTimeout(idleTimeout)
                 .logSensitiveData(false)
                 .workerThreadsCount(2)
