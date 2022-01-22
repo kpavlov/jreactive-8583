@@ -26,19 +26,26 @@ class EchoFromClientIT extends AbstractIT {
 
     @Override
     protected void configureServer(final Iso8583Server<IsoMessage> server) {
-        server.setConfigurer(new ConnectorConfigurer<>() {
+       server.setConfigurer(new ConnectorConfigurer<>() {
 
-            @Override
-            public void configurePipeline(final ChannelPipeline pipeline, final ServerConfiguration configuration) {
-                pipeline.addBefore("idleEventHandler", "connectListenerHandler", new ChannelInboundHandlerAdapter() {
-                    @Override
-                    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-                        super.channelActive(ctx);
-                        final var message = server.getIsoMessageFactory().newMessage(0x800);
-                        ctx.writeAndFlush(message);
-                    }
-                });
-            }
+           @Override
+           public void configurePipeline(final ChannelPipeline pipeline,
+                                         final ServerConfiguration configuration) {
+               final var echoHandler = new ChannelInboundHandlerAdapter() {
+                   @Override
+                   public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+                       super.channelActive(ctx);
+                       final var message = server.getIsoMessageFactory().newMessage(0x800);
+                       ctx.writeAndFlush(message);
+                   }
+               };
+
+               if (pipeline.get("idleEventHandler") != null) {
+                   pipeline.addBefore("idleEventHandler", "connectListenerHandler", echoHandler);
+               } else {
+                   pipeline.addLast("connectListenerHandler", echoHandler);
+               }
+           }
         });
     }
 
