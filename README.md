@@ -52,7 +52,7 @@ Add dependency to your project:
         <dependency>
             <groupId>com.github.kpavlov.jreactive8583</groupId>
             <artifactId>netty-iso8583</artifactId>
-            <version>${VERSION}</version>
+            <version>${LATEST_VERSION}</version>
         </dependency>
     </dependencies>
 
@@ -105,7 +105,6 @@ client.shutdown();// [11]
 Typical server workflow includes:
 
 ~~~java
-
 var messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987);// [1]
 Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
 
@@ -163,12 +162,22 @@ You may:
 - customize [ISO 8583 version](https://en.wikipedia.org/wiki/ISO_8583#ISO_8583_version)
 
 See
-[ConnectorConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java),
-[ServerConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/server/ServerConfiguration.java) and
-[ClientConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/client/ClientConfiguration.java).
+[ConnectorConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/ConnectorConfiguration.java)
+,
+[ServerConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/server/ServerConfiguration.java)
+and
+[ClientConfiguration](./src/main/java/com/github/kpavlov/jreactive8583/client/ClientConfiguration.java)
+.
 
 ---
-For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ) page.
+For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreactive-8583/wiki/FAQ)
+page.
+
+## Sequence Diagram
+
+Message processing is described in the following diagram:
+
+![Sequence Diagram](docs/sequence.svg)
 
 ## ISO 8583 Links
 
@@ -178,6 +187,7 @@ For frequently asked questions check the [FAQ](https://github.com/kpavlov/jreact
 - [ISO 8583 wiki page](https://en.wikipedia.org/wiki/ISO_8583)
 
 [iso8583]: https://en.wikipedia.org/wiki/ISO_8583
+
 [iso-examples]: https://github.com/beckerdo/ISO-8583-Examples "Some payments processing examples"
 [j8583-example]: https://krishnarag.wordpress.com/2014/06/18/iso-8583-j8583-java-library/
 [j8583]: https://bitbucket.org/chochos/j8583 "Java implementation of the ISO8583 protocol."

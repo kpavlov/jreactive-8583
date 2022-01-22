@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant LengthFieldFrameDecoder <<ByteToMessageDecoder>>
+participant Iso8583Encoder
+participant Iso8583Decoder
+participant IsoMessageLoggingHandler
+participant ParseExceptionHandler
+participant IdleStateHandler
+participant IdleEventHandler
+collections CustomHandlers as "Custom Handlers"
+
+LengthFieldFrameDecoder -[#red]> Iso8583Decoder : <font color=red>**Bytes**
+
+group Worker Group
+
+    alt parsing successful
+        Iso8583Decoder -[#red]> IsoMessageLoggingHandler : <font color=red>**IsoMessage**
+    else parse error && replyOnError == true
+        Iso8583Decoder -[#red]> ParseExceptionHandler : <font color=red>**ParseException**
+        IsoMessageLoggingHandler <[#blue]- ParseExceptionHandler : <font color=blue>**IsoMessage [@24=650]**
+    end
+
+    alt addEchoMessageListener == true
+        IsoMessageLoggingHandler -[#red]> IdleStateHandler
+        IdleStateHandler  -[#red]> IdleEventHandler : <font color=red>**IdleStateEvent**
+        IsoMessageLoggingHandler <[#blue]-IdleEventHandler  : <font color=blue>**IsoMessage [@type=Echo]**
+        IdleStateHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+    else
+        IsoMessageLoggingHandler -[#red]> CustomHandlers  : <font color=red>**IsoMessage**
+
+    end
+
+    IsoMessageLoggingHandler <[#blue]- CustomHandlers : <font color=blue>**IsoMessage**
+end
+
+  Iso8583Encoder <[#blue]-  IsoMessageLoggingHandler : <font color=blue>**IsoMessage**
+  <[#blue]-  Iso8583Encoder : <font color=blue>**Bytes**
+
+legend right
+    <font color=red>**IsoMessage**</font> - Inbound message (request)
+    <font color=blue>**IsoMessage**</font> - Outbound message (response)
+endlegend
+
+@enduml
