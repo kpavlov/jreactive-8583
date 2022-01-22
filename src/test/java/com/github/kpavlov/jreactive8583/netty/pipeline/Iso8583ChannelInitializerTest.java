@@ -96,9 +96,9 @@ class Iso8583ChannelInitializerTest {
 
         //then
         verify(pipeline, times(1))
-            .addLast(eq("idleState"), any(IdleStateHandler.class));
+            .addLast(same(workerGroup), eq("idleState"), any(IdleStateHandler.class));
         verify(pipeline, times(1))
-            .addLast(eq("idleEventHandler"), any(IdleEventHandler.class));
+            .addLast(same(workerGroup), eq("idleEventHandler"), any(IdleEventHandler.class));
 
     }
 

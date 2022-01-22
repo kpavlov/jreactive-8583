@@ -62,8 +62,12 @@ internal constructor(
             pipeline.addLast(workerGroup, "replyOnError", parseExceptionHandler)
         }
         if (configuration.shouldAddEchoMessageListener()) {
-            pipeline.addLast("idleState", IdleStateHandler(0, 0, configuration.idleTimeout))
-            pipeline.addLast("idleEventHandler", IdleEventHandler(isoMessageFactory))
+            pipeline.addLast(
+                workerGroup,
+                "idleState",
+                IdleStateHandler(0, 0, configuration.idleTimeout)
+            )
+            pipeline.addLast(workerGroup, "idleEventHandler", IdleEventHandler(isoMessageFactory))
         }
         pipeline.addLast(workerGroup, *customChannelHandlers)
         configurer?.configurePipeline(pipeline, configuration)
