@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IsoMessageLoggingHandlerTest {
+class IsoMessageLoggingHandlerTest {
 
     private IsoMessageLoggingHandler handler;
 
@@ -56,48 +56,50 @@ public class IsoMessageLoggingHandlerTest {
     }
 
     @Test
-    public void testMaskSensitiveData() {
+    void testMaskSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, new int[]{34, 35, 36, 45, 112});
 
         final var result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result).doesNotContain(pan);
-        assertThat(result).doesNotContain(cvv);
-        assertThat(result).doesNotContain(track1);
-        assertThat(result).doesNotContain(track2);
-        assertThat(result).doesNotContain(track3);
+        assertThat(result)
+            .doesNotContain(pan)
+            .doesNotContain(cvv)
+            .doesNotContain(track1)
+            .doesNotContain(track2)
+            .doesNotContain(track3);
     }
 
     @Test
-    public void testMaskDefaultSensitiveData() {
+    void testMaskDefaultSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true,
             IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result).doesNotContain(pan);
-        assertThat(result).doesNotContain(track1).as("track1");
-        assertThat(result).doesNotContain(track2).as("track2");
-        assertThat(result).doesNotContain(track3).as("track3");
-        // there is no standard field for CVV, so it's not masked by default
-        assertThat(result).contains(cvv);
+        assertThat(result)
+            .doesNotContain(pan)
+            .doesNotContain(track1).as("track1")
+            .doesNotContain(track2).as("track2")
+            .doesNotContain(track3).as("track3")
+            .contains(cvv); // there is no standard field for CVV, so it's not masked by default
     }
 
     @Test
-    public void testPrintSensitiveData() {
+    void testPrintSensitiveData() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, true, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
 
-        assertThat(result).contains(pan);
-        assertThat(result).contains(cvv);
-        assertThat(result).contains(track1);
-        assertThat(result).contains(track2);
-        assertThat(result).contains(track3);
+        assertThat(result)
+            .contains(pan)
+            .contains(cvv)
+            .contains(track1)
+            .contains(track2)
+            .contains(track3);
     }
 
     @Test
-    public void testHideFieldDescriptions() {
+    void testHideFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, false, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);
@@ -106,7 +108,7 @@ public class IsoMessageLoggingHandlerTest {
     }
 
     @Test
-    public void testShowFieldDescriptions() {
+    void testShowFieldDescriptions() {
         handler = new IsoMessageLoggingHandler(LogLevel.DEBUG, false, true, IsoMessageLoggingHandler.DEFAULT_MASKED_FIELDS);
 
         final var result = handler.format(ctx, "someEvent", message);

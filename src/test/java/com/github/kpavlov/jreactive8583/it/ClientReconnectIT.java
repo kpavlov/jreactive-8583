@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 
 @Tag("reconnect")
-public class ClientReconnectIT extends AbstractIT {
+class ClientReconnectIT extends AbstractIT {
 
     @Test
-    public void clientShouldReconnectWhenConnectionLost() throws Exception {
+    void clientShouldReconnectWhenConnectionLost() throws Exception {
         //when
         server.shutdown();
         await().alias("client was disconnected").until(() -> (!client.isConnected()));

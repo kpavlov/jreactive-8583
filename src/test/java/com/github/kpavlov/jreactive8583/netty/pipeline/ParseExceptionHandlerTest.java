@@ -43,7 +43,7 @@ public class ParseExceptionHandlerTest {
     }
 
     @Test
-    public void testExceptionCaught() throws Exception {
+    void testExceptionCaught() throws Exception {
         final var errorMessage = UUID.randomUUID().toString();
 
         final var exception = new ParseException(errorMessage, 0);

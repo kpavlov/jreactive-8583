@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-public class ClientServerIT extends AbstractIT {
+class ClientServerIT extends AbstractIT {
 
     private final Map<Integer, IsoMessage> receivedMessages = new ConcurrentHashMap<>();
 
@@ -55,7 +55,7 @@ public class ClientServerIT extends AbstractIT {
     }
 
     @Test
-    public void shouldSendAsyncCaptureRequest() {
+    void shouldSendAsyncCaptureRequest() {
         // given
         final var finMessage = client.getIsoMessageFactory().newMessage(0x0200);
         finMessage.setField(60, IsoType.LLLVAR.value("foo", 3));
