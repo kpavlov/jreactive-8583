@@ -9,12 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CompositeIsoMessageHandlerTest {
+class CompositeIsoMessageHandlerTest {
 
     @Mock
     private IsoMessageListener<IsoMessage> listener1;
@@ -35,7 +33,7 @@ public class CompositeIsoMessageHandlerTest {
     }
 
     @Test
-    public void shouldRemoveListener() throws Exception {
+    void shouldRemoveListener() throws Exception {
         //given
         when(listener1.applies(message)).thenReturn(true);
         when(listener3.applies(message)).thenReturn(true);
@@ -52,7 +50,7 @@ public class CompositeIsoMessageHandlerTest {
     }
 
     @Test
-    public void shouldHandleWithAppropriateHandler() throws Exception {
+    void shouldHandleWithAppropriateHandler() throws Exception {
         //given
         when(listener1.applies(message)).thenReturn(false);
         when(listener2.applies(message)).thenReturn(true);
@@ -69,7 +67,7 @@ public class CompositeIsoMessageHandlerTest {
     }
 
     @Test
-    public void testStopProcessing() throws Exception {
+    void testStopProcessing() throws Exception {
         //given
         when(listener1.applies(message)).thenReturn(true);
         when(listener2.applies(message)).thenReturn(true);
@@ -86,7 +84,7 @@ public class CompositeIsoMessageHandlerTest {
     }
 
     @Test
-    public void shouldNotFailOnExceptionInFailsafeMode() throws Exception {
+    void shouldNotFailOnExceptionInFailsafeMode() throws Exception {
         //given
         handler = new CompositeIsoMessageHandler<>(false);
         handler.addListeners(listener1, listener2, listener3);

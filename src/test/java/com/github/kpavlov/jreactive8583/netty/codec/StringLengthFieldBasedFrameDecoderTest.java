@@ -49,7 +49,7 @@ class StringLengthFieldBasedFrameDecoderTest {
     }
 
     @Test
-    public void shouldGetUnadjustedFrameLength() {
+    void shouldGetUnadjustedFrameLength() {
         // given
         final var content = "MESSAGE";
         when(message.writeData()).thenReturn(content.getBytes(StandardCharsets.US_ASCII));

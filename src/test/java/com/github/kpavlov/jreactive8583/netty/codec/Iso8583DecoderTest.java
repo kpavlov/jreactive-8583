@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class Iso8583DecoderTest {
+class Iso8583DecoderTest {
 
     private Iso8583Decoder decoder;
 
@@ -35,7 +35,7 @@ public class Iso8583DecoderTest {
     }
 
     @Test
-    public void testDecodeEmptyByteBufDoesNothing() throws Exception {
+    void testDecodeEmptyByteBufDoesNothing() throws Exception {
         when(byteBuf.isReadable()).thenReturn(false);
 
         decoder.decode(ctx, byteBuf, out);

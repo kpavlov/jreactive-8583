@@ -7,6 +7,7 @@ import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.awaitility.Awaitility.await;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Tag("slow")
-public class LockDetectionIT extends AbstractIT {
+class LockDetectionIT extends AbstractIT {
 
     private static final int NUM_CLIENTS = 20;
     private static final int NUM_MESSAGES = 100;
@@ -39,7 +40,7 @@ public class LockDetectionIT extends AbstractIT {
     @BeforeAll
     public static void beforeAll() {
         threadMXBean = ManagementFactory.getThreadMXBean();
-        assertThat(threadMXBean.isThreadContentionMonitoringSupported());
+        assertThat(threadMXBean.isThreadContentionMonitoringSupported()).isTrue();
         threadMXBean.setThreadContentionMonitoringEnabled(true);
 
         monitoringThread = new Thread(() -> {
@@ -96,7 +97,7 @@ public class LockDetectionIT extends AbstractIT {
     }
 
     @Test
-    public void shouldProcessRequestsFromMultipleClientsWithoutDeadlocks() throws Exception {
+    void shouldProcessRequestsFromMultipleClientsWithoutDeadlocks() throws Exception {
 
         for (final var client : clients) {
             new Thread(() -> {
@@ -119,20 +120,21 @@ public class LockDetectionIT extends AbstractIT {
         latch.await();
         monitoringThread.join();
 
-        assertThat(monitorDeadlockedCount.get()).as("Monitor Deadlock Count").isEqualTo(0);
-        assertThat(deadlockedCount.get()).as("Deadlock Count").isEqualTo(0);
+        assertThat(monitorDeadlockedCount.get()).as("Monitor Deadlock Count").isZero();
+        assertThat(deadlockedCount.get()).as("Deadlock Count").isZero();
     }
 
     @Override
     protected void configureClient(final Iso8583Client<IsoMessage> client) {
         client.addMessageListener(new IsoMessageListener<>() {
             @Override
-            public boolean applies(final IsoMessage isoMessage) {
+            public boolean applies(@NotNull final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x210;
             }
 
             @Override
-            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
+            public boolean onMessage(@NotNull final ChannelHandlerContext ctx,
+                                     @NotNull final IsoMessage isoMessage) {
                 latch.countDown();
                 final var count = latch.getCount();
                 if (count % 100 == 0 || (count < 10 && count % 10 == 0)) {
@@ -150,12 +152,13 @@ public class LockDetectionIT extends AbstractIT {
         server.addMessageListener(new IsoMessageListener<>() {
 
             @Override
-            public boolean applies(final IsoMessage isoMessage) {
+            public boolean applies(@NotNull final IsoMessage isoMessage) {
                 return isoMessage.getType() == 0x200;
             }
 
             @Override
-            public boolean onMessage(final ChannelHandlerContext ctx, final IsoMessage isoMessage) {
+            public boolean onMessage(@NotNull final ChannelHandlerContext ctx,
+                                     @NotNull final IsoMessage isoMessage) {
                 final var response = server.getIsoMessageFactory().createResponse(isoMessage);
                 response.setField(39, IsoType.ALPHA.value("00", 2));
                 response.setField(60, IsoType.LLLVAR.value("XXX", 3));

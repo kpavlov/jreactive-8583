@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
+class AbstractIso8583ConnectorTest<M extends IsoMessage> {
 
     private AbstractIso8583Connector<ConnectorConfiguration, ServerBootstrap, M> subject;
 
@@ -45,7 +45,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     }
 
     @Test
-    public void addMessageListener() throws Exception {
+    void addMessageListener() throws Exception {
         //given
         @SuppressWarnings("unchecked") final IsoMessageListener<M> listener = mock(IsoMessageListener.class);
         when(listener.applies(message)).thenReturn(true);
@@ -59,7 +59,7 @@ public class AbstractIso8583ConnectorTest<M extends IsoMessage> {
     }
 
     @Test
-    public void removeMessageListener() throws Exception {
+    void removeMessageListener() throws Exception {
         //given
         subject.addMessageListener(listener);
         @SuppressWarnings("unchecked") final IsoMessageListener<M> listener = mock(IsoMessageListener.class);
