@@ -7,12 +7,20 @@ import java.io.UnsupportedEncodingException
 import java.text.ParseException
 import javax.annotation.Nonnull
 
+/**
+ * @param role Role of the communicating party.
+ * @see MessageOrigin
+ */
 public open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
     private val messageFactory: com.solab.iso8583.MessageFactory<T> = defaultMessageFactory(),
-    private val isoVersion: ISO8583Version = ISO8583Version.V1987
+    private val isoVersion: ISO8583Version = ISO8583Version.V1987,
+    private val role: MessageOrigin
 ) : MessageFactory<T> {
 
-    public constructor(isoVersion: ISO8583Version) : this(defaultMessageFactory(), isoVersion)
+    public constructor(
+        isoVersion: ISO8583Version,
+        role: MessageOrigin
+    ) : this(defaultMessageFactory(), isoVersion, role)
 
     override fun newMessage(type: Int): T {
         return messageFactory.newMessage(type)
@@ -24,6 +32,13 @@ public open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
         @Nonnull messageOrigin: MessageOrigin
     ): T {
         return newMessage(mtiValue(isoVersion, messageClass, messageFunction, messageOrigin))
+    }
+
+    override fun newMessage(
+        @Nonnull messageClass: MessageClass,
+        @Nonnull messageFunction: MessageFunction
+    ): T {
+        return newMessage(mtiValue(isoVersion, messageClass, messageFunction, this.role))
     }
 
     override fun createResponse(requestMessage: T): T {
@@ -49,5 +64,6 @@ public open class J8583MessageFactory<T : IsoMessage> @JvmOverloads constructor(
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 private fun <T : IsoMessage> defaultMessageFactory() =
     ConfigParser.createDefault() as com.solab.iso8583.MessageFactory<T>

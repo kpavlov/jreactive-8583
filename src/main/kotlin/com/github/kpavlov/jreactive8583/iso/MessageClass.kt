@@ -10,7 +10,7 @@ package com.github.kpavlov.jreactive8583.iso
 @Suppress("unused")
 public enum class MessageClass(internal val value: Int) {
     /**
-     * x1xx	Authorization message
+     * `x1xx` - Authorization message
      *
      *
      * Determine if funds are available, get an approval but do not post
@@ -20,7 +20,7 @@ public enum class MessageClass(internal val value: Int) {
     AUTHORIZATION(0x0100),
 
     /**
-     * x2xx	Financial messages
+     * `x2xx` - Financial messages
      *
      *
      * Determine if funds are available, get an approval and post directly
@@ -29,7 +29,7 @@ public enum class MessageClass(internal val value: Int) {
     FINANCIAL(0x0200),
 
     /**
-     * x3xx	File actions message
+     * `x3xx` - File actions message
      *
      *
      * Used for hot-card, TMS and other exchanges
@@ -37,7 +37,7 @@ public enum class MessageClass(internal val value: Int) {
     FILE_ACTIONS(0x0300),
 
     /**
-     * x4xx	Reversal and chargeback messages
+     * `x4xx` 	Reversal and chargeback messages
      *
      *
      * - Reversal (x4x0 or x4x1): Reverses the action of a previous authorization.
@@ -46,14 +46,14 @@ public enum class MessageClass(internal val value: Int) {
     REVERSAL_CHARGEBACK(0x0400),
 
     /**
-     * x5xx	Reconciliation message
+     * `x5xx` - Reconciliation message
+     *
      * Transmits settlement information message.
      */
     RECONCILIATION(0x0500),
 
     /**
-     * x6xx	Administrative message
-     *
+     * `x6xx` - Administrative message
      *
      * Transmits administrative advice. Often used for failure messages
      * (e.g., message reject or failure to apply).
@@ -61,7 +61,7 @@ public enum class MessageClass(internal val value: Int) {
     ADMINISTRATIVE(0x0600),
 
     /**
-     * x7xx	Fee collection messages
+     * `x7xx` - Fee collection messages
      */
     FEE_COLLECTION(0x0700),
 

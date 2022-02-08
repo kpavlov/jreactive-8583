@@ -18,23 +18,27 @@ repositories {
 }
 
 dependencies {
+    val slf4jVersion = "1.7.35"
+    val junitJupiterVersion = "5.8.2"
+
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("net.sf.j8583:j8583:1.17.0")
-    implementation("io.netty:netty-handler:4.1.73.Final")
-    implementation("org.slf4j:slf4j-api:1.7.35")
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    api(kotlin("stdlib-jdk8"))
+    api("net.sf.j8583:j8583:1.17.0")
+    api("io.netty:netty-handler:4.1.73.Final")
+    api("org.slf4j:slf4j-api:$slf4jVersion")
+    api("com.google.code.findbugs:jsr305:3.0.2")
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:4.3.1")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
     testImplementation("org.assertj:assertj-core:3.22.0")
-    testImplementation("org.springframework:spring-context:5.3.15")
-    testImplementation("org.springframework:spring-test:5.3.15")
-    testImplementation("org.slf4j:slf4j-simple:1.7.35")
+    testImplementation(platform("org.springframework:spring-framework-bom:5.3.15"))
+    testImplementation("org.springframework:spring-context")
+    testImplementation("org.springframework:spring-test")
+    testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.awaitility:awaitility:4.1.1")
-    testImplementation(kotlin("test-junit5"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
 
 group = "com.github.kpavlov.jreactive8583"

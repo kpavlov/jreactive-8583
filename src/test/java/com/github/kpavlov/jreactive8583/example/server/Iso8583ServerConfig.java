@@ -3,6 +3,7 @@ package com.github.kpavlov.jreactive8583.example.server;
 import com.github.kpavlov.jreactive8583.iso.ISO8583Version;
 import com.github.kpavlov.jreactive8583.iso.J8583MessageFactory;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageOrigin;
 import com.github.kpavlov.jreactive8583.server.Iso8583Server;
 import com.github.kpavlov.jreactive8583.server.ServerConfiguration;
 import com.solab.iso8583.IsoMessage;
@@ -40,7 +41,7 @@ public class Iso8583ServerConfig {
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);
-        return new J8583MessageFactory<>(messageFactory, ISO8583Version.V1987);
+        return new J8583MessageFactory<>(messageFactory, ISO8583Version.V1987, MessageOrigin.ACQUIRER);
     }
 
 

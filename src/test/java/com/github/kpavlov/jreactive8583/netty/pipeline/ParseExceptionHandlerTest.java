@@ -3,6 +3,7 @@ package com.github.kpavlov.jreactive8583.netty.pipeline;
 import com.github.kpavlov.jreactive8583.iso.ISO8583Version;
 import com.github.kpavlov.jreactive8583.iso.J8583MessageFactory;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageOrigin;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.IsoValue;
@@ -34,7 +35,7 @@ public class ParseExceptionHandlerTest {
 
     @BeforeAll
     public static void beforeClass() {
-        messageFactory = new J8583MessageFactory<>(ISO8583Version.V1993);
+        messageFactory = new J8583MessageFactory<>(ISO8583Version.V1993, MessageOrigin.ACQUIRER);
     }
 
     @BeforeEach

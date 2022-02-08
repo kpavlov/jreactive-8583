@@ -5,6 +5,7 @@ import com.github.kpavlov.jreactive8583.client.Iso8583Client;
 import com.github.kpavlov.jreactive8583.iso.ISO8583Version;
 import com.github.kpavlov.jreactive8583.iso.J8583MessageFactory;
 import com.github.kpavlov.jreactive8583.iso.MessageFactory;
+import com.github.kpavlov.jreactive8583.iso.MessageOrigin;
 import com.solab.iso8583.IsoMessage;
 import com.solab.iso8583.impl.SimpleTraceGenerator;
 import com.solab.iso8583.parse.ConfigParser;
@@ -52,8 +53,9 @@ public class Iso8583ClientConfig {
         messageFactory.setCharacterEncoding(StandardCharsets.US_ASCII.name());
         messageFactory.setUseBinaryMessages(false);
         messageFactory.setAssignDate(true);
-        messageFactory.setTraceNumberGenerator(new SimpleTraceGenerator((int) (System
-                .currentTimeMillis() % 1000000)));
-        return new J8583MessageFactory<>(messageFactory, ISO8583Version.V1987);
+        messageFactory.setTraceNumberGenerator(
+            new SimpleTraceGenerator((int) (System.currentTimeMillis() % 1000000))
+        );
+        return new J8583MessageFactory<>(messageFactory, ISO8583Version.V1987, MessageOrigin.OTHER);
     }
 }

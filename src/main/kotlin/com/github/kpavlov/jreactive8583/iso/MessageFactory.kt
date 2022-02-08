@@ -6,12 +6,21 @@ import java.io.UnsupportedEncodingException
 import java.text.ParseException
 
 public interface MessageFactory<T> {
+
     public fun newMessage(type: Int): T
 
     public fun newMessage(
         messageClass: MessageClass,
         messageFunction: MessageFunction,
         messageOrigin: MessageOrigin
+    ): T
+
+    /**
+     * Creates a new message with a default message origin (i.e. role)
+     */
+    public fun newMessage(
+        messageClass: MessageClass,
+        messageFunction: MessageFunction
     ): T
 
     public fun createResponse(requestMessage: T): T
