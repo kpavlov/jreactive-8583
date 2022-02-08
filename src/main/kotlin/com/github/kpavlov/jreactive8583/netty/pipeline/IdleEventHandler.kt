@@ -17,8 +17,8 @@ internal class IdleEventHandler<T>(
 ) : ChannelInboundHandlerAdapter() {
 
     override fun userEventTriggered(ctx: ChannelHandlerContext, evt: Any) {
-        if (evt is IdleStateEvent
-            && (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE)
+        if (evt is IdleStateEvent &&
+            (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE)
         ) {
             val heartbeatMessage = createHeartbeatMessage()
             ctx.write(heartbeatMessage)
