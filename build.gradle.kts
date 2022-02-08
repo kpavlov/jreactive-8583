@@ -4,7 +4,7 @@ plugins {
     `java-library`
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.dokka") version "1.6.10"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     signing
     `maven-publish`
 
@@ -22,16 +22,16 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("net.sf.j8583:j8583:1.17.0")
     implementation("io.netty:netty-handler:4.1.73.Final")
-    implementation("org.slf4j:slf4j-api:1.7.33")
+    implementation("org.slf4j:slf4j-api:1.7.35")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.3.1")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
     testImplementation("org.assertj:assertj-core:3.22.0")
     testImplementation("org.springframework:spring-context:5.3.15")
     testImplementation("org.springframework:spring-test:5.3.15")
-    testImplementation("org.slf4j:slf4j-simple:1.7.32")
+    testImplementation("org.slf4j:slf4j-simple:1.7.35")
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.awaitility:awaitility:4.1.1")
     testImplementation(kotlin("test-junit5"))
