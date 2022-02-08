@@ -63,7 +63,7 @@ Now you may use ISO8583 client or server in your code.
 The minimal client workflow includes:
 
 ~~~java
-var messageFactory = new J8583MessageFactory<>();// [1]
+var messageFactory = new J8583MessageFactory<>(ISO8583Version.V1987, MessageOrigin.OTHER);// [1]
 Iso8583Client<IsoMessage> client = new Iso8583Client<>(messageFactory);// [2]
 
 client.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
@@ -88,12 +88,15 @@ if (client.isConnected()) { // [7]
 client.shutdown();// [11]
 ~~~
 
-1. First you need to create a `MessageFactory`
-2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and, optionally, `SocketAddress`
+1. First you need to create a `MessageFactory`. You MUST specify a role of your client for
+   originated messages, e.g. `ACQUIRER`, `ISSUER` or `OTHER`.
+2. Then you create a [`Iso8583Client`][Iso8583Client] providing `MessageFactory` and,
+   optionally, `SocketAddress`
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
 4. Configure the client. You may omit this step if you're fine with default configuration.
 5. Initialize a client. Now it is ready to connect.
-6. Establish a connection. By default, if connection will is lost, it reconnects automatically. You may disable this behaviour or change _reconnectInterval_.
+6. Establish a connection. By default, if connection will is lost, it reconnects automatically. You
+   may disable this behaviour or change _reconnectInterval_.
 7. Verify that connection is established
 8. Send `IsoMessage` asynchronously
 9. Send `IsoMessage` synchronously
@@ -105,7 +108,7 @@ client.shutdown();// [11]
 Typical server workflow includes:
 
 ~~~java
-var messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987);// [1]
+var messageFactory = new J8583MessageFactory<>(ConfigParser.createDefault(), ISO8583Version.V1987, MessageOrigin.ACQUIRER);// [1]
 Iso8583Server<IsoMessage> server = new Iso8583Server<>(port, messageFactory);// [2]
 
 server.addMessageListener(new IsoMessageListener<IsoMessage>() { // [3]
@@ -123,7 +126,8 @@ if (server.isStarted()) { // [7]
 server.shutdown();// [8]
 ~~~
 
-1. First you need to create a `MessageFactory`
+1. First you need to create a `MessageFactory`. You MUST specify a role of your server for
+   originated messages, e.g. `ACQUIRER`, `ISSUER` or `OTHER`.
 2. Then you create a [`Iso8583Server`][Iso8583Server] providing `MessageFactory` and port to bind to
 3. Add one or more custom [`IsoMessageListener`][IsoMessageListener]s to handle `IsoMessage`s.
 4. Configure the server. You may omit this step if you're fine with default configuration.
