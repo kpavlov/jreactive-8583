@@ -6,9 +6,11 @@ set -e
 echo "Cleanup 🧹"
 rm -rf build
 
-echo "\nBuilding 📦"
+printf '\nBuilding 📦\n'
+
 #./gradlew build --scan
 ./gradlew $GRADLE_ARGS build
 
-echo "\nTesting 🧪"
+printf '\nTesting 🧪\n'
+
 ./gradlew $GRADLE_ARGS check --stacktrace
