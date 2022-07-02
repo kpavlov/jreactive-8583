@@ -2,9 +2,9 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.6.10"
-    id("org.jetbrains.dokka") version "1.6.10"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    kotlin("jvm") version "1.7.0"
+    id("org.jetbrains.dokka") version "1.7.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     signing
     `maven-publish`
 
@@ -50,7 +50,8 @@ java.targetCompatibility = JavaVersion.VERSION_11
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
+        apiVersion = "1.7"
         freeCompilerArgs = listOf(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
