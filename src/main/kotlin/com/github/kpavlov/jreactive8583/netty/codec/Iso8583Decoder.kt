@@ -23,7 +23,7 @@ internal class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMess
     public override fun decode(
         ctx: ChannelHandlerContext,
         byteBuf: ByteBuf,
-        out: MutableList<Any>,
+        out: MutableList<Any>
     ) {
         if (!byteBuf.isReadable) {
             return
