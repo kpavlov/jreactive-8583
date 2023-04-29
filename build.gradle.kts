@@ -18,12 +18,13 @@ repositories {
 }
 
 dependencies {
+    val assertjVersion = "3.24.2"
     val awitilityVersion = "4.2.0"
-    val junitJupiterVersion = "5.8.2"
-    val mockitoVersion = "4.3.1"
-    val nettyVersion = "4.1.78.Final"
-    val slf4jVersion = "1.7.36"
-    val springVersion = "5.3.21"
+    val junitJupiterVersion = "5.9.3"
+    val mockitoVersion = "5.3.1"
+    val nettyVersion = "4.1.92.Final"
+    val slf4jVersion = "2.0.7"
+    val springVersion = "5.3.27"
 
     api("com.google.code.findbugs:jsr305:3.0.2")
     api("io.netty:netty-handler:$nettyVersion")
@@ -33,7 +34,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.awaitility:awaitility-kotlin:$awitilityVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
@@ -62,7 +63,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         freeCompilerArgs = listOf(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
-            "-Xexplicit-api=strict",
+            "-Xexplicit-api=strict"
         )
     }
 }
@@ -73,7 +74,7 @@ tasks.test {
         events = setOf(
             TestLogEvent.PASSED,
             TestLogEvent.SKIPPED,
-            TestLogEvent.FAILED,
+            TestLogEvent.FAILED
         )
     }
 }
@@ -96,8 +97,8 @@ tasks.jar {
         attributes(
             mapOf(
                 "Implementation-Title" to project.name,
-                "Implementation-Version" to project.version,
-            ),
+                "Implementation-Version" to project.version
+            )
         )
     }
 }
