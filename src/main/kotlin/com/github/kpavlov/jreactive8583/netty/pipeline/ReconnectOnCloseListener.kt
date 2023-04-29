@@ -36,7 +36,8 @@ internal class ReconnectOnCloseListener(
             logger.trace("Failed to connect. Will try again in {} millis", reconnectInterval)
             executorService.schedule(
                 Callable { client.connectAsync() },
-                reconnectInterval.toLong(), TimeUnit.MILLISECONDS
+                reconnectInterval.toLong(),
+                TimeUnit.MILLISECONDS
             )
         }
     }

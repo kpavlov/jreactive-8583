@@ -35,7 +35,9 @@ internal open class ParseExceptionHandler(
 
     protected fun createErrorResponseMessage(cause: ParseException): IsoMessage {
         val message = isoMessageFactory.newMessage(
-            MessageClass.ADMINISTRATIVE, MessageFunction.NOTIFICATION, MessageOrigin.OTHER
+            MessageClass.ADMINISTRATIVE,
+            MessageFunction.NOTIFICATION,
+            MessageOrigin.OTHER
         )
         // 650 (Unable to parse message)
         message.setValue(24, 650, IsoType.NUMERIC, 3)
