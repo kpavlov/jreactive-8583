@@ -62,7 +62,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         freeCompilerArgs = listOf(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
-            "-Xexplicit-api=strict"
+            "-Xexplicit-api=strict",
         )
     }
 }
@@ -71,7 +71,9 @@ tasks.test {
     useJUnitPlatform()
     testLogging {
         events = setOf(
-            TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
+            TestLogEvent.PASSED,
+            TestLogEvent.SKIPPED,
+            TestLogEvent.FAILED,
         )
     }
 }
@@ -94,8 +96,8 @@ tasks.jar {
         attributes(
             mapOf(
                 "Implementation-Title" to project.name,
-                "Implementation-Version" to project.version
-            )
+                "Implementation-Version" to project.version,
+            ),
         )
     }
 }
