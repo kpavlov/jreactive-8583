@@ -69,7 +69,8 @@ internal constructor(
             ChannelOption.TCP_NODELAY,
             parseBoolean(
                 System.getProperty(
-                    "nfs.rpc.tcp.nodelay", "true"
+                    "nfs.rpc.tcp.nodelay",
+                    "true"
                 )
             )
         )

@@ -10,5 +10,5 @@ source build.sh
 echo "Publishing 📢"
 
 ## https://github.com/gradle-nexus/publish-plugin/
-./gradlew $GRADLE_ARGS publishToSonatype
+./gradlew "$GRADLE_ARGS" publishToSonatype
 #./gradlew $GRADLE_ARGS publishToSonatype closeAndReleaseSonatypeStagingRepository

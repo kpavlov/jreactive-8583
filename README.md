@@ -40,9 +40,9 @@ Usually, N==2.
 The header contains the length of the following message.
 The high byte of value is transmitted first, and the low byte of value is transmitted second.
 
-| N bytes            | M bytes            |
-| ------------------ | ------------------ |
-| Message Length = M | ISO–8583 Message   |
+| N bytes            | M bytes          |
+|--------------------|------------------|
+| Message Length = M | ISO–8583 Message |
 
 # Getting Started
 
@@ -134,7 +134,7 @@ server.shutdown();// [8]
 5. Initialize a server. Now it is ready to start.
 6. Start server. Now it is ready to accept client connections.
 7. Verify that the server is started
-9. Shutdown server when you're done.
+8. Shutdown server when you're done.
 
 ## Logging
 

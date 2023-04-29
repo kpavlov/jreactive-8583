@@ -2,14 +2,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.7.0"
-    id("org.jetbrains.dokka") version "1.7.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    kotlin("jvm") version "1.8.20"
+    id("org.jetbrains.dokka") version "1.8.10"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
     signing
     `maven-publish`
 
     // https://github.com/gradle-nexus/publish-plugin
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 repositories {
@@ -18,12 +18,13 @@ repositories {
 }
 
 dependencies {
+    val assertjVersion = "3.24.2"
     val awitilityVersion = "4.2.0"
-    val junitJupiterVersion = "5.8.2"
-    val mockitoVersion = "4.3.1"
-    val nettyVersion = "4.1.78.Final"
-    val slf4jVersion = "1.7.36"
-    val springVersion = "5.3.21"
+    val junitJupiterVersion = "5.9.3"
+    val mockitoVersion = "5.3.1"
+    val nettyVersion = "4.1.92.Final"
+    val slf4jVersion = "2.0.7"
+    val springVersion = "5.3.27"
 
     api("com.google.code.findbugs:jsr305:3.0.2")
     api("io.netty:netty-handler:$nettyVersion")
@@ -33,7 +34,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.awaitility:awaitility-kotlin:$awitilityVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
@@ -46,8 +47,11 @@ dependencies {
 }
 
 group = "com.github.kpavlov.jreactive8583"
-version = if (findProperty("version") != "unspecified") findProperty("version")
-else "0.0.1-SNAPSHOT"
+version = if (findProperty("version") != "unspecified") {
+    findProperty("version")
+} else {
+    "0.0.1-SNAPSHOT"
+}
 description = "ISO8583 Connector for Netty"
 java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
@@ -68,7 +72,9 @@ tasks.test {
     useJUnitPlatform()
     testLogging {
         events = setOf(
-            TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
+            TestLogEvent.PASSED,
+            TestLogEvent.SKIPPED,
+            TestLogEvent.FAILED
         )
     }
 }

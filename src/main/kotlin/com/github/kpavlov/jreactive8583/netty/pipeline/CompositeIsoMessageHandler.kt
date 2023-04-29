@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandler.Sharable
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import org.slf4j.LoggerFactory
+import java.util.Locale
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -27,7 +28,8 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         } catch (e: ClassCastException) {
             logger.debug(
                 "IsoMessage subclass {} is not supported by {}. Doing nothing.",
-                msg.javaClass, javaClass
+                msg.javaClass,
+                javaClass
             )
             return
         }
@@ -42,7 +44,9 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         while (applyNextListener && i < size) {
             val messageListener = messageListeners[i]
             applyNextListener = handleWithMessageListener(
-                messageListener, isoMessage, ctx
+                messageListener,
+                isoMessage,
+                ctx
             )
             if (!applyNextListener) {
                 logger.trace(
@@ -64,7 +68,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
             if (messageListener.applies(isoMessage)) {
                 logger.debug(
                     "Handling IsoMessage[@type=0x{}] with {}",
-                    String.format("%04X", isoMessage.type),
+                    String.format(Locale.ENGLISH, "%04X", isoMessage.type),
                     messageListener
                 )
                 return messageListener.onMessage(ctx, isoMessage)
@@ -72,7 +76,9 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         } catch (e: Exception) {
             logger.debug(
                 "Can't evaluate {}.apply({})",
-                messageListener, isoMessage.javaClass, e
+                messageListener,
+                isoMessage.javaClass,
+                e
             )
             if (failOnError) {
                 throw e
