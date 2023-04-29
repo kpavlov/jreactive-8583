@@ -9,8 +9,8 @@ rm -rf build
 printf '\nBuilding 📦\n'
 
 #./gradlew build --scan
-./gradlew $GRADLE_ARGS build
+./gradlew "$GRADLE_ARGS" build
 
 printf '\nTesting 🧪\n'
 
-./gradlew $GRADLE_ARGS check --stacktrace
+./gradlew "$GRADLE_ARGS" check --stacktrace
