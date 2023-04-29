@@ -68,7 +68,8 @@ public class ParseExceptionHandlerTest {
         assertThat(field44.getType()).as("field44.type").isEqualTo(IsoType.LLVAR);
         assertThat(field44.getLength()).as("field44.length").isEqualTo(25);
         assertThat(field44.getValue()).as("field44.value")
-                .isEqualToComparingFieldByField(errorMessage.substring(0, 22) + "...");
+            .usingRecursiveComparison()
+                .isEqualTo(errorMessage.substring(0, 22) + "...");
 
     }
 }
