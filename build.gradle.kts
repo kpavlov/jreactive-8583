@@ -2,14 +2,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.7.0"
-    id("org.jetbrains.dokka") version "1.7.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    kotlin("jvm") version "1.8.20"
+    id("org.jetbrains.dokka") version "1.8.10"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
     signing
     `maven-publish`
 
     // https://github.com/gradle-nexus/publish-plugin
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 repositories {
