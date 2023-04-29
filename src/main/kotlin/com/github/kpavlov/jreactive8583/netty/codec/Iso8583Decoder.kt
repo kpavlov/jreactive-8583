@@ -7,7 +7,6 @@ import com.solab.iso8583.IsoMessage
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import java.text.ParseException
 
 internal class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMessage>) :
     ByteToMessageDecoder() {
@@ -24,7 +23,7 @@ internal class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMess
     public override fun decode(
         ctx: ChannelHandlerContext,
         byteBuf: ByteBuf,
-        out: MutableList<Any>
+        out: MutableList<Any>,
     ) {
         if (!byteBuf.isReadable) {
             return
@@ -32,10 +31,6 @@ internal class Iso8583Decoder(private val messageFactory: MessageFactory<IsoMess
         val bytes = ByteArray(byteBuf.readableBytes())
         byteBuf.readBytes(bytes)
         val isoMessage = messageFactory.parseMessage(bytes, 0)
-        if (isoMessage != null) {
-            out.add(isoMessage)
-        } else {
-            throw ParseException("Can't parse ISO8583 message", 0)
-        }
+        out.add(isoMessage)
     }
 }
