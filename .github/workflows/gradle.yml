@@ -35,7 +35,7 @@ jobs:
     - name: Checkout LFS objects
       run: git lfs checkout
     - name: Set up JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: ${{ matrix.java }}
         distribution: 'zulu'
@@ -48,8 +48,8 @@ jobs:
         gradle-version: wrapper
         arguments: check build --stacktrace
     - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v3
-      if: always()
+      uses: mikepenz/action-junit-report@v4
+      if: success() || failure()
       with:
         report_paths: '**/build/test-results/test/TEST-*.xml'
 
