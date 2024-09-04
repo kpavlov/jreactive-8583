@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
 
     // https://github.com/gradle-nexus/publish-plugin
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 repositories {
