@@ -33,7 +33,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     testImplementation("net.jcip:jcip-annotations:1.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
-    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.assertj:assertj-core:3.26.3")
     testImplementation("org.awaitility:awaitility-kotlin:$awitilityVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
