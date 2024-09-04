@@ -47,11 +47,13 @@ dependencies {
 }
 
 group = "com.github.kpavlov.jreactive8583"
+
 version = if (findProperty("version") != "unspecified") {
     findProperty("version")
 } else {
     "0.0.1-SNAPSHOT"
 }
+
 description = "ISO8583 Connector for Netty"
 java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
