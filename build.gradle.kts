@@ -23,7 +23,7 @@ dependencies {
     val mockitoVersion = "4.3.1"
     val nettyVersion = "4.1.78.Final"
     val slf4jVersion = "1.7.36"
-    val springVersion = "5.3.21"
+    val springVersion = "5.3.39"
 
     api("com.google.code.findbugs:jsr305:3.0.2")
     api("io.netty:netty-handler:$nettyVersion")
