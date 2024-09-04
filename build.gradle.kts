@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     val awitilityVersion = "4.2.0"
-    val junitJupiterVersion = "5.8.2"
+    val junitJupiterVersion = "5.11.0"
     val mockitoVersion = "4.3.1"
     val nettyVersion = "4.1.78.Final"
     val slf4jVersion = "1.7.36"
