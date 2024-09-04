@@ -27,7 +27,7 @@ dependencies {
 
     api("com.google.code.findbugs:jsr305:3.0.2")
     api("io.netty:netty-handler:$nettyVersion")
-    api("net.sf.j8583:j8583:1.17.0")
+    api("net.sf.j8583:j8583:1.18.0")
     api("org.slf4j:slf4j-api:$slf4jVersion")
     api(kotlin("stdlib-jdk8"))
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
