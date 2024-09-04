@@ -21,7 +21,7 @@ dependencies {
     val awitilityVersion = "4.2.0"
     val junitJupiterVersion = "5.8.2"
     val mockitoVersion = "4.3.1"
-    val nettyVersion = "4.1.78.Final"
+    val nettyVersion = "4.1.113.Final"
     val slf4jVersion = "1.7.36"
     val springVersion = "5.3.21"
 
