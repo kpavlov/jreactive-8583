@@ -23,7 +23,10 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '11', '17', '21' ]
+        java: 
+          - '11'
+          - '17'
+          # - '21' temporary disabled
 
     name: Build under JDK ${{ matrix.Java }}
 
