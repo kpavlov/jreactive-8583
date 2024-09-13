@@ -93,7 +93,8 @@ internal class IsoMessageLoggingHandler(
         if (printSensitiveData) {
             sb.append("Message: ").append(m.debugString()).append("\n")
         }
-        sb.append("MTI: 0x").append(String.format("%04x", m.type))
+        sb.append("MTI: 0x").append("%04x".format(m.type))
+        @Suppress("MagicNumber")
         for (i in 2..127) {
             if (m.hasField(i)) {
                 val field = m.getField<Any>(i)
@@ -124,6 +125,7 @@ internal class IsoMessageLoggingHandler(
 
     private fun maskPAN(fullPan: String): CharArray {
         val maskedPan = fullPan.toCharArray()
+        @Suppress("MagicNumber")
         for (i in 6 until maskedPan.size - 4) {
             maskedPan[i] = MASK_CHAR
         }

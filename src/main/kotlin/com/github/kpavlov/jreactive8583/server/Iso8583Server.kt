@@ -36,6 +36,7 @@ public open class Iso8583Server<T : IsoMessage>(
         val bootstrap = ServerBootstrap()
         val tcpNoDelay =
             java.lang.Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"))
+        @Suppress("UNCHECKED_CAST")
         bootstrap.group(bossEventLoopGroup, workerEventLoopGroup)
             .channel(NioServerSocketChannel::class.java)
             .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
@@ -77,10 +78,12 @@ public open class Iso8583Server<T : IsoMessage>(
         }
         logger.info("Stopping the Server...")
         with(channel) {
+            @Suppress("TooGenericExceptionCaught")
             try {
                 deregister()
                 close().syncUninterruptibly()
                 logger.info("Server was Stopped.")
+
             } catch (e: Exception) {
                 logger.error("Error while stopping the server", e)
             }

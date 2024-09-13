@@ -1,48 +1,42 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.platform.jvm.JvmPlatform
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.7.0"
-    id("org.jetbrains.dokka") version "1.7.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
     signing
     `maven-publish`
 
     // https://github.com/gradle-nexus/publish-plugin
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    alias(libs.plugins.nexusPublish)
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    val awitilityVersion = "4.2.0"
-    val junitJupiterVersion = "5.8.2"
-    val mockitoVersion = "4.3.1"
-    val nettyVersion = "4.1.78.Final"
-    val slf4jVersion = "1.7.36"
-    val springVersion = "5.3.21"
-
-    api("com.google.code.findbugs:jsr305:3.0.2")
-    api("io.netty:netty-handler:$nettyVersion")
-    api("net.sf.j8583:j8583:1.17.0")
-    api("org.slf4j:slf4j-api:$slf4jVersion")
+    api(libs.findbugs)
+    api(libs.netty)
+    api(libs.j8583)
+    api(libs.slf4j.api)
     api(kotlin("stdlib-jdk8"))
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    testImplementation("net.jcip:jcip-annotations:1.0")
-    testImplementation("org.apache.commons:commons-lang3:3.12.0")
-    testImplementation("org.assertj:assertj-core:3.22.0")
-    testImplementation("org.awaitility:awaitility-kotlin:$awitilityVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
-    testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
-    testImplementation("org.springframework:spring-context")
-    testImplementation("org.springframework:spring-test")
+
+    testImplementation(libs.jcip)
+    testImplementation(libs.commons.lang3)
+    testImplementation(libs.assertj)
+    testImplementation(libs.awaitility)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.mockito)
+    testImplementation(libs.slf4j.simple)
+    testImplementation(platform(libs.spring.bom))
+    testImplementation(libs.spring.context)
+    testImplementation(libs.spring.test)
     testImplementation(kotlin("test-junit5"))
-    testImplementation(platform("org.springframework:spring-framework-bom:$springVersion"))
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 group = "com.github.kpavlov.jreactive8583"
@@ -54,17 +48,20 @@ version = (
     }
     )
 description = "ISO8583 Connector for Netty"
-java.sourceCompatibility = JavaVersion.VERSION_11
-java.targetCompatibility = JavaVersion.VERSION_11
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
-        apiVersion = "1.7"
-        freeCompilerArgs = listOf(
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+        progressiveMode = true
+        freeCompilerArgs.addAll(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
-            "-Xexplicit-api=strict"
+            "-Xexplicit-api=strict",
         )
     }
 }

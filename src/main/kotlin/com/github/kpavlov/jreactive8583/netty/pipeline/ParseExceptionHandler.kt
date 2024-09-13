@@ -17,10 +17,11 @@ import java.text.ParseException
  * @see [StackOverflow: How to answer an invalid ISO8583 message](http://stackoverflow.com/questions/28275677/how-to-answer-an-invalid-iso8583-message)
  */
 @Sharable
-internal open class ParseExceptionHandler(
+public open class ParseExceptionHandler(
     private val isoMessageFactory: MessageFactory<IsoMessage>,
     private val includeErrorDetails: Boolean
 ) : ChannelInboundHandlerAdapter() {
+    @Deprecated("Deprecated in Java")
     @Throws(Exception::class)
     override fun exceptionCaught(
         ctx: ChannelHandlerContext,
@@ -33,6 +34,7 @@ internal open class ParseExceptionHandler(
         ctx.fireExceptionCaught(cause)
     }
 
+    @Suppress("MagicNumber")
     protected fun createErrorResponseMessage(cause: ParseException): IsoMessage {
         val message = isoMessageFactory.newMessage(
             MessageClass.ADMINISTRATIVE, MessageFunction.NOTIFICATION, MessageOrigin.OTHER
@@ -42,7 +44,7 @@ internal open class ParseExceptionHandler(
         if (includeErrorDetails) {
             var details = cause.message
             if (details!!.length > 25) {
-                details = details.substring(0, 22) + "..."
+                details = details.take(22) + "..."
             }
             message.setValue(44, details, IsoType.LLVAR, 25)
         }
