@@ -2,6 +2,8 @@
 
 Free ISO8583 Connector for JDK (Netty)
 
+[![Buy me a Coffee](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://buymeacoffee.com/mailsk)
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.kpavlov.jreactive8583/netty-iso8583.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.kpavlov.jreactive8583%22%20AND%20a:%22netty-iso8583%22)
 [![Build Status](https://github.com/kpavlov/jreactive-8583/actions/workflows/gradle.yml/badge.svg)](https://github.com/kpavlov/jreactive-8583/actions/workflows/gradle.yml)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
