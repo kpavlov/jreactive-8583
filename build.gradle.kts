@@ -76,17 +76,14 @@ tasks.test {
     }
 }
 
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
-
-val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
+val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+    dependsOn(tasks.dokkaJavadoc)
+    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
-    from(dokkaHtml.outputDirectory)
 }
 
 java {
     withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.jar {
@@ -101,7 +98,7 @@ tasks.jar {
 }
 
 tasks.assemble {
-    dependsOn(javadocJar)
+    dependsOn(dokkaJavadocJar)
 }
 
 publishing {
@@ -122,8 +119,8 @@ publishing {
                 developer {
                     id.set("kpavlov")
                     name.set("Konstantin Pavlov")
-                    email.set("mail@KonstantinPavlov.net")
-                    url.set("https://KonstantinPavlov.net?utm_source=jreactive8583")
+                    email.set("mail@kpavlov.me")
+                    url.set("https://kpavlov.me?utm_source=jreactive8583")
                     roles.set(listOf("owner", "developer"))
                 }
             }
@@ -136,6 +133,7 @@ publishing {
             inceptionYear.set("2015")
         }
         from(components["java"])
+        artifact(dokkaJavadocJar)
     }
 
     repositories {
