@@ -3,7 +3,7 @@
 # exit when any command fails
 set -e
 
-GRADLE_ARGS="-Pversion=1.5.0"
+GRADLE_ARGS="-Pversion=1.5.1"
 
 source build.sh
 
