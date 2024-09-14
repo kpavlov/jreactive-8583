@@ -341,8 +341,6 @@ ij_kotlin_wrap_elvis_expressions = 1
 ij_kotlin_wrap_expression_body_functions = 1
 ij_kotlin_wrap_first_method_in_call_chain = false
 
-[{*.json, *.yml}]
+[*.{json,yml,yaml}]
 indent_size = 2
-
-[pom.xml]
-max_line_length = 120
+tab_width = 2
