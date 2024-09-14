@@ -15,19 +15,19 @@ public open class ClientConfiguration(
      */
     internal val reconnectInterval: Int = builder.reconnectInterval
 
-    internal companion object {
+    public companion object {
 
         /**
          * Default client reconnect interval in milliseconds.
          */
-        const val DEFAULT_RECONNECT_INTERVAL = 100
+        public const val DEFAULT_RECONNECT_INTERVAL: Int = 100
 
         @JvmStatic
-        fun newBuilder(): Builder = Builder()
+        public fun newBuilder(): Builder = Builder()
 
         @Suppress("unused")
         @JvmStatic
-        fun getDefault(): ClientConfiguration = newBuilder().build()
+        public fun getDefault(): ClientConfiguration = newBuilder().build()
     }
 
     @Suppress("unused")

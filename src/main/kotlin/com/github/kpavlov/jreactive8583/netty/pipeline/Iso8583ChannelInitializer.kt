@@ -42,6 +42,7 @@ internal constructor(
     vararg customChannelHandlers: ChannelHandler
 ) : ChannelInitializer<T>() {
 
+    @Suppress("SpreadOperator")
     private val customChannelHandlers = arrayOf(*customChannelHandlers)
     private val isoMessageEncoder = createIso8583Encoder(configuration)
     private val loggingHandler = createLoggingHandler(configuration)
@@ -69,6 +70,7 @@ internal constructor(
             )
             pipeline.addLast(workerGroup, "idleEventHandler", IdleEventHandler(isoMessageFactory))
         }
+        @Suppress("SpreadOperator")
         pipeline.addLast(workerGroup, *customChannelHandlers)
         configurer?.configurePipeline(pipeline, configuration)
     }

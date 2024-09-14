@@ -27,7 +27,8 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         } catch (e: ClassCastException) {
             logger.debug(
                 "IsoMessage subclass {} is not supported by {}. Doing nothing.",
-                msg.javaClass, javaClass
+                msg.javaClass, javaClass,
+                e
             )
             return
         }
@@ -55,6 +56,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun handleWithMessageListener(
         messageListener: IsoMessageListener<T>,
         isoMessage: T,
@@ -64,7 +66,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
             if (messageListener.applies(isoMessage)) {
                 logger.debug(
                     "Handling IsoMessage[@type=0x{}] with {}",
-                    String.format("%04X", isoMessage.type),
+                    "%04X".format(isoMessage.type),
                     messageListener
                 )
                 return messageListener.onMessage(ctx, isoMessage)

@@ -193,7 +193,7 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
         this.workerThreadsCount = b.workerThreadsCount
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "TooManyFunctions")
     public open class Builder<B : Builder<B>> {
         internal var addLoggingHandler = false
         internal var addEchoMessageListener = false
