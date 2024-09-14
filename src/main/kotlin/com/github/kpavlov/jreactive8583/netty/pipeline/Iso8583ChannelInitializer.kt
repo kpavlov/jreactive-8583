@@ -34,7 +34,7 @@ import io.netty.handler.timeout.IdleStateHandler
 public open class Iso8583ChannelInitializer<T : Channel,
     B : AbstractBootstrap<*, *>,
     C : ConnectorConfiguration>
-internal constructor(
+public constructor(
     private val configuration: C,
     private val configurer: ConnectorConfigurer<C, B>?,
     private val workerGroup: EventLoopGroup,
@@ -79,22 +79,22 @@ internal constructor(
         return isoMessageFactory
     }
 
-    private fun createParseExceptionHandler(): ChannelHandler {
+    protected fun createParseExceptionHandler(): ChannelHandler {
         return ParseExceptionHandler(isoMessageFactory, true)
     }
 
-    private fun createIso8583Encoder(configuration: C): Iso8583Encoder {
+    protected fun createIso8583Encoder(configuration: C): Iso8583Encoder {
         return Iso8583Encoder(
             configuration.frameLengthFieldLength,
             configuration.encodeFrameLengthAsString()
         )
     }
 
-    private fun createIso8583Decoder(messageFactory: MessageFactory<IsoMessage>): Iso8583Decoder {
+    protected fun createIso8583Decoder(messageFactory: MessageFactory<IsoMessage>): Iso8583Decoder {
         return Iso8583Decoder(messageFactory)
     }
 
-    private fun createLoggingHandler(configuration: C): ChannelHandler {
+    protected fun createLoggingHandler(configuration: C): ChannelHandler {
         return IsoMessageLoggingHandler(
             LogLevel.DEBUG,
             configuration.logSensitiveData(),

@@ -89,7 +89,7 @@ public open class Iso8583Client<T : IsoMessage>(
         return connectFuture
     }
 
-    override fun createBootstrap(): Bootstrap {
+    public override fun createBootstrap(): Bootstrap {
         val b = Bootstrap()
         b.group(bossEventLoopGroup)
             .channel(NioSocketChannel::class.java)

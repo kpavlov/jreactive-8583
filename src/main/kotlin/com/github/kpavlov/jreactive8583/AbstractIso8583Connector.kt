@@ -20,15 +20,14 @@ public abstract class AbstractIso8583Connector<
     C : ConnectorConfiguration,
     B : AbstractBootstrap<B, *>,
     M : IsoMessage>
-internal constructor(
+protected constructor(
     configuration: C,
     isoMessageFactory: MessageFactory<M>,
-    messageHandler: CompositeIsoMessageHandler<M> = CompositeIsoMessageHandler()
+    protected val messageHandler: CompositeIsoMessageHandler<M> = CompositeIsoMessageHandler()
 ) {
 
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    internal val messageHandler: CompositeIsoMessageHandler<M>
     public val isoMessageFactory: MessageFactory<M> = isoMessageFactory
     private val channelRef = AtomicReference<Channel>()
     protected val configuration: C = configuration
@@ -98,9 +97,7 @@ internal constructor(
             channelRef.set(channel)
         }
 
-    // @VisibleForTest
     init {
-        this.messageHandler = messageHandler
         if (configuration.shouldAddEchoMessageListener()) {
             messageHandler.addListener(EchoMessageListener(isoMessageFactory))
         }

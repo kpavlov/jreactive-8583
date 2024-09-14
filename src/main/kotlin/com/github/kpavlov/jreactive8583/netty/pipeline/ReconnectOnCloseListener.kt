@@ -9,29 +9,30 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal class ReconnectOnCloseListener(
+public open class ReconnectOnCloseListener(
     private val client: Iso8583Client<*>,
     private val reconnectInterval: Int,
     private val executorService: ScheduledExecutorService
 ) : ChannelFutureListener {
     private val logger = LoggerFactory.getLogger(ReconnectOnCloseListener::class.java)
     private val disconnectRequested = AtomicBoolean(false)
-    fun requestReconnect() {
+
+    public fun requestReconnect() {
         disconnectRequested.set(false)
     }
 
-    fun requestDisconnect() {
+    public fun requestDisconnect() {
         disconnectRequested.set(true)
     }
 
-    override fun operationComplete(future: ChannelFuture) {
+    public override fun operationComplete(future: ChannelFuture) {
         val channel = future.channel()
         logger.debug("Client connection was closed to {}", channel.remoteAddress())
         channel.disconnect()
         scheduleReconnect()
     }
 
-    fun scheduleReconnect() {
+    public fun scheduleReconnect() {
         if (!disconnectRequested.get()) {
             logger.trace("Failed to connect. Will try again in {} millis", reconnectInterval)
             executorService.schedule(
