@@ -13,7 +13,7 @@ public open class ClientConfiguration(
      *
      * @return interval between reconnects, in milliseconds.
      */
-    internal val reconnectInterval: Int = builder.reconnectInterval
+    public val reconnectInterval: Int = builder.reconnectInterval
 
     public companion object {
 

@@ -12,11 +12,11 @@ import io.netty.handler.timeout.IdleStateEvent
  * IdleEventHandler sends heartbeats (administrative messages) when channel becomes idle,
  * i.e. `IdleStateEvent` is received.
  */
-internal class IdleEventHandler<T>(
+public open class IdleEventHandler<T>(
     private val isoMessageFactory: MessageFactory<T>
 ) : ChannelInboundHandlerAdapter() {
 
-    override fun userEventTriggered(ctx: ChannelHandlerContext, evt: Any) {
+    public override fun userEventTriggered(ctx: ChannelHandlerContext, evt: Any) {
         if (evt is IdleStateEvent &&
             (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE)
         ) {
@@ -26,7 +26,7 @@ internal class IdleEventHandler<T>(
         }
     }
 
-    private fun createHeartbeatMessage(): T {
+    protected fun createHeartbeatMessage(): T {
         return isoMessageFactory.newMessage(
             MessageClass.NETWORK_MANAGEMENT,
             MessageFunction.REQUEST

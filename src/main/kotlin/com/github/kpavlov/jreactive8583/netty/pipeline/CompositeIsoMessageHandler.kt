@@ -8,11 +8,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter
 import org.slf4j.LoggerFactory
 import java.util.concurrent.CopyOnWriteArrayList
 
-/**
- * Handles [IsoMessage] s with chain of [IsoMessageListener]s.
- */
+/** Handles [IsoMessage] s with chain of [IsoMessageListener]s. */
 @Sharable
-internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
+public open class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads constructor(
     private val failOnError: Boolean = true
 ) : ChannelInboundHandlerAdapter() {
 
@@ -21,7 +19,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
     private val messageListeners: MutableList<IsoMessageListener<T>> = CopyOnWriteArrayList()
 
     @Throws(Exception::class)
-    override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
+    public override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
         val isoMessage = try {
             msg as? T
         } catch (e: ClassCastException) {
@@ -36,7 +34,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         super.channelRead(ctx, msg)
     }
 
-    private fun doHandleMessage(ctx: ChannelHandlerContext, isoMessage: T) {
+    protected fun doHandleMessage(ctx: ChannelHandlerContext, isoMessage: T) {
         var applyNextListener = true
         val size = messageListeners.size
         var i = 0
@@ -57,7 +55,7 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun handleWithMessageListener(
+    protected fun handleWithMessageListener(
         messageListener: IsoMessageListener<T>,
         isoMessage: T,
         ctx: ChannelHandlerContext
@@ -83,18 +81,18 @@ internal class CompositeIsoMessageHandler<T : IsoMessage> @JvmOverloads construc
         return true
     }
 
-    fun addListener(listener: IsoMessageListener<T>) {
+    public fun addListener(listener: IsoMessageListener<T>) {
         messageListeners.add(listener)
     }
 
     @SafeVarargs
-    fun addListeners(vararg listeners: IsoMessageListener<T>) {
+    public fun addListeners(vararg listeners: IsoMessageListener<T>) {
         for (listener in listeners) {
             addListener(listener)
         }
     }
 
-    fun removeListener(listener: IsoMessageListener<T>) {
+    public fun removeListener(listener: IsoMessageListener<T>) {
         messageListeners.remove(listener)
     }
 }

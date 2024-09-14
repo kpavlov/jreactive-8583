@@ -32,7 +32,7 @@ public open class Iso8583Server<T : IsoMessage>(
         ).sync().await()
     }
 
-    override fun createBootstrap(): ServerBootstrap {
+    public override fun createBootstrap(): ServerBootstrap {
         val bootstrap = ServerBootstrap()
         val tcpNoDelay =
             java.lang.Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"))
@@ -56,7 +56,7 @@ public open class Iso8583Server<T : IsoMessage>(
         return bootstrap
     }
 
-    override fun shutdown() {
+    public override fun shutdown() {
         stop()
         super.shutdown()
     }

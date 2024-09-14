@@ -18,20 +18,20 @@ import java.lang.Integer.parseInt
  * sensitive cardholder data will be printed masked.
  */
 @Sharable
-internal class IsoMessageLoggingHandler(
+public open class IsoMessageLoggingHandler(
     level: LogLevel,
     private val printSensitiveData: Boolean,
     private val printFieldDescriptions: Boolean,
     private val maskedFields: IntArray = DEFAULT_MASKED_FIELDS
 ) : LoggingHandler(level) {
 
-    companion object {
+    public companion object {
 
         private const val MASK_CHAR = '*'
         private val MASKED_VALUE = "***".toCharArray()
 
         @JvmField
-        val DEFAULT_MASKED_FIELDS = intArrayOf(
+        public val DEFAULT_MASKED_FIELDS: IntArray = intArrayOf(
             34, // PAN extended
             35, // track 2
             36, // track 3
@@ -88,7 +88,7 @@ internal class IsoMessageLoggingHandler(
         }
     }
 
-    private fun formatIsoMessage(m: IsoMessage): String {
+    protected fun formatIsoMessage(m: IsoMessage): String {
         val sb = StringBuilder()
         if (printSensitiveData) {
             sb.append("Message: ").append(m.debugString()).append("\n")
@@ -111,7 +111,7 @@ internal class IsoMessageLoggingHandler(
         return sb.toString()
     }
 
-    private fun getFormattedValue(field: IsoValue<Any>, i: Int): CharArray {
+    protected fun getFormattedValue(field: IsoValue<Any>, i: Int): CharArray {
         return if (printSensitiveData) {
             field.toString().toCharArray()
         } else {
@@ -123,7 +123,7 @@ internal class IsoMessageLoggingHandler(
         }
     }
 
-    private fun maskPAN(fullPan: String): CharArray {
+    protected fun maskPAN(fullPan: String): CharArray {
         val maskedPan = fullPan.toCharArray()
         @Suppress("MagicNumber")
         for (i in 6 until maskedPan.size - 4) {

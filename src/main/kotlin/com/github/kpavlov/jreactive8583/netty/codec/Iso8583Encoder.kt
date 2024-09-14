@@ -10,7 +10,7 @@ import io.netty.handler.codec.MessageToByteEncoder
 import io.netty.util.CharsetUtil
 
 @Sharable
-internal class Iso8583Encoder(
+public class Iso8583Encoder(
     private val lengthHeaderLength: Int,
     private val encodeLengthHeaderAsString: Boolean
 ) :

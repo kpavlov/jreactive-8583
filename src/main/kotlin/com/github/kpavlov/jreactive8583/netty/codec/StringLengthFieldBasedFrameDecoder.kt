@@ -8,27 +8,21 @@ import io.netty.util.CharsetUtil
 import java.nio.ByteOrder
 
 /**
- * Netty's [LengthFieldBasedFrameDecoder] assumes the frame length header
- * is a binary encoded integer.
- * This overrides it's frame length decoding to implement the case when
- * the frame length header is String encoded.
- *
+ * Netty's [LengthFieldBasedFrameDecoder] assumes the frame length header is a binary encoded
+ * integer. This overrides it's frame length decoding to implement the case when the frame length
+ * header is String encoded.
  *
  * Uses [CharsetUtil.US_ASCII] for decoding
- */
-internal open class StringLengthFieldBasedFrameDecoder
-
-/**
- * @param maxFrameLength      the maximum length of the frame.  If the length of the frame is
- * greater than this value, `TooLongFrameException` will be
- * thrown.
- * @param lengthFieldOffset   the offset of the length field
- * @param lengthFieldLength   the length of the length field
- * @param lengthAdjustment    the compensation value to add to the value of the length field
+ *
+ * @param maxFrameLength the maximum length of the frame. If the length of the frame is greater than
+ *    this value, `TooLongFrameException` will be thrown.
+ * @param lengthFieldOffset the offset of the length field
+ * @param lengthFieldLength the length of the length field
+ * @param lengthAdjustment the compensation value to add to the value of the length field
  * @param initialBytesToStrip the number of first bytes to strip out from the decoded frame
  * @see LengthFieldBasedFrameDecoder
  */
-constructor(
+public open class StringLengthFieldBasedFrameDecoder(
     maxFrameLength: Int,
     lengthFieldOffset: Int,
     lengthFieldLength: Int,
