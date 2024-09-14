@@ -25,7 +25,6 @@ dependencies {
     api(libs.slf4j.api)
     api(kotlin("stdlib-jdk8"))
 
-    testImplementation(libs.jcip)
     testImplementation(libs.commons.lang3)
     testImplementation(libs.assertj)
     testImplementation(libs.awaitility)

@@ -10,7 +10,6 @@ import com.solab.iso8583.IsoType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
-import net.jcip.annotations.NotThreadSafe;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -19,7 +18,6 @@ import java.util.List;
 
 import static org.awaitility.Awaitility.await;
 
-@NotThreadSafe
 class EchoFromClientIT extends AbstractIT {
 
     private final List<IsoMessage> capturedRequests = Collections.synchronizedList(new LinkedList<>());

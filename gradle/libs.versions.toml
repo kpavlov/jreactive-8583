@@ -14,7 +14,6 @@ findbugs = "3.0.2"
 findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "findbugs" }
 netty = { group = "io.netty", name = "netty-handler", version.ref = "netty" }
 j8583 = { group = "net.sf.j8583", name = "j8583", version = "2.0.0" }
-jcip = { group = "net.jcip", name = "jcip-annotations", version = "1.0" }
 commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
 assertj = { group = "org.assertj", name = "assertj-core", version = "3.26.3" }
 awaitility = { group = "org.awaitility", name = "awaitility-kotlin", version.ref = "awaitility" }
