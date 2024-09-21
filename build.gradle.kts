@@ -9,9 +9,7 @@ plugins {
     alias(libs.plugins.detekt)
     signing
     `maven-publish`
-
-    // https://github.com/gradle-nexus/publish-plugin
-    alias(libs.plugins.nexusPublish)
+    alias(libs.plugins.nexusPublish) // https://github.com/gradle-nexus/publish-plugin
 }
 
 repositories {
@@ -39,18 +37,13 @@ dependencies {
 }
 
 group = "com.github.kpavlov.jreactive8583"
-version = (
-    if (findProperty("version") != "unspecified") {
-        findProperty("version")!!
-    } else {
-        "0.0.1-SNAPSHOT"
-    }
-    )
+version = findProperty("version")?.toString() ?: "0.0.1-SNAPSHOT"
 description = "ISO8583 Connector for Netty"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar() // Include sources JAR
 }
 
 kotlin {
@@ -60,7 +53,7 @@ kotlin {
         freeCompilerArgs.addAll(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
-            "-Xexplicit-api=strict",
+            "-Xexplicit-api=strict"
         )
     }
 }
@@ -76,64 +69,59 @@ tasks.test {
     }
 }
 
-val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+val dokkaJavadocJar by tasks.registering(Jar::class) {
     dependsOn(tasks.dokkaJavadoc)
     from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
-}
-
-java {
-    withSourcesJar()
-}
-
-tasks.jar {
-    manifest {
-        attributes(
-            mapOf(
-                "Implementation-Title" to project.name,
-                "Implementation-Version" to project.version
-            )
-        )
-    }
 }
 
 tasks.assemble {
     dependsOn(dokkaJavadocJar)
 }
 
-publishing {
-    // https://docs.gradle.org/current/userguide/publishing_setup.html
+tasks.jar {
+    manifest {
+        attributes(
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version
+        )
+    }
+}
 
-    publications.create<MavenPublication>("maven") {
-        pom {
-            name.set("ISO8583 Connector for Netty")
-            description.set("ISO8583 protocol client and server Netty connectors.")
-            url.set("https://github.com/kpavlov/jreactive-8583")
-            licenses {
-                license {
-                    name.set("The Apache License, Version 2.0")
-                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                }
-            }
-            developers {
-                developer {
-                    id.set("kpavlov")
-                    name.set("Konstantin Pavlov")
-                    email.set("mail@kpavlov.me")
-                    url.set("https://kpavlov.me?utm_source=jreactive8583")
-                    roles.set(listOf("owner", "developer"))
-                }
-            }
-            scm {
-                connection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
-                developerConnection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            artifact(dokkaJavadocJar.get())
+
+            pom {
+                name.set("ISO8583 Connector for Netty")
+                description.set("ISO8583 protocol client and server Netty connectors.")
                 url.set("https://github.com/kpavlov/jreactive-8583")
-                tag.set("HEAD")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("kpavlov")
+                        name.set("Konstantin Pavlov")
+                        email.set("mail@kpavlov.me")
+                        url.set("https://kpavlov.me?utm_source=jreactive8583")
+                        roles.set(listOf("owner", "developer"))
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
+                    developerConnection.set("scm:git:git@github.com:kpavlov/jreactive-8583.git")
+                    url.set("https://github.com/kpavlov/jreactive-8583")
+                    tag.set("HEAD")
+                }
+                inceptionYear.set("2015")
             }
-            inceptionYear.set("2015")
         }
-        from(components["java"])
-        artifact(dokkaJavadocJar)
     }
 
     repositories {
@@ -146,7 +134,6 @@ publishing {
 
 nexusPublishing {
     repositories {
-        // https://blog.solidsoft.pl/2015/09/08/deploy-to-maven-central-using-api-key-aka-auth-token/
         sonatype()
     }
 }
@@ -156,6 +143,6 @@ signing {
     sign(publishing.publications["maven"])
 }
 
-tasks.withType<JavaCompile> {
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }
