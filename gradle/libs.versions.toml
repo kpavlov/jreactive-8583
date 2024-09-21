@@ -9,13 +9,17 @@ netty = "4.1.113.Final"
 slf4j = "2.0.16"
 spring = "6.1.13"
 findbugs = "3.0.2"
+j8583 = "2.0.0"
+commonsLang3 = "3.17.0"
+assertj = "3.26.3"
+nexusPublish = "2.0.0"
 
 [libraries]
 findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "findbugs" }
 netty = { group = "io.netty", name = "netty-handler", version.ref = "netty" }
-j8583 = { group = "net.sf.j8583", name = "j8583", version = "2.0.0" }
-commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
-assertj = { group = "org.assertj", name = "assertj-core", version = "3.26.3" }
+j8583 = { group = "net.sf.j8583", name = "j8583", version.ref = "j8583" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commonsLang3" }
+assertj = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 awaitility = { group = "org.awaitility", name = "awaitility-kotlin", version.ref = "awaitility" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }
 mockito = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
@@ -30,4 +34,4 @@ slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
+nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
