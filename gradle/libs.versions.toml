@@ -2,7 +2,7 @@
 awaitility = "4.2.2"
 detekt = "1.23.7"
 dokka = "1.9.20"
-junitJupiter = "5.11.2"
+junitJupiter = "5.11.3"
 kotlin = "2.0.21"
 mockito = "5.14.2"
 netty = "4.1.114.Final"
