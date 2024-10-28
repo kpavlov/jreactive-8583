@@ -17,19 +17,21 @@ import java.net.InetSocketAddress
 public open class Iso8583Server<T : IsoMessage>(
     port: Int,
     config: ServerConfiguration,
-    messageFactory: MessageFactory<T>
+    messageFactory: MessageFactory<T>,
 ) : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
-
     private var socketAddress = InetSocketAddress(port)
 
     @Throws(InterruptedException::class)
     public fun start() {
-        bootstrap.bind().addListener(
-            GenericFutureListener { future: ChannelFuture ->
-                channel = future.channel()
-                logger.info("Server is started and listening at {}", channel?.localAddress())
-            }
-        ).sync().await()
+        bootstrap
+            .bind()
+            .addListener(
+                GenericFutureListener { future: ChannelFuture ->
+                    channel = future.channel()
+                    logger.info("Server is started and listening at {}", channel?.localAddress())
+                },
+            ).sync()
+            .await()
     }
 
     public override fun createBootstrap(): ServerBootstrap {
@@ -37,7 +39,8 @@ public open class Iso8583Server<T : IsoMessage>(
         val tcpNoDelay =
             java.lang.Boolean.parseBoolean(System.getProperty("nfs.rpc.tcp.nodelay", "true"))
         @Suppress("UNCHECKED_CAST")
-        bootstrap.group(bossEventLoopGroup, workerEventLoopGroup)
+        bootstrap
+            .group(bossEventLoopGroup, workerEventLoopGroup)
             .channel(NioServerSocketChannel::class.java)
             .childOption(ChannelOption.TCP_NODELAY, tcpNoDelay)
             .childOption(ChannelOption.SO_KEEPALIVE, true)
@@ -48,8 +51,8 @@ public open class Iso8583Server<T : IsoMessage>(
                     configurer,
                     workerEventLoopGroup,
                     isoMessageFactory as MessageFactory<IsoMessage>,
-                    messageHandler
-                )
+                    messageHandler,
+                ),
             )
         configureBootstrap(bootstrap)
         bootstrap.validate()
@@ -83,7 +86,6 @@ public open class Iso8583Server<T : IsoMessage>(
                 deregister()
                 close().syncUninterruptibly()
                 logger.info("Server was Stopped.")
-
             } catch (e: Exception) {
                 logger.error("Error while stopping the server", e)
             }

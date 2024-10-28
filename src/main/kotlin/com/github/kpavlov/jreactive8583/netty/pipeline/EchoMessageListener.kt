@@ -7,12 +7,10 @@ import com.solab.iso8583.IsoMessage
 import io.netty.channel.ChannelHandlerContext
 
 public open class EchoMessageListener<T : IsoMessage>(
-    private val isoMessageFactory: MessageFactory<T>
+    private val isoMessageFactory: MessageFactory<T>,
 ) : IsoMessageListener<T> {
-
-    public override fun applies(isoMessage: T): Boolean {
-        return isoMessage.type and MessageClass.NETWORK_MANAGEMENT.value != 0
-    }
+    public override fun applies(isoMessage: T): Boolean =
+        isoMessage.type and MessageClass.NETWORK_MANAGEMENT.value != 0
 
     /**
      * Sends EchoResponse message. Always returns `false`.
@@ -20,7 +18,10 @@ public open class EchoMessageListener<T : IsoMessage>(
      * @param isoMessage a message to handle
      * @return `false` - message should not be handled by any other handler.
      */
-    public override fun onMessage(ctx: ChannelHandlerContext, isoMessage: T): Boolean {
+    public override fun onMessage(
+        ctx: ChannelHandlerContext,
+        isoMessage: T,
+    ): Boolean {
         val echoResponse: IsoMessage = isoMessageFactory.createResponse(isoMessage)
         ctx.writeAndFlush(echoResponse)
         return false

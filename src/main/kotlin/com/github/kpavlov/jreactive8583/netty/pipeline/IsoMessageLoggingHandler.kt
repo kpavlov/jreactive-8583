@@ -22,24 +22,24 @@ public open class IsoMessageLoggingHandler(
     level: LogLevel,
     private val printSensitiveData: Boolean,
     private val printFieldDescriptions: Boolean,
-    private val maskedFields: IntArray = DEFAULT_MASKED_FIELDS
+    private val maskedFields: IntArray = DEFAULT_MASKED_FIELDS,
 ) : LoggingHandler(level) {
-
     public companion object {
-
         private const val MASK_CHAR = '*'
         private val MASKED_VALUE = "***".toCharArray()
 
         @JvmField
-        public val DEFAULT_MASKED_FIELDS: IntArray = intArrayOf(
-            34, // PAN extended
-            35, // track 2
-            36, // track 3
-            45 // track 1
-        )
+        public val DEFAULT_MASKED_FIELDS: IntArray =
+            intArrayOf(
+                34, // PAN extended
+                35, // track 2
+                36, // track 3
+                45, // track 1
+            )
 
         private val FIELD_NAMES = arrayOfNulls<String>(256)
         private const val FIELD_PROPERTIES = "iso8583fields.properties"
+
         private fun loadProperties() {
             try {
                 propertiesStream.use { stream ->
@@ -61,12 +61,15 @@ public open class IsoMessageLoggingHandler(
         private val propertiesStream: InputStream
             get() {
                 var stream =
-                    Thread.currentThread().contextClassLoader
+                    Thread
+                        .currentThread()
+                        .contextClassLoader
                         .getResourceAsStream("/$FIELD_PROPERTIES")
                 if (stream == null) {
-                    stream = IsoMessageLoggingHandler::class.java.getResourceAsStream(
-                        "/com/github/kpavlov/jreactive8583/$FIELD_PROPERTIES"
-                    )
+                    stream =
+                        IsoMessageLoggingHandler::class.java.getResourceAsStream(
+                            "/com/github/kpavlov/jreactive8583/$FIELD_PROPERTIES",
+                        )
                 }
                 return stream!!
             }
@@ -79,14 +82,13 @@ public open class IsoMessageLoggingHandler(
     public override fun format(
         ctx: ChannelHandlerContext,
         eventName: String,
-        arg: Any
-    ): String {
-        return if (arg is IsoMessage) {
+        arg: Any,
+    ): String =
+        if (arg is IsoMessage) {
             super.format(ctx, eventName, formatIsoMessage(arg))
         } else {
             super.format(ctx, eventName, arg)
         }
-    }
 
     protected fun formatIsoMessage(m: IsoMessage): String {
         val sb = StringBuilder()
@@ -104,15 +106,23 @@ public open class IsoMessageLoggingHandler(
                 }
                 val formattedValue: CharArray
                 formattedValue = getFormattedValue(field, i)
-                sb.append(field.type).append('(').append(field.length)
-                    .append(")] = '").append(formattedValue).append('\'')
+                sb
+                    .append(field.type)
+                    .append('(')
+                    .append(field.length)
+                    .append(")] = '")
+                    .append(formattedValue)
+                    .append('\'')
             }
         }
         return sb.toString()
     }
 
-    protected fun getFormattedValue(field: IsoValue<Any>, i: Int): CharArray {
-        return if (printSensitiveData) {
+    protected fun getFormattedValue(
+        field: IsoValue<Any>,
+        i: Int,
+    ): CharArray =
+        if (printSensitiveData) {
             field.toString().toCharArray()
         } else {
             when {
@@ -121,7 +131,6 @@ public open class IsoMessageLoggingHandler(
                 else -> field.toString().toCharArray()
             }
         }
-    }
 
     protected fun maskPAN(fullPan: String): CharArray {
         val maskedPan = fullPan.toCharArray()

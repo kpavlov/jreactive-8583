@@ -20,7 +20,10 @@ public interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBoo
      * @param bootstrap     AbstractBootstrap to configure
      * @param configuration A [ConnectorConfiguration] to use
      */
-    public fun configureBootstrap(bootstrap: B, configuration: C) {
+    public fun configureBootstrap(
+        bootstrap: B,
+        configuration: C,
+    ) {
         // this method was intentionally left blank
     }
 
@@ -37,7 +40,10 @@ public interface ConnectorConfigurer<C : ConnectorConfiguration, B : AbstractBoo
      * @param pipeline      A [ChannelPipeline] being configured
      * @param configuration A [ConnectorConfiguration] to use
      */
-    public fun configurePipeline(pipeline: ChannelPipeline, configuration: C) {
+    public fun configurePipeline(
+        pipeline: ChannelPipeline,
+        configuration: C,
+    ) {
         // this method was intentionally left blank
     }
 }

@@ -6,13 +6,12 @@ import java.io.UnsupportedEncodingException
 import java.text.ParseException
 
 public interface MessageFactory<T> {
-
     public fun newMessage(type: Int): T
 
     public fun newMessage(
         messageClass: MessageClass,
         messageFunction: MessageFunction,
-        messageOrigin: MessageOrigin
+        messageOrigin: MessageOrigin,
     ): T
 
     /**
@@ -20,15 +19,26 @@ public interface MessageFactory<T> {
      */
     public fun newMessage(
         messageClass: MessageClass,
-        messageFunction: MessageFunction
+        messageFunction: MessageFunction,
     ): T
 
     public fun createResponse(requestMessage: T): T
-    public fun createResponse(request: T, copyAllFields: Boolean): T
+
+    public fun createResponse(
+        request: T,
+        copyAllFields: Boolean,
+    ): T
 
     @Throws(ParseException::class, UnsupportedEncodingException::class)
-    public fun parseMessage(buf: ByteArray, isoHeaderLength: Int, binaryIsoHeader: Boolean): T
+    public fun parseMessage(
+        buf: ByteArray,
+        isoHeaderLength: Int,
+        binaryIsoHeader: Boolean,
+    ): T
 
     @Throws(UnsupportedEncodingException::class, ParseException::class)
-    public fun parseMessage(buf: ByteArray, isoHeaderLength: Int): T
+    public fun parseMessage(
+        buf: ByteArray,
+        isoHeaderLength: Int,
+    ): T
 }

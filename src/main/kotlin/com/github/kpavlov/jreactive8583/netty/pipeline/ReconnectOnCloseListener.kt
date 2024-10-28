@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 public open class ReconnectOnCloseListener(
     private val client: Iso8583Client<*>,
     private val reconnectInterval: Int,
-    private val executorService: ScheduledExecutorService
+    private val executorService: ScheduledExecutorService,
 ) : ChannelFutureListener {
     private val logger = LoggerFactory.getLogger(ReconnectOnCloseListener::class.java)
     private val disconnectRequested = AtomicBoolean(false)
@@ -37,7 +37,8 @@ public open class ReconnectOnCloseListener(
             logger.trace("Failed to connect. Will try again in {} millis", reconnectInterval)
             executorService.schedule(
                 Callable { client.connectAsync() },
-                reconnectInterval.toLong(), TimeUnit.MILLISECONDS
+                reconnectInterval.toLong(),
+                TimeUnit.MILLISECONDS,
             )
         }
     }

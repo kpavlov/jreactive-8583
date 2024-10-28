@@ -35,8 +35,9 @@ private const val DEFAULT_FRAME_LENGTH_FIELD_ADJUST = 0
  */
 private const val DEFAULT_FRAME_LENGTH_FIELD_OFFSET = 0
 
-public abstract class ConnectorConfiguration protected constructor(b: Builder<*>) {
-
+public abstract class ConnectorConfiguration protected constructor(
+    b: Builder<*>,
+) {
     public val addEchoMessageListener: Boolean
 
     /**
@@ -122,9 +123,7 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
      *
      * @return true if [EchoMessageListener] should be added to [CompositeIsoMessageHandler]
      */
-    public fun shouldAddEchoMessageListener(): Boolean {
-        return addEchoMessageListener
-    }
+    public fun shouldAddEchoMessageListener(): Boolean = addEchoMessageListener
 
     /**
      * Returns true is [IsoMessageLoggingHandler]
@@ -133,18 +132,14 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
      *
      * @return true if [IsoMessageLoggingHandler] should be added.
      */
-    public fun addLoggingHandler(): Boolean {
-        return addLoggingHandler
-    }
+    public fun addLoggingHandler(): Boolean = addLoggingHandler
 
     /**
      * Whether to reply with administrative message in case of message syntax errors. Default value is `false.`
      *
      * @return true if reply message should be sent in case of error parsing the message.
      */
-    public fun replyOnError(): Boolean {
-        return replyOnError
-    }
+    public fun replyOnError(): Boolean = replyOnError
 
     /**
      * Returns `true` if sensitive information like PAN, CVV/CVV2, and Track2 should be printed to log.
@@ -155,13 +150,9 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
      *
      * @return `true` if sensitive data should be printed to log
      */
-    public fun logSensitiveData(): Boolean {
-        return logSensitiveData
-    }
+    public fun logSensitiveData(): Boolean = logSensitiveData
 
-    public fun logFieldDescription(): Boolean {
-        return logFieldDescription
-    }
+    public fun logFieldDescription(): Boolean = logFieldDescription
 
     /**
      * Returns <code>true</code> if the length header is to be encoded as a String,
@@ -212,31 +203,36 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
         /**
          * @param shouldAddEchoMessageListener `true` to add echo message handler.
          */
-        public fun addEchoMessageListener(shouldAddEchoMessageListener: Boolean = true): B = apply {
-            addEchoMessageListener = shouldAddEchoMessageListener
-        } as B
+        public fun addEchoMessageListener(shouldAddEchoMessageListener: Boolean = true): B =
+            apply {
+                addEchoMessageListener = shouldAddEchoMessageListener
+            } as B
 
         /**
          * @param length Maximum frame length.
          */
-        public fun maxFrameLength(length: Int): B = apply {
-            maxFrameLength = length
-        } as B
+        public fun maxFrameLength(length: Int): B =
+            apply {
+                maxFrameLength = length
+            } as B
 
-        public fun idleTimeout(timeout: Int): B = apply {
-            idleTimeout = timeout
-        } as B
+        public fun idleTimeout(timeout: Int): B =
+            apply {
+                idleTimeout = timeout
+            } as B
 
-        public fun replyOnError(doReply: Boolean = true): B = apply {
-            replyOnError = doReply
-        } as B
+        public fun replyOnError(doReply: Boolean = true): B =
+            apply {
+                replyOnError = doReply
+            } as B
 
         /**
          * @param addLoggingHandler `true` if [IsoMessageLoggingHandler] should be added to Netty pipeline.
          */
-        public fun addLoggingHandler(value: Boolean = true): B = apply {
-            addLoggingHandler = value
-        } as B
+        public fun addLoggingHandler(value: Boolean = true): B =
+            apply {
+                addLoggingHandler = value
+            } as B
 
         /**
          * Should log sensitive data (unmasked) or not.
@@ -246,42 +242,50 @@ public abstract class ConnectorConfiguration protected constructor(b: Builder<*>
          *
          * @param logSensitiveData `true` to log sensitive data via logger
          */
-        public fun logSensitiveData(logSensitiveData: Boolean = true): B = apply {
-            this.logSensitiveData = logSensitiveData
-        } as B
+        public fun logSensitiveData(logSensitiveData: Boolean = true): B =
+            apply {
+                this.logSensitiveData = logSensitiveData
+            } as B
 
         /**
          * @param logFieldDescription `true` to print ISO field descriptions in the log
          */
-        public fun describeFieldsInLog(shouldDescribe: Boolean = true): B = apply {
-            logFieldDescription = shouldDescribe
-        } as B
+        public fun describeFieldsInLog(shouldDescribe: Boolean = true): B =
+            apply {
+                logFieldDescription = shouldDescribe
+            } as B
 
         /**
          * @param sensitiveDataFields Array of sensitive fields
          */
-        public fun sensitiveDataFields(vararg sensitiveDataFields: Int): B = apply {
-            this.sensitiveDataFields = sensitiveDataFields
-        } as B
+        public fun sensitiveDataFields(vararg sensitiveDataFields: Int): B =
+            apply {
+                this.sensitiveDataFields = sensitiveDataFields
+            } as B
 
-        public fun frameLengthFieldLength(frameLengthFieldLength: Int): B = apply {
-            this.frameLengthFieldLength = frameLengthFieldLength
-        } as B
+        public fun frameLengthFieldLength(frameLengthFieldLength: Int): B =
+            apply {
+                this.frameLengthFieldLength = frameLengthFieldLength
+            } as B
 
-        public fun frameLengthFieldOffset(frameLengthFieldOffset: Int): B = apply {
-            this.frameLengthFieldOffset = frameLengthFieldOffset
-        } as B
+        public fun frameLengthFieldOffset(frameLengthFieldOffset: Int): B =
+            apply {
+                this.frameLengthFieldOffset = frameLengthFieldOffset
+            } as B
 
-        public fun frameLengthFieldAdjust(frameLengthFieldAdjust: Int): B = apply {
-            this.frameLengthFieldAdjust = frameLengthFieldAdjust
-        } as B
+        public fun frameLengthFieldAdjust(frameLengthFieldAdjust: Int): B =
+            apply {
+                this.frameLengthFieldAdjust = frameLengthFieldAdjust
+            } as B
 
-        public fun encodeFrameLengthAsString(encodeFrameLengthAsString: Boolean): B = apply {
-            this.encodeFrameLengthAsString = encodeFrameLengthAsString
-        } as B
+        public fun encodeFrameLengthAsString(encodeFrameLengthAsString: Boolean): B =
+            apply {
+                this.encodeFrameLengthAsString = encodeFrameLengthAsString
+            } as B
 
-        public fun workerThreadsCount(numberOfThreads: Int): B = apply {
-            workerThreadsCount = numberOfThreads
-        } as B
+        public fun workerThreadsCount(numberOfThreads: Int): B =
+            apply {
+                workerThreadsCount = numberOfThreads
+            } as B
     }
 }

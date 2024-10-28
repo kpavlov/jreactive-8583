@@ -27,19 +27,19 @@ public open class StringLengthFieldBasedFrameDecoder(
     lengthFieldOffset: Int,
     lengthFieldLength: Int,
     lengthAdjustment: Int,
-    initialBytesToStrip: Int
+    initialBytesToStrip: Int,
 ) : LengthFieldBasedFrameDecoder(
-    maxFrameLength,
-    lengthFieldOffset,
-    lengthFieldLength,
-    lengthAdjustment,
-    initialBytesToStrip
-) {
+        maxFrameLength,
+        lengthFieldOffset,
+        lengthFieldLength,
+        lengthAdjustment,
+        initialBytesToStrip,
+    ) {
     public override fun getUnadjustedFrameLength(
         buf: ByteBuf,
         offset: Int,
         length: Int,
-        order: ByteOrder
+        order: ByteOrder,
     ): Long {
         var b = buf
         b = b.order(order)

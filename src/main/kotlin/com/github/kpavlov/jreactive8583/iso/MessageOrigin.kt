@@ -3,8 +3,9 @@
 package com.github.kpavlov.jreactive8583.iso
 
 @Suppress("unused", "MagicNumber")
-public enum class MessageOrigin(internal val value: Int) {
-
+public enum class MessageOrigin(
+    internal val value: Int,
+) {
     /**
      * xxx0	Acquirer
      */
@@ -33,5 +34,5 @@ public enum class MessageOrigin(internal val value: Int) {
     /**
      * xxx5	Other repeat
      */
-    OTHER_REPEAT(0x0005);
+    OTHER_REPEAT(0x0005),
 }

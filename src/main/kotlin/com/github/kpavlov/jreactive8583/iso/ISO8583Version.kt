@@ -14,14 +14,12 @@ package com.github.kpavlov.jreactive8583.iso
  * As of June 2017, however ISO 8583:2003 has yet to achieve wide acceptance.
  *
  * @see [](https://en.wikipedia.org/wiki/ISO_8583.Message_type_indicator_)
+ * @param value A first digit in Message type indicator
 ) */
 @Suppress("unused", "MagicNumber")
-public enum class ISO8583Version
-
-/**
- * @param value A first digit in Message type indicator
- */
-(internal val value: Int) {
+public enum class ISO8583Version(
+    internal val value: Int,
+) {
     /**
      * ISO 8583:1987
      */
@@ -45,5 +43,5 @@ public enum class ISO8583Version
     /**
      * Private use
      */
-    PRIVATE(0x9000);
+    PRIVATE(0x9000),
 }

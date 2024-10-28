@@ -8,7 +8,9 @@ package com.github.kpavlov.jreactive8583.iso
  * @see [](https://en.wikipedia.org/wiki/ISO_8583.Message_type_indicator_)
 ) */
 @Suppress("unused", "MagicNumber")
-public enum class MessageClass(internal val value: Int) {
+public enum class MessageClass(
+    internal val value: Int,
+) {
     /**
      * `x1xx` - Authorization message
      *
@@ -69,5 +71,5 @@ public enum class MessageClass(internal val value: Int) {
      * x8xx	Network management message
      * Used for secure key exchange, logon, echo test and other network functions.
      */
-    NETWORK_MANAGEMENT(0x0800);
+    NETWORK_MANAGEMENT(0x0800),
 }
