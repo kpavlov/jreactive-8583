@@ -31,6 +31,18 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder
 import io.netty.handler.logging.LogLevel
 import io.netty.handler.timeout.IdleStateHandler
 
+/**
+ * Initializes ISO 8583 channels with the necessary handlers.
+ *
+ * @param T the type of channel being initialized
+ * @param B the type of bootstrap to be configured
+ * @param C the type of connector configuration providing necessary settings
+ * @param configuration the connector configuration that provides necessary settings for initializing the channel
+ * @param configurer the configurer to further customize the bootstrap and pipeline configuration
+ * @param workerGroup the event loop group used for managing channel handlers
+ * @param isoMessageFactory the factory to create and parse ISO 8583 messages
+ * @param customChannelHandlers optional custom handlers to be added to the pipeline
+ */
 public open class Iso8583ChannelInitializer<
     T : Channel,
     B : AbstractBootstrap<*, *>,

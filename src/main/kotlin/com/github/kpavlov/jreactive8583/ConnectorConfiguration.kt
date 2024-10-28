@@ -35,6 +35,11 @@ private const val DEFAULT_FRAME_LENGTH_FIELD_ADJUST = 0
  */
 private const val DEFAULT_FRAME_LENGTH_FIELD_OFFSET = 0
 
+/**
+ * Abstract class representing the configuration for a connector.
+ *
+ * @param b The builder used to create the configuration instance.
+ */
 public abstract class ConnectorConfiguration protected constructor(
     b: Builder<*>,
 ) {
