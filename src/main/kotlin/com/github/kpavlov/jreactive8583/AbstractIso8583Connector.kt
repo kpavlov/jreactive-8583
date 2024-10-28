@@ -19,87 +19,86 @@ import java.util.concurrent.atomic.AtomicReference
 public abstract class AbstractIso8583Connector<
     C : ConnectorConfiguration,
     B : AbstractBootstrap<B, *>,
-    M : IsoMessage>
-protected constructor(
-    configuration: C,
-    isoMessageFactory: MessageFactory<M>,
-    protected val messageHandler: CompositeIsoMessageHandler<M> = CompositeIsoMessageHandler()
-) {
+    M : IsoMessage,
+>
+    protected constructor(
+        configuration: C,
+        isoMessageFactory: MessageFactory<M>,
+        protected val messageHandler: CompositeIsoMessageHandler<M> = CompositeIsoMessageHandler(),
+    ) {
+        protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
+        public val isoMessageFactory: MessageFactory<M> = isoMessageFactory
+        private val channelRef = AtomicReference<Channel>()
+        protected val configuration: C = configuration
+        public var configurer: ConnectorConfigurer<C, B>? = null
+        protected lateinit var bossEventLoopGroup: EventLoopGroup
+            private set
+        protected lateinit var workerEventLoopGroup: EventLoopGroup
+        protected lateinit var bootstrap: B
 
-    public val isoMessageFactory: MessageFactory<M> = isoMessageFactory
-    private val channelRef = AtomicReference<Channel>()
-    protected val configuration: C = configuration
-    public var configurer: ConnectorConfigurer<C, B>? = null
-    protected lateinit var bossEventLoopGroup: EventLoopGroup
-        private set
-    protected lateinit var workerEventLoopGroup: EventLoopGroup
-    protected lateinit var bootstrap: B
+        public fun addMessageListener(handler: IsoMessageListener<M>) {
+            messageHandler.addListener(handler)
+        }
 
-    public fun addMessageListener(handler: IsoMessageListener<M>) {
-        messageHandler.addListener(handler)
-    }
+        public fun removeMessageListener(handler: IsoMessageListener<M>) {
+            messageHandler.removeListener(handler)
+        }
 
-    public fun removeMessageListener(handler: IsoMessageListener<M>) {
-        messageHandler.removeListener(handler)
-    }
+        /**
+         * Making connector ready to create a connection / bind to port.
+         * Creates a Bootstrap
+         *
+         * @see AbstractBootstrap
+         */
+        public fun init() {
+            logger.info("Initializing")
+            bossEventLoopGroup = createBossEventLoopGroup()
+            workerEventLoopGroup = createWorkerEventLoopGroup()
+            bootstrap = createBootstrap()
+        }
 
-    /**
-     * Making connector ready to create a connection / bind to port.
-     * Creates a Bootstrap
-     *
-     * @see AbstractBootstrap
-     */
-    public fun init() {
-        logger.info("Initializing")
-        bossEventLoopGroup = createBossEventLoopGroup()
-        workerEventLoopGroup = createWorkerEventLoopGroup()
-        bootstrap = createBootstrap()
-    }
+        public open fun shutdown() {
+            workerEventLoopGroup.shutdownGracefully()
+            bossEventLoopGroup.shutdownGracefully()
+        }
 
-    public open fun shutdown() {
-        workerEventLoopGroup.shutdownGracefully()
-        bossEventLoopGroup.shutdownGracefully()
-    }
+        protected fun configureBootstrap(bootstrap: B) {
+            bootstrap
+                .option(
+                    ChannelOption.TCP_NODELAY,
+                    parseBoolean(
+                        System.getProperty(
+                            "nfs.rpc.tcp.nodelay",
+                            "true",
+                        ),
+                    ),
+                ).option(ChannelOption.AUTO_READ, true)
+            configurer?.configureBootstrap(bootstrap, configuration)
+        }
 
-    protected fun configureBootstrap(bootstrap: B) {
-        bootstrap.option(
-            ChannelOption.TCP_NODELAY,
-            parseBoolean(
-                System.getProperty(
-                    "nfs.rpc.tcp.nodelay", "true"
-                )
+        protected abstract fun createBootstrap(): B
+
+        protected fun createBossEventLoopGroup(): EventLoopGroup = NioEventLoopGroup()
+
+        protected fun createWorkerEventLoopGroup(): EventLoopGroup {
+            val group = NioEventLoopGroup(configuration.workerThreadsCount)
+            logger.debug(
+                "Created worker EventLoopGroup with {} executor threads",
+                group.executorCount(),
             )
-        )
-            .option(ChannelOption.AUTO_READ, true)
-        configurer?.configureBootstrap(bootstrap, configuration)
-    }
-
-    protected abstract fun createBootstrap(): B
-
-    protected fun createBossEventLoopGroup(): EventLoopGroup {
-        return NioEventLoopGroup()
-    }
-
-    protected fun createWorkerEventLoopGroup(): EventLoopGroup {
-        val group = NioEventLoopGroup(configuration.workerThreadsCount)
-        logger.debug(
-            "Created worker EventLoopGroup with {} executor threads",
-            group.executorCount()
-        )
-        return group
-    }
-
-    protected var channel: Channel?
-        get() = channelRef.get()
-        protected set(channel) {
-            channelRef.set(channel)
+            return group
         }
 
-    init {
-        if (configuration.shouldAddEchoMessageListener()) {
-            messageHandler.addListener(EchoMessageListener(isoMessageFactory))
+        protected var channel: Channel?
+            get() = channelRef.get()
+            protected set(channel) {
+                channelRef.set(channel)
+            }
+
+        init {
+            if (configuration.shouldAddEchoMessageListener()) {
+                messageHandler.addListener(EchoMessageListener(isoMessageFactory))
+            }
         }
     }
-}

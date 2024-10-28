@@ -6,9 +6,8 @@ import com.github.kpavlov.jreactive8583.ConnectorConfiguration
 
 @SuppressWarnings("WeakerAccess")
 public class ServerConfiguration(
-    builder: Builder
+    builder: Builder,
 ) : ConnectorConfiguration(builder) {
-
     public companion object {
         @JvmStatic
         public fun newBuilder(): Builder = Builder()

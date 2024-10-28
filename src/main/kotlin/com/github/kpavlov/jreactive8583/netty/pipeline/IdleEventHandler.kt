@@ -13,10 +13,12 @@ import io.netty.handler.timeout.IdleStateEvent
  * i.e. `IdleStateEvent` is received.
  */
 public open class IdleEventHandler<T>(
-    private val isoMessageFactory: MessageFactory<T>
+    private val isoMessageFactory: MessageFactory<T>,
 ) : ChannelInboundHandlerAdapter() {
-
-    public override fun userEventTriggered(ctx: ChannelHandlerContext, evt: Any) {
+    public override fun userEventTriggered(
+        ctx: ChannelHandlerContext,
+        evt: Any,
+    ) {
         if (evt is IdleStateEvent &&
             (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE)
         ) {
@@ -26,10 +28,9 @@ public open class IdleEventHandler<T>(
         }
     }
 
-    protected fun createHeartbeatMessage(): T {
-        return isoMessageFactory.newMessage(
+    protected fun createHeartbeatMessage(): T =
+        isoMessageFactory.newMessage(
             MessageClass.NETWORK_MANAGEMENT,
-            MessageFunction.REQUEST
+            MessageFunction.REQUEST,
         )
-    }
 }

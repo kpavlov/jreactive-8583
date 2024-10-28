@@ -19,13 +19,13 @@ import java.text.ParseException
 @Sharable
 public open class ParseExceptionHandler(
     private val isoMessageFactory: MessageFactory<IsoMessage>,
-    private val includeErrorDetails: Boolean
+    private val includeErrorDetails: Boolean,
 ) : ChannelInboundHandlerAdapter() {
     @Deprecated("Deprecated in Java")
     @Throws(Exception::class)
     public override fun exceptionCaught(
         ctx: ChannelHandlerContext,
-        cause: Throwable
+        cause: Throwable,
     ) {
         if (cause is ParseException) {
             val message = createErrorResponseMessage(cause)
@@ -36,14 +36,17 @@ public open class ParseExceptionHandler(
 
     @Suppress("MagicNumber")
     protected fun createErrorResponseMessage(cause: ParseException): IsoMessage {
-        val message = isoMessageFactory.newMessage(
-            MessageClass.ADMINISTRATIVE, MessageFunction.NOTIFICATION, MessageOrigin.OTHER
-        )
+        val message =
+            isoMessageFactory.newMessage(
+                MessageClass.ADMINISTRATIVE,
+                MessageFunction.NOTIFICATION,
+                MessageOrigin.OTHER,
+            )
         // 650 (Unable to parse message)
         message.setValue(24, 650, IsoType.NUMERIC, 3)
         if (includeErrorDetails) {
             var details = cause.message
-            if (details!!.length > 25) {
+            if (details != null && details.length > 25) {
                 details = details.take(22) + "..."
             }
             message.setValue(44, details, IsoType.LLVAR, 25)

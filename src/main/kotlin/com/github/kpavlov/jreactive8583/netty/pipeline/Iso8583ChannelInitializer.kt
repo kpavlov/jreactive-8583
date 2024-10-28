@@ -31,96 +31,108 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder
 import io.netty.handler.logging.LogLevel
 import io.netty.handler.timeout.IdleStateHandler
 
-public open class Iso8583ChannelInitializer<T : Channel,
+/**
+ * Initializes ISO 8583 channels with the necessary handlers.
+ *
+ * @param T the type of channel being initialized
+ * @param B the type of bootstrap to be configured
+ * @param C the type of connector configuration providing necessary settings
+ * @param configuration the connector configuration that provides necessary settings for initializing the channel
+ * @param configurer the configurer to further customize the bootstrap and pipeline configuration
+ * @param workerGroup the event loop group used for managing channel handlers
+ * @param isoMessageFactory the factory to create and parse ISO 8583 messages
+ * @param customChannelHandlers optional custom handlers to be added to the pipeline
+ */
+public open class Iso8583ChannelInitializer<
+    T : Channel,
     B : AbstractBootstrap<*, *>,
-    C : ConnectorConfiguration>
-public constructor(
-    private val configuration: C,
-    private val configurer: ConnectorConfigurer<C, B>?,
-    private val workerGroup: EventLoopGroup,
-    private val isoMessageFactory: MessageFactory<IsoMessage>,
-    vararg customChannelHandlers: ChannelHandler
-) : ChannelInitializer<T>() {
-
-    @Suppress("SpreadOperator")
-    private val customChannelHandlers = arrayOf(*customChannelHandlers)
-    private val isoMessageEncoder = createIso8583Encoder(configuration)
-    private val loggingHandler = createLoggingHandler(configuration)
-    private val parseExceptionHandler = createParseExceptionHandler()
-
-    public override fun initChannel(ch: T) {
-        val pipeline = ch.pipeline()
-        pipeline.addLast(
-            "lengthFieldFrameDecoder",
-            createLengthFieldBasedFrameDecoder(configuration)
-        )
-        pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory))
-        pipeline.addLast("iso8583Encoder", isoMessageEncoder)
-        if (configuration.addLoggingHandler()) {
-            pipeline.addLast(workerGroup, "logging", loggingHandler)
-        }
-        if (configuration.replyOnError()) {
-            pipeline.addLast(workerGroup, "replyOnError", parseExceptionHandler)
-        }
-        if (configuration.shouldAddEchoMessageListener()) {
-            pipeline.addLast(
-                workerGroup,
-                "idleState",
-                IdleStateHandler(0, 0, configuration.idleTimeout)
-            )
-            pipeline.addLast(workerGroup, "idleEventHandler", IdleEventHandler(isoMessageFactory))
-        }
+    C : ConnectorConfiguration,
+>
+    public constructor(
+        private val configuration: C,
+        private val configurer: ConnectorConfigurer<C, B>?,
+        private val workerGroup: EventLoopGroup,
+        private val isoMessageFactory: MessageFactory<IsoMessage>,
+        vararg customChannelHandlers: ChannelHandler,
+    ) : ChannelInitializer<T>() {
         @Suppress("SpreadOperator")
-        pipeline.addLast(workerGroup, *customChannelHandlers)
-        configurer?.configurePipeline(pipeline, configuration)
-    }
+        private val customChannelHandlers = arrayOf(*customChannelHandlers)
+        private val isoMessageEncoder = createIso8583Encoder(configuration)
+        private val loggingHandler = createLoggingHandler(configuration)
+        private val parseExceptionHandler = createParseExceptionHandler()
 
-    public fun getIsoMessageFactory(): MessageFactory<*> {
-        return isoMessageFactory
-    }
-
-    protected fun createParseExceptionHandler(): ChannelHandler {
-        return ParseExceptionHandler(isoMessageFactory, true)
-    }
-
-    protected fun createIso8583Encoder(configuration: C): Iso8583Encoder {
-        return Iso8583Encoder(
-            configuration.frameLengthFieldLength,
-            configuration.encodeFrameLengthAsString()
-        )
-    }
-
-    protected fun createIso8583Decoder(messageFactory: MessageFactory<IsoMessage>): Iso8583Decoder {
-        return Iso8583Decoder(messageFactory)
-    }
-
-    protected fun createLoggingHandler(configuration: C): ChannelHandler {
-        return IsoMessageLoggingHandler(
-            LogLevel.DEBUG,
-            configuration.logSensitiveData(),
-            configuration.logFieldDescription(),
-            configuration.sensitiveDataFields
-        )
-    }
-
-    protected fun createLengthFieldBasedFrameDecoder(configuration: C): ChannelHandler {
-        val lengthFieldLength = configuration.frameLengthFieldLength
-        return if (configuration.encodeFrameLengthAsString()) {
-            StringLengthFieldBasedFrameDecoder(
-                configuration.maxFrameLength,
-                configuration.frameLengthFieldOffset,
-                lengthFieldLength,
-                configuration.frameLengthFieldAdjust,
-                lengthFieldLength
+        public override fun initChannel(ch: T) {
+            val pipeline = ch.pipeline()
+            pipeline.addLast(
+                "lengthFieldFrameDecoder",
+                createLengthFieldBasedFrameDecoder(configuration),
             )
-        } else {
-            LengthFieldBasedFrameDecoder(
-                configuration.maxFrameLength,
-                configuration.frameLengthFieldOffset,
-                lengthFieldLength,
-                configuration.frameLengthFieldAdjust,
-                lengthFieldLength
+            pipeline.addLast("iso8583Decoder", createIso8583Decoder(isoMessageFactory))
+            pipeline.addLast("iso8583Encoder", isoMessageEncoder)
+            if (configuration.addLoggingHandler()) {
+                pipeline.addLast(workerGroup, "logging", loggingHandler)
+            }
+            if (configuration.replyOnError()) {
+                pipeline.addLast(workerGroup, "replyOnError", parseExceptionHandler)
+            }
+            if (configuration.shouldAddEchoMessageListener()) {
+                pipeline.addLast(
+                    workerGroup,
+                    "idleState",
+                    IdleStateHandler(0, 0, configuration.idleTimeout),
+                )
+                pipeline.addLast(
+                    workerGroup,
+                    "idleEventHandler",
+                    IdleEventHandler(isoMessageFactory),
+                )
+            }
+            @Suppress("SpreadOperator")
+            pipeline.addLast(workerGroup, *customChannelHandlers)
+            configurer?.configurePipeline(pipeline, configuration)
+        }
+
+        public fun getIsoMessageFactory(): MessageFactory<*> = isoMessageFactory
+
+        protected fun createParseExceptionHandler(): ChannelHandler =
+            ParseExceptionHandler(isoMessageFactory, true)
+
+        protected fun createIso8583Encoder(configuration: C): Iso8583Encoder =
+            Iso8583Encoder(
+                configuration.frameLengthFieldLength,
+                configuration.encodeFrameLengthAsString(),
             )
+
+        protected fun createIso8583Decoder(
+            messageFactory: MessageFactory<IsoMessage>,
+        ): Iso8583Decoder = Iso8583Decoder(messageFactory)
+
+        protected fun createLoggingHandler(configuration: C): ChannelHandler =
+            IsoMessageLoggingHandler(
+                LogLevel.DEBUG,
+                configuration.logSensitiveData(),
+                configuration.logFieldDescription(),
+                configuration.sensitiveDataFields,
+            )
+
+        protected fun createLengthFieldBasedFrameDecoder(configuration: C): ChannelHandler {
+            val lengthFieldLength = configuration.frameLengthFieldLength
+            return if (configuration.encodeFrameLengthAsString()) {
+                StringLengthFieldBasedFrameDecoder(
+                    configuration.maxFrameLength,
+                    configuration.frameLengthFieldOffset,
+                    lengthFieldLength,
+                    configuration.frameLengthFieldAdjust,
+                    lengthFieldLength,
+                )
+            } else {
+                LengthFieldBasedFrameDecoder(
+                    configuration.maxFrameLength,
+                    configuration.frameLengthFieldOffset,
+                    lengthFieldLength,
+                    configuration.frameLengthFieldAdjust,
+                    lengthFieldLength,
+                )
+            }
         }
     }
-}

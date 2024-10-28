@@ -23,5 +23,8 @@ public interface IsoMessageListener<T : IsoMessage> {
      * @param isoMessage received isoMessage. Not null.
      * @return true if message should be handled by subsequent message listeners
      */
-    public fun onMessage(ctx: ChannelHandlerContext, isoMessage: T): Boolean
+    public fun onMessage(
+        ctx: ChannelHandlerContext,
+        isoMessage: T,
+    ): Boolean
 }

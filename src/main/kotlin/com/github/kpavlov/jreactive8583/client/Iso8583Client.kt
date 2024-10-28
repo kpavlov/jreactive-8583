@@ -18,10 +18,8 @@ import java.util.concurrent.TimeUnit
 public open class Iso8583Client<T : IsoMessage>(
     private var socketAddress: SocketAddress,
     config: ClientConfiguration,
-    isoMessageFactory: MessageFactory<T>
-) :
-    AbstractIso8583Connector<ClientConfiguration, Bootstrap, T>(config, isoMessageFactory) {
-
+    isoMessageFactory: MessageFactory<T>,
+) : AbstractIso8583Connector<ClientConfiguration, Bootstrap, T>(config, isoMessageFactory) {
     private lateinit var reconnectOnCloseListener: ReconnectOnCloseListener
 
     /**
@@ -47,9 +45,10 @@ public open class Iso8583Client<T : IsoMessage>(
      * @throws InterruptedException if connection process was interrupted
      */
     @Throws(InterruptedException::class)
-    public fun connect(host: String, port: Int): ChannelFuture {
-        return connect(InetSocketAddress(host, port))
-    }
+    public fun connect(
+        host: String,
+        port: Int,
+    ): ChannelFuture = connect(InetSocketAddress(host, port))
 
     /**
      * Connects synchronously to specified remote address.
@@ -80,18 +79,20 @@ public open class Iso8583Client<T : IsoMessage>(
                 reconnectOnCloseListener.scheduleReconnect()
                 return@addListener
             }
-            channel = with(connectFuture.channel()!!) {
-                logger.debug("Client is connected to {}", this.remoteAddress())
-                this.closeFuture().addListener(reconnectOnCloseListener)
-                this
-            }
+            channel =
+                with(connectFuture.channel()!!) {
+                    logger.debug("Client is connected to {}", this.remoteAddress())
+                    this.closeFuture().addListener(reconnectOnCloseListener)
+                    this
+                }
         }
         return connectFuture
     }
 
     public override fun createBootstrap(): Bootstrap {
         val b = Bootstrap()
-        b.group(bossEventLoopGroup)
+        b
+            .group(bossEventLoopGroup)
             .channel(NioSocketChannel::class.java)
             .remoteAddress(socketAddress)
             .handler(
@@ -100,16 +101,17 @@ public open class Iso8583Client<T : IsoMessage>(
                     configurer,
                     workerEventLoopGroup,
                     isoMessageFactory as MessageFactory<IsoMessage>,
-                    messageHandler
-                )
+                    messageHandler,
+                ),
             )
         configureBootstrap(b)
         b.validate()
-        reconnectOnCloseListener = ReconnectOnCloseListener(
-            this,
-            configuration.reconnectInterval,
-            bossEventLoopGroup
-        )
+        reconnectOnCloseListener =
+            ReconnectOnCloseListener(
+                this,
+                configuration.reconnectInterval,
+                bossEventLoopGroup,
+            )
         return b
     }
 
@@ -149,7 +151,11 @@ public open class Iso8583Client<T : IsoMessage>(
      * Sends message synchronously with timeout
      */
     @Throws(InterruptedException::class)
-    public fun send(isoMessage: IsoMessage, timeout: Long, timeUnit: TimeUnit) {
+    public fun send(
+        isoMessage: IsoMessage,
+        timeout: Long,
+        timeUnit: TimeUnit,
+    ) {
         sendAsync(isoMessage).sync().await(timeout, timeUnit)
     }
 
