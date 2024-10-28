@@ -8,6 +8,7 @@ Free ISO8583 Connector for JDK (Netty)
 [![Build Status](https://github.com/kpavlov/jreactive-8583/actions/workflows/gradle.yml/badge.svg)](https://github.com/kpavlov/jreactive-8583/actions/workflows/gradle.yml)
 ![Libraries.io for GitHub](https://img.shields.io/librariesio/github/kpavlov/jreactive-8583.svg?maxAge=2592000)
 [![Maintainability](https://api.codeclimate.com/v1/badges/56e9f30962b0cbd97ed7/maintainability)](https://codeclimate.com/github/kpavlov/jreactive-8583/maintainability)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/56d83582f4564db9bfee15b0309ee0b5)](https://app.codacy.com/gh/kpavlov/jreactive-8583/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Motivation
 
