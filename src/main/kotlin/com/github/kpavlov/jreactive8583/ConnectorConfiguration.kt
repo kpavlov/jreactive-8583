@@ -40,6 +40,7 @@ private const val DEFAULT_FRAME_LENGTH_FIELD_OFFSET = 0
  *
  * @param b The builder used to create the configuration instance.
  */
+@Suppress("UnnecessaryAbstractClass")
 public abstract class ConnectorConfiguration protected constructor(
     b: Builder<*>,
 ) {

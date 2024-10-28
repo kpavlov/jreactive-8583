@@ -19,7 +19,7 @@ public open class Iso8583Server<T : IsoMessage>(
     config: ServerConfiguration,
     messageFactory: MessageFactory<T>,
 ) : AbstractIso8583Connector<ServerConfiguration, ServerBootstrap, T>(config, messageFactory) {
-    private var socketAddress = InetSocketAddress(port)
+    private val socketAddress = InetSocketAddress(port)
 
     @Throws(InterruptedException::class)
     public fun start() {
