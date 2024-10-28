@@ -52,7 +52,7 @@ kotlin {
         freeCompilerArgs.addAll(
             "-Xjvm-default=all",
             "-Xjsr305=strict",
-            "-Xexplicit-api=strict"
+            "-Xexplicit-api=strict",
         )
     }
 }
@@ -60,11 +60,12 @@ kotlin {
 tasks.test {
     useJUnitPlatform()
     testLogging {
-        events = setOf(
-            TestLogEvent.PASSED,
-            TestLogEvent.SKIPPED,
-            TestLogEvent.FAILED
-        )
+        events =
+            setOf(
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.FAILED,
+            )
     }
 }
 
@@ -72,6 +73,10 @@ val dokkaJavadocJar by tasks.registering(Jar::class) {
     dependsOn(tasks.dokkaJavadoc)
     from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 tasks.assemble {
@@ -82,7 +87,7 @@ tasks.jar {
     manifest {
         attributes(
             "Implementation-Title" to project.name,
-            "Implementation-Version" to project.version
+            "Implementation-Version" to project.version,
         )
     }
 }
