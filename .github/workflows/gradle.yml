@@ -47,7 +47,7 @@ jobs:
           gradle-version: wrapper
           arguments: check build --stacktrace
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v5
         if: success() || failure()
         with:
           report_paths: '**/TEST-*.xml'
