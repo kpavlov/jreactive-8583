@@ -11,7 +11,7 @@ spring = "6.2.10"
 findbugs = "3.0.2"
 j8583 = "3.0.0"
 commonsLang3 = "3.18.0"
-assertj = "3.27.5"
+assertj = "3.27.6"
 nexusPublish = "2.0.0"
 
 [libraries]
