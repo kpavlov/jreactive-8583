@@ -10,7 +10,7 @@ slf4j = "2.0.17"
 spring = "6.2.11"
 findbugs = "3.0.2"
 j8583 = "3.0.0"
-commonsLang3 = "3.18.0"
+commonsLang3 = "3.19.0"
 assertj = "3.27.6"
 nexusPublish = "2.0.0"
 
